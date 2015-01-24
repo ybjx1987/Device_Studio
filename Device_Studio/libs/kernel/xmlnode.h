@@ -1,6 +1,8 @@
 #ifndef XMLNODE_H
 #define XMLNODE_H
 
+#include "kernellibglobal.h"
+
 #include <QList>
 #include <QString>
 #include <QMap>
@@ -12,7 +14,7 @@ class QXmlStreamWriter;
  * XmlNode类表示的是XML文件的节点，每一个XML节点对应一个XmlNode实例。
  */
 
-class XmlNode
+class KERNEL_EXPORT XmlNode
 {
 public:
     //构造函数

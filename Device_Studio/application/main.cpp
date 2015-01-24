@@ -1,5 +1,6 @@
 #include <QApplication>
 
+#include "mainwindow.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -18,6 +19,8 @@ int main(int argc,char *argv[])
     f.setPointSize(9);
     a.setFont(f);
 
+    MainWindow w;
+    w.show();
 
     int ret=a.exec();
     return ret;

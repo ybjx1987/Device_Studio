@@ -1,6 +1,8 @@
 #ifndef QHOSTFACTORY_H
 #define QHOSTFACTORY_H
 
+#include "kernellibglobal.h"
+
 #include <QMetaObject>
 #include <QMap>
 #include <QString>
@@ -13,7 +15,7 @@ class QAbstractHostInfo;
  * @brief Host创建类，所有的Host都是使用这个类来创建的，Host不能够直接通过new来创建，降低模块耦合
  */
 
-class QHostFactory
+class KERNEL_EXPORT QHostFactory
 {
 public:
     //注册Host，只能够在注册宏中调用

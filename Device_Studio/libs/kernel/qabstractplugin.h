@@ -1,6 +1,8 @@
 #ifndef QABSTRACTPLUGIN_H
 #define QABSTRACTPLUGIN_H
 
+#include "kernellibglobal.h"
+
 #include <QString>
 #include <QObject>
 
@@ -8,7 +10,7 @@
  * @brief 插件接口基类，所有的插件接口都是从这里派生出来的。
  */
 
-class QPluginInterface
+class KERNEL_EXPORT QPluginInterface
 {
 public:
     //插件初始化
@@ -27,7 +29,7 @@ Q_DECLARE_INTERFACE(QPluginInterface, QPluginInterface_iid)
  * @brief 插件的基类，全部的插件都是从这里派生出来的。
  */
 
-class QAbstractPlugin : public QObject,public QPluginInterface
+class KERNEL_EXPORT QAbstractPlugin : public QObject,public QPluginInterface
 {
     Q_OBJECT
     Q_INTERFACES(QPluginInterface)

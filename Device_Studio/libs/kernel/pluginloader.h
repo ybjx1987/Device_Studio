@@ -1,6 +1,8 @@
 #ifndef PLUGINLOADER_H
 #define PLUGINLOADER_H
 
+#include "kernellibglobal.h"
+
 #include <QMap>
 
 class QAbstractPlugin;
@@ -9,7 +11,7 @@ class QAbstractPlugin;
  * @brief 这个类是用来加载插件的，在软件启动的时候调用这个类的相关函数，加载全部的插件。
  */
 
-class PluginLoader
+class KERNEL_EXPORT PluginLoader
 {
 public:
     //加载插件，根据插件描述文件来加载
