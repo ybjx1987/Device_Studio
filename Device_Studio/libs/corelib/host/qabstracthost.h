@@ -4,7 +4,7 @@
 #include <QObject>
 #include <QList>
 #include <QMap>
-#include <QMetaObect>
+#include <QMetaObject>
 
 class XmlNode;
 class QAbstractProperty;
@@ -21,7 +21,7 @@ public:
     //Host类别
     QString     m_group;
     //Host的元类型
-    QMetaObect  *m_metaObject;
+    QMetaObject  *m_metaObject;
     //Host的索引
     int         m_index;
 };

@@ -152,7 +152,7 @@ bool XmlNode::load(QXmlStreamReader *reader)
 bool XmlNode::save(QString &buffer)
 {
     QString str = "";
-    QXmlStreamWriter writer(str);
+    QXmlStreamWriter writer(&str);
     writer.writeStartDocument();
     writer.setAutoFormatting(true);
     writer.setAutoFormattingIndent(1);
@@ -192,7 +192,7 @@ bool XmlNode::save(QXmlStreamWriter *writer)
 
     foreach(XmlNode* xml,m_children)
     {
-        if(!xml->write(writer))
+        if(!xml->save(writer))
         {
             return false;
         }

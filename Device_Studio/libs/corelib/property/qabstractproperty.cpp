@@ -2,6 +2,8 @@
 
 #include "../xmlnode.h"
 
+#include <QMapIterator>
+
 /**
  * @brief 构造函数
  * @param parent--父节点，如果不为NULL，就会把当前节点添加到父节点的m_children末尾
@@ -76,7 +78,7 @@ void QAbstractProperty::setDefaultValue(const QVariant &defaultValue)
  * @brief 获取属性值
  * @return 属性的值
  */
-QVariant QAbstractProperty::getValue()
+QVariant QAbstractProperty::getValue() const
 {
     return m_value;
 }
@@ -107,11 +109,11 @@ bool QAbstractProperty::toXml(XmlNode *xml)
     xml->setTitle(PROPERTY_TITLE);
 
     //设置描述符
-    QMapIterator<QString,QVariant>      it(m_propertys);
+    QMapIterator<QString,QString>      it(m_propertys);
     while(it.hasNext())
     {
         it.next();
-        xml->setProperty(it.key(),it.value().toString());
+        xml->setProperty(it.key(),it.value());
     }
 
     //填写属性值
@@ -193,6 +195,11 @@ void QAbstractProperty::makeValue()
     }
 }
 
+void QAbstractProperty::writeValue()
+{
+    m_propertys.insert("value",m_value.toString());
+}
+
 /**
  * @brief 重载赋值操作符
  * @param property--赋值的属性
@@ -200,7 +207,7 @@ void QAbstractProperty::makeValue()
  */
 QAbstractProperty & QAbstractProperty::operator =(const QAbstractProperty &property)
 {
-    this->m_propertys=pro.m_propertys;
+    this->m_propertys=property.m_propertys;
     QVariant v = property.getValue();
     if(v.type()>0)
     {

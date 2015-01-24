@@ -9,17 +9,19 @@ void QAbstractPlugin::initPlugin()
 }
 
 /**
- * @brief 获取插件的名称
+ * @brief 获取插件名称
+ * @return 插件名称
  */
-void QAbstractPlugin::getPluginName()
+QString QAbstractPlugin::getPluginName()
 {
     return "";
 }
 
 /**
  * @brief 获取插件类型
+ * @return 插件类型
  */
-void QAbstractPlugin::getPluginType()
+QString QAbstractPlugin::getPluginType()
 {
     return "";
 }

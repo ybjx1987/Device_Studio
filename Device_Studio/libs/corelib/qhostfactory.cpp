@@ -30,7 +30,7 @@ void QHostFactory::registerHost(QAbstractHostInfo *info)
  */
 QAbstractHost* QHostFactory::createHost(const QString &name)
 {
-    QAbstractHostInfo *info=m_metaMap->value(name);
+    QAbstractHostInfo *info=m_metaMap.value(name);
     if(info == NULL)
     {
         return NULL;
@@ -62,5 +62,5 @@ QList<QAbstractHostInfo*> QHostFactory::getHostInfo()
  */
 QAbstractHostInfo* QHostFactory::getHostInfo(const QString &name)
 {
-    return m_metaMap->value(name);
+    return m_metaMap.value(name);
 }

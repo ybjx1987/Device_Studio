@@ -1,7 +1,7 @@
 #include "qabstracthost.h"
 
 #include "../xmlnode.h"
-
+#include "../qhostfactory.h"
 #include "../property/qabstractproperty.h"
 
 #include <QUuid>
@@ -18,8 +18,7 @@ QAbstractHostInfo * QAbstractHost::m_info = NULL;
 QAbstractHost::QAbstractHost(QAbstractHost *parent) :
     QObject(parent),
     m_parent(parent),
-    m_object(NULL),
-    m_info(NULL)
+    m_object(NULL)
 {
     if(m_parent != NULL)
     {
@@ -272,7 +271,7 @@ bool QAbstractHost::toXml(XmlNode *xml)
         foreach(QAbstractHost* child,m_children)
         {
             proXml=new XmlNode(xml);
-            if(!child->toXml(obj))
+            if(!child->toXml(proXml))
             {
                 xml->clear();
                 return false;
@@ -317,7 +316,6 @@ bool QAbstractHost::fromXml(XmlNode *xml)
         QList<XmlNode*>   children=xml->getChildren();
         foreach(XmlNode* obj,children)
         {
-            QAbstractProperty *pro=m_nameToProperty.value(str);
             if(obj->getTitle()==PROPERTY_TITLE)
             {
                 QAbstractProperty *pro = getProperty(obj->getProperty("name"));
@@ -328,7 +326,7 @@ bool QAbstractHost::fromXml(XmlNode *xml)
             {
                 QString hostType=obj->getProperty("type");
 
-                QAbstractHost *h=QHostFactory::create_host(hostType);
+                QAbstractHost *h=QHostFactory::createHost(hostType);
                 if(h!=NULL)
                 {
                     h->fromXml(obj);

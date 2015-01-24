@@ -69,7 +69,7 @@ bool PluginLoader::loadPlugin(const QString &xmlFileName)
                         m_plugins.insert(type,plugins);
 
                         //初始化插件
-                        plugin->init_plugin();
+                        plugin->initPlugin();
                     }
                     else
                     {

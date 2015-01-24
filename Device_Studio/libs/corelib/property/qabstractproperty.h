@@ -29,7 +29,7 @@ public:
     //设置属性的默认值
     virtual void    setDefaultValue(const QVariant &defaultValue);
     //获取属性的值
-    QVariant getValue();
+    QVariant getValue() const;
     //获取属性的显示名称
     virtual QString  getShowString()=0;
     //获取属性的显示图标
