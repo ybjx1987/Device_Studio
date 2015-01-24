@@ -36,11 +36,14 @@ QAbstractHost* QHostFactory::createHost(const QString &name)
         return NULL;
     }
     const QMetaObject* obj=info->m_metaObject;
-    QAbstractHost *host;
+    QAbstractHost *host = NULL;
     if(obj!=NULL)
     {
         host=(QAbstractHost*)obj->newInstance();
-        host->init();
+        if(host != NULL)
+        {
+            host->init();
+        }
     }
 
     return host;
