@@ -19,11 +19,19 @@ OBJECTS_DIR=../../../temp/libs/kernel/obj
 RCC_DIR=../../../temp/libs/kernel/rcc
 
 SOURCES += \
-    xmlnode.cpp
+    xmlnode.cpp \
+    host/qabstracthost.cpp \
+    qproject.cpp \
+    host/qprojecthost.cpp \
+    property/qabstractproperty.cpp
 
 HEADERS +=\
     xmlnode.h \
-    kernellibglobal.h
+    kernellibglobal.h \
+    host/qabstracthost.h \
+    qproject.h \
+    host/qprojecthost.h \
+    property/qabstractproperty.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
