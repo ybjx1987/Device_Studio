@@ -16,8 +16,12 @@ RCC_DIR=../../temp/application/rcc
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
-    fancyactionbar.cpp
+    fancyactionbar.cpp \
+    fancytabwidget.cpp \
+    qstatuswidget.cpp
 
 HEADERS += \
     mainwindow.h \
-    fancyactionbar.h
+    fancyactionbar.h \
+    fancytabwidget.h \
+    qstatuswidget.h

@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+class FancyTabWidget;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -11,11 +13,11 @@ public:
     ~MainWindow();
 public:
     void show();
+    void closeEvent(QCloseEvent *);
 protected:
     void saveSetting();
-signals:
-
-public slots:
+protected:
+    FancyTabWidget      *m_fancyTab;
 };
 
 #endif // MAINWINDOW_H

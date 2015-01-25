@@ -22,9 +22,18 @@ HEADERS += \
     platformlibglobal.h \
     stylehelper.h \
     qsettingmanager.h \
-    qplatformcore.h
+    qplatformcore.h \
+    styledbar.h \
+    minisplitter.h \
+    manhattanstyle.h
 
 SOURCES += \
     stylehelper.cpp \
     qsettingmanager.cpp \
-    qplatformcore.cpp
+    qplatformcore.cpp \
+    styledbar.cpp \
+    minisplitter.cpp \
+    manhattanstyle.cpp
+
+RESOURCES += \
+    platform.qrc

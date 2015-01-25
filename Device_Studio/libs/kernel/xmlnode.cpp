@@ -142,7 +142,7 @@ bool XmlNode::load(QXmlStreamReader *reader)
             break;
         }
     }
-    return reader->hasError();
+    return !reader->hasError();
 }
 
 /**
