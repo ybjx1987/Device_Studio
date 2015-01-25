@@ -1,32 +1,31 @@
-QT       += core gui xml sql widgets
-QT 	 += script
+#-------------------------------------------------
+#
+# Project created by QtCreator 2015-01-25T08:28:09
+#
+#-------------------------------------------------
+
+QT       += widgets script xml
 
 TARGET = kernel
 TEMPLATE = lib
 
-DESTDIR = ../../../temp/bin/Device_Studio.app/Contents/MacOS
 DEFINES += KERNEL_LIBRARY
 
+DESTDIR = ../../../temp/bin/Device_Studio.app/Contents/MacOS
 
 UI_DIR=../../../temp/libs/kernel/ui
 MOC_DIR=../../../temp/libs/kernel/moc
 OBJECTS_DIR=../../../temp/libs/kernel/obj
 RCC_DIR=../../../temp/libs/kernel/rcc
 
-HEADERS += \
-    qabstractplugin.h \
-    qhostfactory.h \
-    version.h \
+SOURCES += \
+    xmlnode.cpp
+
+HEADERS +=\
     xmlnode.h \
-    pluginloader.h \
-    host/qabstracthost.h \
-    property/qabstractproperty.h \
     kernellibglobal.h
 
-SOURCES += \
-    qabstractplugin.cpp \
-    qhostfactory.cpp \
-    xmlnode.cpp \
-    pluginloader.cpp \
-    host/qabstracthost.cpp \
-    property/qabstractproperty.cpp
+unix {
+    target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
+    INSTALLS += target
+}

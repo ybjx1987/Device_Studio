@@ -10,10 +10,6 @@
 class QXmlStreamReader;
 class QXmlStreamWriter;
 
-/**
- * XmlNode类表示的是XML文件的节点，每一个XML节点对应一个XmlNode实例。
- */
-
 class KERNEL_EXPORT XmlNode
 {
 public:

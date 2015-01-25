@@ -1,5 +1,5 @@
-#ifndef SHAREDLIBGLOBAL_H
-#define SHAREDLIBGLOBAL_H
+#ifndef KERNEL_GLOBAL_H
+#define KERNEL_GLOBAL_H
 
 #include <QtCore/qglobal.h>
 
@@ -9,4 +9,4 @@
 #  define KERNEL_EXPORT Q_DECL_IMPORT
 #endif
 
-#endif // LIBGLOBAL_H
+#endif // KERNEL_GLOBAL_H
