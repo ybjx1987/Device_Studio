@@ -23,7 +23,8 @@ SOURCES += \
     host/qabstracthost.cpp \
     qproject.cpp \
     host/qprojecthost.cpp \
-    property/qabstractproperty.cpp
+    property/qabstractproperty.cpp \
+    host/qhostfactory.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -31,7 +32,8 @@ HEADERS +=\
     host/qabstracthost.h \
     qproject.h \
     host/qprojecthost.h \
-    property/qabstractproperty.h
+    property/qabstractproperty.h \
+    host/qhostfactory.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
