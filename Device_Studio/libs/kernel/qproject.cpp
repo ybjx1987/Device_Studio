@@ -7,7 +7,8 @@
 #include <QFile>
 
 QProject::QProject():
-    QObject(NULL)
+    QObject(NULL),
+    m_projectHost(NULL)
 {
 
 }
@@ -38,11 +39,23 @@ bool QProject::open(const QString &proFileName)
     }
 
     m_projectHost = new QProjectHost;
+    m_projectHost->init();
+    m_projectHost->fromXml(&xml);
+
 
     return true;
 }
 
 void QProject::close()
 {
+    if(m_projectHost != NULL)
+    {
+        delete m_projectHost;
+        m_projectHost = NULL;
+    }
+}
 
+QProjectHost* QProject::getProjectHost()
+{
+    return m_projectHost;
 }

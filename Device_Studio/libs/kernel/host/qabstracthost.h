@@ -37,7 +37,9 @@ public:
     QAbstractHostInfo*      getHostInfo();
 
     void                    init();
-
+protected:
+    virtual void    createObject();
+    virtual void    initProperty();
 public:
     bool                    toXml(XmlNode * xml);
     bool                    fromXml(XmlNode * xml);

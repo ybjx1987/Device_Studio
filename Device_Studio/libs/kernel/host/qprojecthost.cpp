@@ -11,3 +11,12 @@ QProjectHost::~QProjectHost()
 
 }
 
+void QProjectHost::createObject()
+{
+    m_object = new QObject();
+}
+
+void QProjectHost::initProperty()
+{
+
+}

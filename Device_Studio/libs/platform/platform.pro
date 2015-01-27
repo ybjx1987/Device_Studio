@@ -25,7 +25,10 @@ HEADERS += \
     qplatformcore.h \
     styledbar.h \
     minisplitter.h \
-    manhattanstyle.h
+    manhattanstyle.h \
+    qbaseitemdelegate.h \
+    qbaselistview.h \
+    propertylist/qpropertylistview.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -33,7 +36,10 @@ SOURCES += \
     qplatformcore.cpp \
     styledbar.cpp \
     minisplitter.cpp \
-    manhattanstyle.cpp
+    manhattanstyle.cpp \
+    qbaseitemdelegate.cpp \
+    qbaselistview.cpp \
+    propertylist/qpropertylistview.cpp
 
 RESOURCES += \
     platform.qrc

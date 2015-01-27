@@ -16,6 +16,7 @@ public:
 
     void    close();
 
+    QProjectHost * getProjectHost();
 protected:
     QProjectHost    *m_projectHost;
 };

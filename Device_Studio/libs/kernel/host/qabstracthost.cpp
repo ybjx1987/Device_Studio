@@ -186,5 +186,24 @@ QAbstractHostInfo* QAbstractHost::getHostInfo()
 
 void QAbstractHost::init()
 {
+    createObject();
+    initProperty();
+    if(m_object != NULL)
+    {
+        m_object->installEventFilter(this);
+        foreach(QAbstractProperty *pro,m_propertys)
+        {
+            pro->setValue(m_object->property(pro->getName().toLocal8Bit()));
+        }
+    }
+}
+
+void QAbstractHost::createObject()
+{
+
+}
+
+void QAbstractHost::initProperty()
+{
 
 }

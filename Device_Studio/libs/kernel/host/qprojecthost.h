@@ -9,6 +9,11 @@ class QProjectHost : public QAbstractHost
 public:
     QProjectHost();
     ~QProjectHost();
+
+protected:
+    void        createObject();
+    void        initProperty();
+
 };
 
 #endif // QPROJECTHOST_H
