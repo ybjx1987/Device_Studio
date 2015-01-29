@@ -32,6 +32,9 @@ protected:
     void        updateView();
     void        insertItem(QAbstractProperty * property,
                            QAbstractProperty * parent = NULL);
+    void        mousePressEvent(QMouseEvent *event);
+
+    friend class QPropertyListDelegate;
 protected:
     QList<QAbstractProperty*>                       m_propertys;
     QMap<QString,QTreeWidgetItem*>                  m_groupToItem;

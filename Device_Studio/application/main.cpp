@@ -2,6 +2,7 @@
 
 #include "mainwindow.h"
 #include "../libs/platform/propertylist/qpropertylistview.h"
+#include "../libs/kernel/property/qbytearrayproperty.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -24,12 +25,30 @@ int main(int argc,char *argv[])
     //设置程序默认字体
     QFont f=a.font();
     f.setFamily("Arial");
-    f.setPointSize(9);
+    f.setPointSize(12);
     a.setFont(f);
     //新建主窗口
     //MainWindow w;
     //w.show();
     QPropertyListView view;
+
+    QList<QAbstractProperty*>       list;
+
+    QAbstractProperty *pro;
+
+    for(int i= 0;i<10;i++)
+    {
+        pro = new QByteArrayProperty();
+        pro->setName("abcd");
+        pro->setShowName("Name");
+        pro->setDefaultValue("value"+QString::number(i));
+        pro->reset();
+        list.append(pro);
+    }
+
+
+    view.setPropertys(list);
+
     view.show();
     //进入主循环
     int ret=a.exec();

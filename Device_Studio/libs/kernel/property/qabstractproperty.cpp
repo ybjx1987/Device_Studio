@@ -4,7 +4,12 @@
 
 QAbstractProperty::QAbstractProperty(QAbstractProperty* parent):
     QObject(parent),
-    m_parent(parent)
+    m_parent(parent),
+    m_visible(true),
+    m_needExpanded(false),
+    m_resetable(true),
+    m_editable(true),
+    m_canSame(true)
 {
     if(m_parent != NULL)
     {
@@ -218,4 +223,34 @@ void QAbstractProperty::setNeedExpanded(bool needExpanded)
 bool QAbstractProperty::getNeedExpanded()
 {
     return m_needExpanded;
+}
+
+bool QAbstractProperty::getResetable()
+{
+    return m_resetable;
+}
+
+void QAbstractProperty::setResetable(bool resetable)
+{
+    m_resetable = resetable;
+}
+
+bool QAbstractProperty::getEditable()
+{
+    return m_editable;
+}
+
+void QAbstractProperty::setEditable(bool editable)
+{
+    m_editable = editable;
+}
+
+bool QAbstractProperty::getCanSame()
+{
+    return m_canSame;
+}
+
+void QAbstractProperty::setCanSame(bool canSame)
+{
+    m_canSame = canSame;
 }

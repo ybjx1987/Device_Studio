@@ -1,7 +1,7 @@
 #ifndef QABSTRACTPROPERTY_H
 #define QABSTRACTPROPERTY_H
 
-#include "kernellibglobal.h"
+#include "../kernellibglobal.h"
 
 #include <QObject>
 #include <QMap>
@@ -23,8 +23,6 @@ public:
     virtual QVariant    getValue();
     virtual QString     getValueText() = 0;
     virtual QIcon       getValueIcon() = 0;
-
-    void                reset();
 
     void                setDefaultValue(const QVariant &value);
     bool                isModified();
@@ -55,7 +53,18 @@ public:
     bool                getNeedExpanded();
     void                setNeedExpanded(bool needExpanded);
 
+    bool                getResetable();
+    void                setResetable(bool resetable);
+
+    bool                getEditable();
+    void                setEditable(bool editable);
+
+    bool                getCanSame();
+    void                setCanSame(bool canSame);
+
     QAbstractProperty&  operator =(const QAbstractProperty & pro);
+public slots:
+    void                reset();
 protected:
     virtual void        makeValue(XmlNode * xml);
     virtual void        writeValue(XmlNode * xml);
@@ -75,6 +84,9 @@ protected:
     QString                     m_group;
     QString                     m_showName;
     bool                        m_needExpanded;
+    bool                        m_resetable;
+    bool                        m_editable;
+    bool                        m_canSame;
 };
 
 #endif // QABSTRACTPROPERTY_H

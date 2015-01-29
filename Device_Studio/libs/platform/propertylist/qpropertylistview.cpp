@@ -1,14 +1,25 @@
 #include "qpropertylistview.h"
 
+#include "qpropertyeditorpane.h"
+
 #include "../stylehelper.h"
 #include "../../kernel/property/qabstractproperty.h"
 
 #include <QHeaderView>
+#include <QMouseEvent>
 
 QWidget * QPropertyListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     QWidget* wid = NULL;
-
+    if(index.column() ==1)
+    {
+        QTreeWidgetItem *item = m_listView->itemFromIndex(index);
+        QAbstractProperty *property = m_listView->m_itemToProperty.value(item);
+        if(property != NULL && property->getVisible() && property->getEditable())
+        {
+            wid = new QPropertyEditorPane(property,parent);
+        }
+    }
     return wid;
 }
 
@@ -77,7 +88,7 @@ void QPropertyListView::insertItem(QAbstractProperty *property,
             str = tr("Common");
         }
         parentItem = m_groupToItem.value(str);
-        if(parentItem)
+        if(parentItem == NULL)
         {
             parentItem = new QTreeWidgetItem(this);
             parentItem->setText(0,str);
@@ -89,31 +100,31 @@ void QPropertyListView::insertItem(QAbstractProperty *property,
             parentItem->setData(0,DarkRole,true);
             parentItem->setData(1,DarkRole,true);
         }
-        else
-        {
-            parentItem = m_propertyToItem.value(parent);
-        }
-        if(parentItem == NULL)
-        {
-            return;
-        }
+    }
+    else
+    {
+        parentItem = m_propertyToItem.value(parent);
+    }
+    if(parentItem == NULL)
+    {
+        return;
+    }
 
-        QTreeWidgetItem *item = new QTreeWidgetItem(parentItem);
-        item->setText(0,property->getShowName());
-        item->setToolTip(0,property->getShowName());
-        item->setText(1,property->getValueText());
-        item->setToolTip(1,property->getValueText());
-        item->setIcon(1,property->getValueIcon());
-        item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
-        item->setExpanded(property->getNeedExpanded());
+    QTreeWidgetItem *item = new QTreeWidgetItem(parentItem);
+    item->setText(0,property->getShowName());
+    item->setToolTip(0,property->getShowName());
+    item->setText(1,property->getValueText());
+    item->setToolTip(1,property->getValueText());
+    item->setIcon(1,property->getValueIcon());
+    item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
+    item->setExpanded(property->getNeedExpanded());
 
-        m_itemToProperty.insert(item,property);
-        m_propertyToItem.insert(property,item);
+    m_itemToProperty.insert(item,property);
+    m_propertyToItem.insert(property,item);
 
-        foreach(QAbstractProperty * pro,property->getChildren())
-        {
-            insertItem(pro,property);
-        }
+    foreach(QAbstractProperty * pro,property->getChildren())
+    {
+        insertItem(pro,property);
     }
 }
 
@@ -132,4 +143,29 @@ void QPropertyListView::clear()
     m_propertyToItem.clear();
     m_itemToProperty.clear();
     m_groups.clear();
+}
+
+void QPropertyListView::mousePressEvent(QMouseEvent *event)
+{
+    QTreeWidget::mousePressEvent(event);
+
+    QTreeWidgetItem *item = itemAt(event->pos());
+    if(item != NULL)
+    {
+        if(m_groupToItem.values().contains(item))
+        {
+            if(event->pos().x()+header()->offset()<20)
+            {
+                item->setExpanded(!item->isExpanded());
+            }
+        }
+        else
+        {
+            if(header()->logicalIndexAt(event->pos()) == 1
+                    && event->button() == Qt::LeftButton)
+            {
+                editItem(item,1);
+            }
+        }
+    }
 }

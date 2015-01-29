@@ -28,7 +28,9 @@ HEADERS += \
     manhattanstyle.h \
     qbaseitemdelegate.h \
     qbaselistview.h \
-    propertylist/qpropertylistview.h
+    propertylist/qpropertylistview.h \
+    propertylist/qpropertyeditorpane.h \
+    propertylist/qcommoneditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -39,7 +41,9 @@ SOURCES += \
     manhattanstyle.cpp \
     qbaseitemdelegate.cpp \
     qbaselistview.cpp \
-    propertylist/qpropertylistview.cpp
+    propertylist/qpropertylistview.cpp \
+    propertylist/qpropertyeditorpane.cpp \
+    propertylist/qcommoneditor.cpp
 
 RESOURCES += \
     platform.qrc
