@@ -5,6 +5,7 @@
 #include "../qbaselistview.h"
 
 class QPropertyListView;
+class QAbstractProperty;
 
 class PLATFORM_EXPORT QPropertyListDelegate: public QBaseItemDelegate
 {
@@ -21,8 +22,23 @@ class PLATFORM_EXPORT QPropertyListView : public QBaseListView
 {
     Q_OBJECT
 public:
-    QPropertyListView();
-    ~QPropertyListView();
+    QPropertyListView(QWidget* parent = NULL);
+
+    void    clear();
+
+    void    setPropertys(const QList<QAbstractProperty*>    & propertys);
+
+protected:
+    void        updateView();
+    void        insertItem(QAbstractProperty * property,
+                           QAbstractProperty * parent = NULL);
+protected:
+    QList<QAbstractProperty*>                       m_propertys;
+    QMap<QString,QTreeWidgetItem*>                  m_groupToItem;
+    QList<QTreeWidgetItem*>                         m_groups;
+    QMap<QAbstractProperty*,QTreeWidgetItem*>       m_propertyToItem;
+    QMap<QTreeWidgetItem*,QAbstractProperty*>       m_itemToProperty;
+    QIcon                                           m_expandIcon;
 };
 
 #endif // QPROPERTYLISTVIEW_H

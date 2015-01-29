@@ -144,6 +144,11 @@ QAbstractProperty* QAbstractProperty::getChild(const QString &name)
     return NULL;
 }
 
+QList<QAbstractProperty*> QAbstractProperty::getChildren()
+{
+    return m_children;
+}
+
 void QAbstractProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
@@ -173,4 +178,44 @@ QAbstractProperty& QAbstractProperty::operator =(const QAbstractProperty& pro)
     m_name = pro.m_name;
 
     return *this;
+}
+
+void QAbstractProperty::setVisible(bool visible)
+{
+    m_visible = visible;
+}
+
+bool QAbstractProperty::getVisible()
+{
+    return m_visible;
+}
+
+void QAbstractProperty::setGroup(const QString &group)
+{
+    m_group = group;
+}
+
+QString QAbstractProperty::getGroup()
+{
+    return m_group;
+}
+
+void QAbstractProperty::setShowName(const QString &showName)
+{
+    m_showName = showName;
+}
+
+QString QAbstractProperty::getShowName()
+{
+    return m_showName;
+}
+
+void QAbstractProperty::setNeedExpanded(bool needExpanded)
+{
+    m_needExpanded = needExpanded;
+}
+
+bool QAbstractProperty::getNeedExpanded()
+{
+    return m_needExpanded;
 }

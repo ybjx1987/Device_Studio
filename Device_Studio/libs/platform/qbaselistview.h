@@ -5,9 +5,11 @@
 
 #include <QTreeWidget>
 
-class QBaseListView: public QTreeWidget
+class PLATFORM_EXPORT QBaseListView: public QTreeWidget
 {
     Q_OBJECT
+public:
+    QBaseListView(QWidget* parent = NULL);
 protected:
     void drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const;
 };

@@ -35,12 +35,25 @@ public:
     bool                fromXml(XmlNode* xml);
 
     QAbstractProperty*  getChild(const QString & name);
+    QList<QAbstractProperty*>       getChildren();
 
     QString             getType();
     void                setType(const QString &type);
 
     QString             getName();
     void                setName(const QString &name);
+
+    bool                getVisible();
+    void                setVisible(bool visible);
+
+    QString             getGroup();
+    void                setGroup(const QString &group);
+
+    QString             getShowName();
+    void                setShowName(const QString &showName);
+
+    bool                getNeedExpanded();
+    void                setNeedExpanded(bool needExpanded);
 
     QAbstractProperty&  operator =(const QAbstractProperty & pro);
 protected:
@@ -58,6 +71,10 @@ protected:
     QVariant                    m_value;
     QVariant                    m_defaultValue;
 
+    bool                        m_visible;
+    QString                     m_group;
+    QString                     m_showName;
+    bool                        m_needExpanded;
 };
 
 #endif // QABSTRACTPROPERTY_H

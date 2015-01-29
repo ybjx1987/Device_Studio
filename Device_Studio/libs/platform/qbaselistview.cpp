@@ -4,6 +4,12 @@
 
 #include <QPainter>
 
+QBaseListView::QBaseListView(QWidget *parent):
+    QTreeWidget(parent)
+{
+
+}
+
 void QBaseListView::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const
 {
     QColor c;
