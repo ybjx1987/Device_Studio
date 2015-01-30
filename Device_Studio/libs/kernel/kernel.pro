@@ -25,7 +25,10 @@ SOURCES += \
     host/qprojecthost.cpp \
     property/qabstractproperty.cpp \
     host/qhostfactory.cpp \
-    property/qbytearrayproperty.cpp
+    property/qbytearrayproperty.cpp \
+    property/qintproperty.cpp \
+    property/qboolproperty.cpp \
+    property/qfloatproperty.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -35,7 +38,10 @@ HEADERS +=\
     host/qprojecthost.h \
     property/qabstractproperty.h \
     host/qhostfactory.h \
-    property/qbytearrayproperty.h
+    property/qbytearrayproperty.h \
+    property/qintproperty.h \
+    property/qboolproperty.h \
+    property/qfloatproperty.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

@@ -34,8 +34,13 @@ void QAbstractProperty::setValue(const QVariant &value)
     QVariant old = m_value;
     if(!equal(value))
     {
-        m_value = value;
-        emit valueChanged(m_value,old);
+        QVariant v = value;
+        if(v.canConvert(m_value.type()))
+        {
+            v.convert(m_value.type());
+            m_value = v;
+            emit valueChanged(m_value,old);
+        }
     }
 }
 
@@ -46,7 +51,12 @@ void QAbstractProperty::reset()
 
 void QAbstractProperty::setDefaultValue(const QVariant &value)
 {
-    m_defaultValue = value;
+    QVariant v = value;
+    if(v.canConvert(m_value.type()))
+    {
+        v.convert(m_value.type());
+        m_defaultValue = v;
+    }
 }
 
 QVariant QAbstractProperty::getValue()

@@ -27,7 +27,7 @@ QCommonEditor::QCommonEditor(QAbstractProperty *property, QWidget *parent):
 
     QHBoxLayout *layout = new QHBoxLayout();
     setLayout(layout);
-    layout->setContentsMargins(3,2,3,2);
+    layout->setContentsMargins(5,3,3,2);
     layout->setSpacing(0);
     layout->setSpacing(3);
     layout->addWidget(m_icon);

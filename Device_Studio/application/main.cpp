@@ -2,7 +2,7 @@
 
 #include "mainwindow.h"
 #include "../libs/platform/propertylist/qpropertylistview.h"
-#include "../libs/kernel/property/qbytearrayproperty.h"
+#include "../libs/kernel/property/qfloatproperty.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -38,10 +38,10 @@ int main(int argc,char *argv[])
 
     for(int i= 0;i<10;i++)
     {
-        pro = new QByteArrayProperty();
+        pro = new QFloatProperty();
         pro->setName("abcd");
         pro->setShowName("Name");
-        pro->setDefaultValue("value"+QString::number(i));
+        pro->setDefaultValue(i/2.0);
         pro->reset();
         list.append(pro);
     }

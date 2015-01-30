@@ -4,6 +4,7 @@ QByteArrayProperty::QByteArrayProperty(QAbstractProperty* parent):
     QAbstractProperty(parent)
 {
     setType("ByteArray");
+    m_value = "";
 }
 
 QString QByteArrayProperty::getValueText()
