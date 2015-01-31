@@ -3,6 +3,9 @@
 #include "mainwindow.h"
 #include "../libs/platform/propertylist/qpropertylistview.h"
 #include "../libs/kernel/property/qfloatproperty.h"
+#include "../libs/kernel/property/qenumproperty.h"
+#include "../libs/kernel/qvarianttype.h"
+#include "../libs/kernel/property/qalignmentproperty.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -36,15 +39,10 @@ int main(int argc,char *argv[])
 
     QAbstractProperty *pro;
 
-    for(int i= 0;i<10;i++)
-    {
-        pro = new QFloatProperty();
-        pro->setName("abcd");
-        pro->setShowName("Name");
-        pro->setDefaultValue(i/2.0);
-        pro->reset();
-        list.append(pro);
-    }
+    pro = new QAlignmentProperty();
+
+    pro->setValue(int(Qt::AlignLeft | Qt::AlignTop));
+    list.append(pro);
 
 
     view.setPropertys(list);

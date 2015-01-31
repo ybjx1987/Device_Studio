@@ -28,7 +28,9 @@ SOURCES += \
     property/qbytearrayproperty.cpp \
     property/qintproperty.cpp \
     property/qboolproperty.cpp \
-    property/qfloatproperty.cpp
+    property/qfloatproperty.cpp \
+    property/qenumproperty.cpp \
+    property/qalignmentproperty.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -41,7 +43,10 @@ HEADERS +=\
     property/qbytearrayproperty.h \
     property/qintproperty.h \
     property/qboolproperty.h \
-    property/qfloatproperty.h
+    property/qfloatproperty.h \
+    property/qenumproperty.h \
+    qvarianttype.h \
+    property/qalignmentproperty.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
