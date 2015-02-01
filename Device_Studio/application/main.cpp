@@ -7,6 +7,13 @@
 #include "../libs/kernel/qvarianttype.h"
 #include "../libs/kernel/property/qalignmentproperty.h"
 
+#include "../libs/kernel/host/qabstractwidgethost.h"
+#include "../libs/kernel/host/qwidgethost.h"
+
+
+#include "../libs/kernel/host/qhostfactory.h"
+#include "../libs/kernel/pluginloader.h"
+
 #include <QFont>
 #include <QTextCodec>
 #include <QTimeEdit>
@@ -30,24 +37,15 @@ int main(int argc,char *argv[])
     f.setFamily("Arial");
     f.setPointSize(12);
     a.setFont(f);
+
+    QHostFactory::registerInnerHost();
+
+    PluginLoader::loadPlugin("plugins.xml");
+
     //新建主窗口
-    //MainWindow w;
-    //w.show();
-    QPropertyListView view;
+    MainWindow w;
+    w.show();
 
-    QList<QAbstractProperty*>       list;
-
-    QAbstractProperty *pro;
-
-    pro = new QAlignmentProperty();
-
-    pro->setValue(int(Qt::AlignLeft | Qt::AlignTop));
-    list.append(pro);
-
-
-    view.setPropertys(list);
-
-    view.show();
     //进入主循环
     int ret=a.exec();
     return ret;

@@ -30,7 +30,8 @@ HEADERS += \
     qbaselistview.h \
     propertylist/qpropertylistview.h \
     propertylist/qpropertyeditorpane.h \
-    propertylist/qcommoneditor.h
+    propertylist/qcommoneditor.h \
+    qabstractpage.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -43,7 +44,8 @@ SOURCES += \
     qbaselistview.cpp \
     propertylist/qpropertylistview.cpp \
     propertylist/qpropertyeditorpane.cpp \
-    propertylist/qcommoneditor.cpp
+    propertylist/qcommoneditor.cpp \
+    qabstractpage.cpp
 
 RESOURCES += \
     platform.qrc

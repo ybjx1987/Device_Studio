@@ -30,7 +30,13 @@ SOURCES += \
     property/qboolproperty.cpp \
     property/qfloatproperty.cpp \
     property/qenumproperty.cpp \
-    property/qalignmentproperty.cpp
+    property/qalignmentproperty.cpp \
+    host/qwidgethost.cpp \
+    host/qabstractwidgethost.cpp \
+    property/qrectproperty.cpp \
+    property/qcursorproperty.cpp \
+    qabstractplugin.cpp \
+    pluginloader.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -46,9 +52,17 @@ HEADERS +=\
     property/qfloatproperty.h \
     property/qenumproperty.h \
     qvarianttype.h \
-    property/qalignmentproperty.h
+    property/qalignmentproperty.h \
+    host/qwidgethost.h \
+    host/qabstractwidgethost.h \
+    property/qrectproperty.h \
+    property/qcursorproperty.h \
+    qabstractplugin.h \
+    pluginloader.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
     INSTALLS += target
 }
+
+OTHER_FILES +=

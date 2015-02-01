@@ -2,6 +2,8 @@
 
 #include "qabstracthost.h"
 
+#include "qwidgethost.h"
+
 QMap<QString,QAbstractHostInfo*>     QHostFactory::m_metaMap;
 QList<QAbstractHostInfo*>            QHostFactory::m_metas;
 
@@ -40,4 +42,9 @@ QList<QAbstractHostInfo*> QHostFactory::getHostInfo()
 QAbstractHostInfo * QHostFactory::getHostInfo(const QString &name)
 {
     return m_metaMap.value(name);
+}
+
+void QHostFactory::registerInnerHost()
+{
+    registerHost(QWidgetHost::getHostInfo());
 }

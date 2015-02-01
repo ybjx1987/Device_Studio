@@ -7,5 +7,23 @@
         <file>images/panel_button.png</file>
         <file>images/panel_manage_button.png</file>
         <file>images/reset.png</file>
+        <file>images/cursors/arrow.png</file>
+        <file>images/cursors/busy.png</file>
+        <file>images/cursors/closedhand.png</file>
+        <file>images/cursors/cross.png</file>
+        <file>images/cursors/hand.png</file>
+        <file>images/cursors/hsplit.png</file>
+        <file>images/cursors/ibeam.png</file>
+        <file>images/cursors/no.png</file>
+        <file>images/cursors/openhand.png</file>
+        <file>images/cursors/sizeall.png</file>
+        <file>images/cursors/sizeb.png</file>
+        <file>images/cursors/sizef.png</file>
+        <file>images/cursors/sizeh.png</file>
+        <file>images/cursors/sizev.png</file>
+        <file>images/cursors/uparrow.png</file>
+        <file>images/cursors/vsplit.png</file>
+        <file>images/cursors/wait.png</file>
+        <file>images/cursors/whatsthis.png</file>
     </qresource>
 </RCC>

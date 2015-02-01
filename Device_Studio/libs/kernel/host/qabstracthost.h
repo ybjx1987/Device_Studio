@@ -1,7 +1,7 @@
 #ifndef QABSTRACTHOST_H
 #define QABSTRACTHOST_H
 
-#include "kernellibglobal.h"
+#include "../kernellibglobal.h"
 
 #include <QObject>
 #include <QList>
@@ -34,15 +34,24 @@ public:
     void                    setUuid(const QString &uuid);
     QString                 getUuid();
 
-    QAbstractHostInfo*      getHostInfo();
+    static QAbstractHostInfo*      getHostInfo();
 
     void                    init();
+
+    QList<QAbstractProperty*>   getPropertys();
+    QAbstractProperty*      getProperty(const QString &name);
+
+    QVariant                getPropertyValue(const QString &name);
+    void                    setPropertyValue(const QString &name,const QVariant &value);
 protected:
     virtual void    createObject();
     virtual void    initProperty();
 public:
     bool                    toXml(XmlNode * xml);
     bool                    fromXml(XmlNode * xml);
+protected:
+    void                    insertProperty(QAbstractProperty * property,int index = -1);
+    void                    removeProperty(const QString &name);
 
 protected:
     virtual     void        writeAttribute(XmlNode * xml);
@@ -56,8 +65,6 @@ protected:
 
     QString                     m_name;
     QString                     m_uuid;
-
-    static QAbstractHostInfo    *m_info;
 };
 
 #endif // QABSTRACTHOST_H

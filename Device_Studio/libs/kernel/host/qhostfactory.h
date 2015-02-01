@@ -15,6 +15,8 @@ public:
     static QAbstractHost* createHost(const QString& name);
     static QList<QAbstractHostInfo*> getHostInfo();
     static QAbstractHostInfo *  getHostInfo(const QString &name);
+
+    static void registerInnerHost();
 protected:
     static QMap<QString,QAbstractHostInfo*>     m_metaMap;
     static QList<QAbstractHostInfo*>            m_metas;

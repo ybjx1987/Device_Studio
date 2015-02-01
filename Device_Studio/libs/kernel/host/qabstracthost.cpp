@@ -3,14 +3,13 @@
 #include "qhostfactory.h"
 
 #include "../property/qabstractproperty.h"
+#include "../property/qbytearrayproperty.h"
 
 #include "../xmlnode.h"
 
 #include <QVariant>
 #include <QUuid>
 #include <QWidget>
-
-QAbstractHostInfo * QAbstractHost::m_info = NULL;
 
 QAbstractHost::QAbstractHost(QAbstractHost *parent) :
     QObject(parent),
@@ -176,20 +175,18 @@ QString QAbstractHost::getUuid()
 
 QAbstractHostInfo* QAbstractHost::getHostInfo()
 {
-    if(m_info == NULL)
-    {
-        m_info = new QAbstractHostInfo;
-        m_info->m_metaObject = &(QAbstractHost::staticMetaObject);
-    }
-    return m_info;
+    QAbstractHostInfo * info = new QAbstractHostInfo();
+    info->m_metaObject = &(QAbstractHost::staticMetaObject);
+    info->m_type = "abstract";
+    return info;
 }
 
 void QAbstractHost::init()
 {
     createObject();
-    initProperty();
     if(m_object != NULL)
     {
+        initProperty();
         m_object->installEventFilter(this);
         foreach(QAbstractProperty *pro,m_propertys)
         {
@@ -200,10 +197,88 @@ void QAbstractHost::init()
 
 void QAbstractHost::createObject()
 {
-
+    m_object = NULL;
 }
 
 void QAbstractHost::initProperty()
 {
+    QByteArrayProperty  *pro = new QByteArrayProperty();
+    pro->setName("objectName");
+    pro->setShowName(tr("Name"));
+    pro->setGroup("Attributes");
+    insertProperty(pro);
+}
 
+void QAbstractHost::insertProperty(QAbstractProperty *property, int index)
+{
+    if(index < 0 || index > m_propertys.size())
+    {
+        index = m_propertys.size();
+    }
+
+    if(m_propertys.contains(property))
+    {
+        m_propertys.removeAll(property);
+    }
+
+    m_propertys.insert(index,property);
+    m_nameToProperty.insert(property->getName(),property);
+
+
+}
+
+QList<QAbstractProperty*>   QAbstractHost::getPropertys()
+{
+    return m_propertys;
+}
+
+QAbstractProperty * QAbstractHost::getProperty(const QString &name)
+{
+    QStringList list = name.split(".");
+    if(list.size()>0)
+    {
+        QAbstractProperty * pro = m_nameToProperty.value(list.takeFirst());
+        if(pro != NULL)
+        {
+            while(list.size() > 0)
+            {
+                pro = pro->getChild(list.takeFirst());
+                if(pro == NULL)
+                {
+                    break;
+                }
+            }
+            return pro;
+        }
+        else
+        {
+            return NULL;
+        }
+    }
+    else
+    {
+        return NULL;
+    }
+}
+
+QVariant QAbstractHost::getPropertyValue(const QString &name)
+{
+    QAbstractProperty * pro = getProperty(name);
+    if(pro != NULL)
+    {
+        return pro->getValue();
+    }
+    else
+    {
+        return QVariant();
+    }
+}
+
+void QAbstractHost::setPropertyValue(const QString &name, const QVariant &value)
+{
+    QAbstractProperty * pro = getProperty(name);
+    if(pro != NULL)
+    {
+        pro->setValue(value);
+    }
 }

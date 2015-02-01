@@ -65,9 +65,14 @@ public:
     QAbstractProperty&  operator =(const QAbstractProperty & pro);
 public slots:
     void                reset();
+protected slots:
+    virtual void        updateValue();
 protected:
     virtual void        makeValue(XmlNode * xml);
     virtual void        writeValue(XmlNode * xml);
+
+    void                connectUpdateValue();
+    void                disconnectUpdateValue();
 signals:
     void                valueChanged(const QVariant &now,const QVariant &old);
 protected:

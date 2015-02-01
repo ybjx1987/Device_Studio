@@ -254,3 +254,26 @@ void QAbstractProperty::setCanSame(bool canSame)
 {
     m_canSame = canSame;
 }
+
+void QAbstractProperty::connectUpdateValue()
+{
+    foreach(QAbstractProperty * child,m_children)
+    {
+        connect(child,SIGNAL(valueChanged(QVariant,QVariant)),this,SLOT(updateValue()));
+        child->connectUpdateValue();
+    }
+}
+
+void QAbstractProperty::disconnectUpdateValue()
+{
+    foreach(QAbstractProperty * child,m_children)
+    {
+        disconnect(child,SIGNAL(valueChanged(QVariant,QVariant)),this,SLOT(updateValue()));
+        child->disconnectUpdateValue();
+    }
+}
+
+void QAbstractProperty::updateValue()
+{
+
+}
