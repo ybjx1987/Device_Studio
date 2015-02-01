@@ -7,7 +7,8 @@
 QBaseListView::QBaseListView(QWidget *parent):
     QTreeWidget(parent)
 {
-
+    setFocusPolicy(Qt::NoFocus);
+    setItemDelegate(new QBaseItemDelegate);
 }
 
 void QBaseListView::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const

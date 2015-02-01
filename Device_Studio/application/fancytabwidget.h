@@ -110,7 +110,17 @@ class FancyTabWidget : public QWidget
 public:
     explicit FancyTabWidget(QWidget *parent = 0);
 
+    void    insertTab(int index,QWidget* tab,const QIcon &icon,const QString &label);
+
     void paintEvent(QPaintEvent *);
+
+    void    setTabEnabled(int index, bool enabled);
+
+    void    setCurrentIndex(const QString &label);
+
+    void    setCurrentIndex(int index);
+
+    int     findTab(const QString &name);
 signals:
 
 public slots:

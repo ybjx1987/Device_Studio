@@ -61,6 +61,6 @@ QAbstractHostInfo* QWidgetHost::getHostInfo()
     info->m_index = 1;
     info->m_showGroup = tr("Containners");
     info->m_showName = tr("Widget");
-    info->m_showIcon = ":/inner/images/widget.png";
+    info->m_showIcon = ":/inner/images/widgets/widget.png";
     return info;
 }

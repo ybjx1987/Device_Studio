@@ -21,9 +21,13 @@ MOC_DIR=../../../../temp/pages/designer/moc
 OBJECTS_DIR=../../../../temp/pages/designer/obj
 RCC_DIR=../../../../temp/pages/designer/rcc
 
-SOURCES += qdesignerplugin.cpp
+SOURCES += qdesignerplugin.cpp \
+    qdesignerwidget.cpp \
+    qwidgetboxlist.cpp
 
-HEADERS += qdesignerplugin.h
+HEADERS += qdesignerplugin.h \
+    qdesignerwidget.h \
+    qwidgetboxlist.h
 
 unix {
     target.path = /usr/lib

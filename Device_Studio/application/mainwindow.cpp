@@ -7,8 +7,16 @@
 #include "../libs/platform/qsettingmanager.h"
 #include "../libs/platform/manhattanstyle.h"
 
+#include "../libs/kernel/pluginloader.h"
+#include "../libs/platform/qabstractpage.h"
+
 #include <QDesktopWidget>
 #include <QApplication>
+
+bool pageCheck(QAbstractPlugin *plugin1,QAbstractPlugin * plugin2)
+{
+    return ((QAbstractPage*)plugin1)->getPageIndex()<((QAbstractPage*)plugin2)->getPageIndex();
+}
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -16,6 +24,24 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     qApp->setStyle(new ManhattanStyle(qApp->style()->objectName()));
     setCentralWidget(m_fancyTab);
+
+    QMap<QString,QAbstractPlugin*>  pages = PluginLoader::getPluginByType("Plugin.Page");
+
+    QList<QAbstractPlugin*> list = pages.values();
+
+    qSort(list.begin(),list.end(),pageCheck);
+
+    foreach(QAbstractPlugin * plugin,list)
+    {
+        QAbstractPage * page = (QAbstractPage*)plugin;
+        m_fancyTab->insertTab(list.indexOf(plugin),page->getWidget(),
+                              page->getPageIcon(),page->getPageText());
+    }
+
+    if(list.size()>0)
+    {
+        m_fancyTab->setCurrentIndex(0);
+    }
 }
 
 MainWindow::~MainWindow()

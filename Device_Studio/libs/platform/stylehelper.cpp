@@ -67,7 +67,7 @@ QColor StyleHelper::mergedColors(const QColor &colorA, const QColor &colorB, int
 
 qreal StyleHelper::sidebarFontSize()
 {//×ÖÌå´óÐ¡
-    return 7.5;
+    return 9;
 }
 
 int StyleHelper::navigationWidgetHeight()

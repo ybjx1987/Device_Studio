@@ -25,5 +25,52 @@
         <file>images/cursors/vsplit.png</file>
         <file>images/cursors/wait.png</file>
         <file>images/cursors/whatsthis.png</file>
+        <file>images/design.png</file>
+        <file>images/widgets/calendarwidget.png</file>
+        <file>images/widgets/checkbox.png</file>
+        <file>images/widgets/columnview.png</file>
+        <file>images/widgets/combobox.png</file>
+        <file>images/widgets/commandlinkbutton.png</file>
+        <file>images/widgets/dateedit.png</file>
+        <file>images/widgets/datetimeedit.png</file>
+        <file>images/widgets/dial.png</file>
+        <file>images/widgets/dialogbuttonbox.png</file>
+        <file>images/widgets/dockwidget.png</file>
+        <file>images/widgets/doublespinbox.png</file>
+        <file>images/widgets/fontcombobox.png</file>
+        <file>images/widgets/frame.png</file>
+        <file>images/widgets/graphicsview.png</file>
+        <file>images/widgets/groupbox.png</file>
+        <file>images/widgets/groupboxcollapsible.png</file>
+        <file>images/widgets/hscrollbar.png</file>
+        <file>images/widgets/hslider.png</file>
+        <file>images/widgets/hsplit.png</file>
+        <file>images/widgets/label.png</file>
+        <file>images/widgets/lcdnumber.png</file>
+        <file>images/widgets/line.png</file>
+        <file>images/widgets/lineedit.png</file>
+        <file>images/widgets/listbox.png</file>
+        <file>images/widgets/listview.png</file>
+        <file>images/widgets/mdiarea.png</file>
+        <file>images/widgets/pipeline.png</file>
+        <file>images/widgets/plaintextedit.png</file>
+        <file>images/widgets/progress.png</file>
+        <file>images/widgets/pushbutton.png</file>
+        <file>images/widgets/radiobutton.png</file>
+        <file>images/widgets/scrollarea.png</file>
+        <file>images/widgets/spacer.png</file>
+        <file>images/widgets/spinbox.png</file>
+        <file>images/widgets/tabbar.png</file>
+        <file>images/widgets/table.png</file>
+        <file>images/widgets/tabwidget.png</file>
+        <file>images/widgets/textedit.png</file>
+        <file>images/widgets/timeedit.png</file>
+        <file>images/widgets/toolbox.png</file>
+        <file>images/widgets/toolbutton.png</file>
+        <file>images/widgets/vline.png</file>
+        <file>images/widgets/vscrollbar.png</file>
+        <file>images/widgets/vslider.png</file>
+        <file>images/widgets/vspacer.png</file>
+        <file>images/widgets/widget.png</file>
     </qresource>
 </RCC>

@@ -1,12 +1,15 @@
 #include "qdesignerplugin.h"
 
+#include "qdesignerwidget.h"
+
 #include <qplugin.h>
 #include <QIcon>
 #include <QVariant>
 
 void QDesignerPlugin::createWidget()
 {
-    m_widget = NULL;
+    m_widget = new QDesignerWidget;
+    m_widget->setProperty("panelwidget",true);
 }
 
 QString QDesignerPlugin::getPluginName()

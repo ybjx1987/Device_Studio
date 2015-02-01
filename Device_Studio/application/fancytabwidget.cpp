@@ -558,3 +558,40 @@ void FancyTabWidget::paintEvent(QPaintEvent *)
     painter.setPen(light);
     painter.drawLine(rect.bottomLeft(), rect.bottomRight());
 }
+
+void FancyTabWidget::insertTab(int index, QWidget *tab, const QIcon &icon, const QString &label)
+{
+    m_modesStack->insertWidget(index,tab);
+    m_tabBar->insertTab(index,icon,label);
+}
+
+void FancyTabWidget::setCurrentIndex(const QString &label)
+{
+    int index = findTab(label);
+    if(index >0 )
+    {
+        setCurrentIndex(index);
+    }
+}
+
+void FancyTabWidget::setCurrentIndex(int index)
+{
+    if(m_tabBar->getTabEnabled(index))
+    {
+        m_tabBar->setCurrentIndex(index);
+    }
+}
+
+int FancyTabWidget::findTab(const QString &name)
+{
+    return m_tabBar->findTab(name);
+}
+
+void FancyTabWidget::setTabEnabled(int index, bool enabled)
+{
+    if(index == m_tabBar->getCurrentIndex())
+    {
+        m_tabBar->setCurrentIndex(0);
+    }
+    m_tabBar->setTabEnabled(index,enabled);
+}
