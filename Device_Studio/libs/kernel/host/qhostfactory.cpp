@@ -3,13 +3,14 @@
 #include "qabstracthost.h"
 
 #include "qwidgethost.h"
+#include "qlineedithost.h"
 
 QMap<QString,QAbstractHostInfo*>     QHostFactory::m_metaMap;
 QList<QAbstractHostInfo*>            QHostFactory::m_metas;
 
 void QHostFactory::registerHost(QAbstractHostInfo *info)
 {
-    if(m_metaMap.contains(info->m_type) || info == NULL)
+    if(m_metaMap.contains(info->m_name) || info == NULL)
     {
         return;
     }
@@ -47,4 +48,5 @@ QAbstractHostInfo * QHostFactory::getHostInfo(const QString &name)
 void QHostFactory::registerInnerHost()
 {
     registerHost(QWidgetHost::getHostInfo());
+    registerHost(QLineEditHost::getHostInfo());
 }

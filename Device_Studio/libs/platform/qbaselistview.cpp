@@ -13,6 +13,7 @@ QBaseListView::QBaseListView(QWidget *parent):
 
 void QBaseListView::drawRow(QPainter *painter, const QStyleOptionViewItem &options, const QModelIndex &index) const
 {
+
     QColor c;
 
     QStyleOptionViewItem opt = options;

@@ -16,6 +16,7 @@ class KERNEL_EXPORT QAbstractHostInfo
 {
 public:
     QString         m_type;
+    QString         m_name;
     const QMetaObject     *m_metaObject;
 };
 

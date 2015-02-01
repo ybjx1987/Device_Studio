@@ -59,6 +59,7 @@ QAbstractHostInfo* QWidgetHost::getHostInfo()
     QWidgetHostInfo * info = new QWidgetHostInfo();
     info->m_metaObject = &(QWidgetHost::staticMetaObject);
     info->m_index = 1;
+    info->m_name = "widget";
     info->m_showGroup = tr("Containners");
     info->m_showName = tr("Widget");
     info->m_showIcon = ":/inner/images/widgets/widget.png";
