@@ -7,6 +7,9 @@
 
 #include "../../../libs/platform/minisplitter.h"
 
+#include "../../../libs/kernel/host/qhostfactory.h"
+#include "../../../libs/kernel/host/qabstracthost.h"
+
 #include <QVBoxLayout>
 
 QDesignerWidget::QDesignerWidget(QWidget * parent ):
@@ -44,5 +47,15 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
 
     splitter->setStretchFactor(0,0);
     splitter->setStretchFactor(1,1);
+
+    QAbstractHost * host = QHostFactory::createHost("lineedit");
+    if(host == NULL)
+    {
+        qDebug("Host is NULL");
+    }
+    else
+    {
+        m_propertyView->setPropertys(host->getPropertys());
+    }
 }
 

@@ -29,14 +29,11 @@ public:
 
     bool                equal(const QVariant &value);
 
-    bool                toXml(XmlNode * xml);
-    bool                fromXml(XmlNode* xml);
+    virtual bool        toXml(XmlNode * xml);
+    virtual bool        fromXml(XmlNode* xml);
 
     QAbstractProperty*  getChild(const QString & name);
     QList<QAbstractProperty*>       getChildren();
-
-    QString             getType();
-    void                setType(const QString &type);
 
     QString             getName();
     void                setName(const QString &name);

@@ -64,16 +64,6 @@ bool QAbstractProperty::isModified()
     return !equal(m_defaultValue);
 }
 
-void QAbstractProperty::setType(const QString &type)
-{
-    m_type = type;
-}
-
-QString QAbstractProperty::getType()
-{
-    return m_type;
-}
-
 void QAbstractProperty::setName(const QString &name)
 {
     m_name = name;
@@ -110,7 +100,7 @@ bool QAbstractProperty::toXml(XmlNode *xml)
 
 bool QAbstractProperty::fromXml(XmlNode *xml)
 {
-    if(xml == NULL)
+    if(xml == NULL && xml->getTitle() != PROPERTY_TITLE)
     {
         return false;
     }
@@ -157,7 +147,6 @@ QList<QAbstractProperty*> QAbstractProperty::getChildren()
 void QAbstractProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
-    setType(xml->getProperty("type"));
     QVariant v = xml->getProperty("value");
     if(m_value.type()>0)
     {
@@ -169,13 +158,12 @@ void QAbstractProperty::makeValue(XmlNode *xml)
 void QAbstractProperty::writeValue(XmlNode *xml)
 {
     xml->setProperty("name",getName());
-    xml->setProperty("type",getType());
     xml->setProperty("value",m_value.toString());
 }
 
 QAbstractProperty& QAbstractProperty::operator =(const QAbstractProperty& pro)
 {
-    if(m_type != getType())
+    if(strcmp(metaObject()->className(),pro.metaObject()->className()) != 0)
     {
         return *this;
     }

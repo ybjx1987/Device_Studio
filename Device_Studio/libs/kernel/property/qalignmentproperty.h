@@ -9,7 +9,7 @@ class KERNEL_EXPORT QAlignmentProperty : public QAbstractProperty
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QAlignmentProperty(QAbstractProperty * parent = NULL);
+    QAlignmentProperty(QAbstractProperty * parent = NULL);
 
     QString         getValueText();
     QIcon           getValueIcon();

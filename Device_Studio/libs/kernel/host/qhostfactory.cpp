@@ -15,7 +15,7 @@ void QHostFactory::registerHost(QAbstractHostInfo *info)
         return;
     }
 
-    m_metaMap.insert(info->m_type,info);
+    m_metaMap.insert(info->m_name,info);
     m_metas.append(info);
 }
 

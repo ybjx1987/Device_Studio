@@ -223,8 +223,17 @@ void QAbstractHost::insertProperty(QAbstractProperty *property, int index)
 
     m_propertys.insert(index,property);
     m_nameToProperty.insert(property->getName(),property);
+}
 
-
+void QAbstractHost::removeProperty(const QString &name)
+{
+    QAbstractProperty * pro = m_nameToProperty.value(name);
+    if(pro != NULL)
+    {
+        m_nameToProperty.remove(name);
+        m_propertys.removeAll(pro);
+        delete pro;
+    }
 }
 
 QList<QAbstractProperty*>   QAbstractHost::getPropertys()

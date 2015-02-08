@@ -3,7 +3,6 @@
 QFloatProperty::QFloatProperty(QAbstractProperty * parent):
     QAbstractProperty(parent)
 {
-    setType("Float");
     m_value = 0.0;
 }
 

@@ -5,7 +5,6 @@
 QEnumProperty::QEnumProperty(QAbstractProperty * parent):
     QAbstractProperty(parent)
 {
-    setType("ENUM");
 }
 
 QString QEnumProperty::getValueText()

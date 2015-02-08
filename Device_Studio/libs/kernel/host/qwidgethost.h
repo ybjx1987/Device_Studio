@@ -17,7 +17,7 @@ class KERNEL_EXPORT QWidgetHost : public QAbstractWidgetHost
 {
     Q_OBJECT
 public:
-    QWidgetHost(QAbstractWidgetHost * parent = NULL);
+    Q_INVOKABLE QWidgetHost(QAbstractWidgetHost * parent = NULL);
 
     static QAbstractHostInfo * getHostInfo();
 protected:

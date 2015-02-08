@@ -31,24 +31,12 @@ void QPropertyListDelegate::updateEditorGeometry(QWidget *editor, const QStyleOp
 QPropertyListView::QPropertyListView(QWidget* parent):
     QBaseListView(parent)
 {
-    setFrameStyle(QFrame::NoFrame);
-    setIconSize(QSize(18,18));
     setColumnCount(2);
     setHeaderLabels(QStringList()<<tr("Property")<<tr("Value"));
-    setAlternatingRowColors(true);
-    setEditTriggers(QAbstractItemView::EditKeyPressed);
-    setRootIsDecorated(false);
 
     setItemDelegate(new QPropertyListDelegate(this));
 
     m_expandIcon = StyleHelper::drawIndicatorIcon(palette(),style());
-
-    QPalette p = this->palette();
-    p.setColor(QPalette::Inactive,QPalette::Highlight,
-               p.color(QPalette::Active,QPalette::Highlight));
-    p.setColor(QPalette::Inactive,QPalette::HighlightedText,
-               p.color(QPalette::Active,QPalette::HighlightedText));
-    setPalette(p);
 }
 
 void QPropertyListView::setPropertys(const QList<QAbstractProperty *> &propertys)
@@ -145,27 +133,10 @@ void QPropertyListView::clear()
     m_groups.clear();
 }
 
-void QPropertyListView::mousePressEvent(QMouseEvent *event)
+void QPropertyListView::clickEditItem(QTreeWidgetItem* item,int index)
 {
-    QTreeWidget::mousePressEvent(event);
-
-    QTreeWidgetItem *item = itemAt(event->pos());
-    if(item != NULL)
+    if(index == 1)
     {
-        if(m_groupToItem.values().contains(item))
-        {
-            if(event->pos().x()+header()->offset()<20)
-            {
-                item->setExpanded(!item->isExpanded());
-            }
-        }
-        else
-        {
-            if(header()->logicalIndexAt(event->pos()) == 1
-                    && event->button() == Qt::LeftButton)
-            {
-                editItem(item,1);
-            }
-        }
+        editItem(item,1);
     }
 }

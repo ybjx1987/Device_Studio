@@ -15,13 +15,8 @@ static bool checkHost(QWidgetHostInfo * info1,QWidgetHostInfo * info2)
 QWidgetBoxList::QWidgetBoxList(QWidget* parent ):
     QBaseListView(parent)
 {
-    setIndentation(0);
-    setRootIsDecorated(false);
     setColumnCount(1);
     header()->hide();
-    setAlternatingRowColors(true);
-
-    m_expandIcon = StyleHelper::drawIndicatorIcon(palette(),style());
 
     initWidgetBox();
 }

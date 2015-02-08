@@ -37,7 +37,11 @@ SOURCES += \
     property/qcursorproperty.cpp \
     qabstractplugin.cpp \
     pluginloader.cpp \
-    host/qlineedithost.cpp
+    host/qlineedithost.cpp \
+    property/qmemerydataproperty.cpp \
+    property/qfontproperty.cpp \
+    property/qstringproperty.cpp \
+    property/qscriptproperty.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -60,7 +64,11 @@ HEADERS +=\
     property/qcursorproperty.h \
     qabstractplugin.h \
     pluginloader.h \
-    host/qlineedithost.h
+    host/qlineedithost.h \
+    property/qmemerydataproperty.h \
+    property/qfontproperty.h \
+    property/qstringproperty.h \
+    property/qscriptproperty.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

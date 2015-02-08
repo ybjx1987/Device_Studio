@@ -32,7 +32,7 @@ protected:
     void        updateView();
     void        insertItem(QAbstractProperty * property,
                            QAbstractProperty * parent = NULL);
-    void        mousePressEvent(QMouseEvent *event);
+    void        clickEditItem(QTreeWidgetItem *item, int index);
 
     friend class QPropertyListDelegate;
 protected:

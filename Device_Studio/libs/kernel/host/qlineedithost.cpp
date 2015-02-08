@@ -3,6 +3,7 @@
 #include "../property/qbytearrayproperty.h"
 #include "../property/qboolproperty.h"
 #include "../property/qalignmentproperty.h"
+#include "../property/qscriptproperty.h"
 
 #include <QLineEdit>
 
@@ -22,6 +23,11 @@ void QLineEditHost::createObject()
 void QLineEditHost::initProperty()
 {
     QWidgetHost::initProperty();
+
+    removeProperty("mousePress");
+    removeProperty("mouseMove");
+    removeProperty("mouseRelease");
+    removeProperty("doubleClick");
 
     QAbstractProperty * pro;
 
@@ -51,6 +57,18 @@ void QLineEditHost::initProperty()
     pro->setShowName(tr("Frame"));
     pro->setGroup("Attributes");
     pro->setCanSame(true);
+    insertProperty(pro);
+
+    pro = new QScriptProperty();
+    pro->setName("textChanged");
+    pro->setShowName(tr("TextChanged"));
+    pro->setGroup("Events");
+    insertProperty(pro);
+
+    pro = new QScriptProperty();
+    pro->setName("editFinish");
+    pro->setShowName(tr("EditFinish"));
+    pro->setGroup("Events");
     insertProperty(pro);
 }
 
@@ -97,7 +115,7 @@ bool QLineEditHost::getReadOnly()
 QWidgetHostInfo* QLineEditHost::getHostInfo()
 {
     QWidgetHostInfo * info = new QWidgetHostInfo();
-    info->m_metaObject = &(QWidgetHost::staticMetaObject);
+    info->m_metaObject = &(QLineEditHost::staticMetaObject);
     info->m_index = 10;
     info->m_showGroup = tr("Input Widgets");
     info->m_showIcon = ":/inner/images/widgets/lineedit.png";

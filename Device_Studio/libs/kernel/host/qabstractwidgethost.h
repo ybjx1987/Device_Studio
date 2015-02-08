@@ -29,6 +29,27 @@ public slots:
 
     void    setLevel(int level);
     int     getLevel();
+
+    void    setFocusPolicy(int focusPolicy);
+    int     getFocusPolicy();
+
+    void    setFontSize(int pointSize);
+    int     getFontSize();
+
+    void    setFontFamily(const QString &family);
+    QString getFontFamily();
+
+    void    setFontBold(bool bold);
+    bool    getFontBold();
+
+    void    setFontUnderline(bool underline);
+    bool    getFontUnderline();
+
+    void    setFontItalic(bool italic);
+    bool    getFontItalic();
+
+    void    setFontStrikeout(bool strikeout);
+    bool    getFontStrikeout();
 };
 
 #endif // QABSTRACTWIDGETHOST_H

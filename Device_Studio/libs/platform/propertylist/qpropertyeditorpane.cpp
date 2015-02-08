@@ -23,6 +23,7 @@ QPropertyEditorPane::QPropertyEditorPane(QAbstractProperty* property,QWidget* pa
     m_resetButton->setFocusProxy(this);
     m_resetButton->setFocusPolicy(Qt::NoFocus);
     m_resetButton->setEnabled(m_property->isModified());
+    m_resetButton->setVisible(m_property->parent() == NULL);
 
     connect(m_resetButton,SIGNAL(clicked()),m_property,SLOT(reset()));
     connect(m_property,SIGNAL(valueChanged(QVariant,QVariant)),

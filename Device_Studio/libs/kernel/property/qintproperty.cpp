@@ -3,7 +3,6 @@
 QIntProperty::QIntProperty(QAbstractProperty * parent):
     QAbstractProperty(parent)
 {
-    setType("Number");
     m_value = 0;
 }
 

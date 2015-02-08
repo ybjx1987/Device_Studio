@@ -7,7 +7,7 @@ class KERNEL_EXPORT QEnumProperty : public QAbstractProperty
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QEnumProperty(QAbstractProperty *project = NULL);
+    QEnumProperty(QAbstractProperty *project = NULL);
 
     QString     getValueText();
     QIcon       getValueIcon();

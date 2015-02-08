@@ -9,7 +9,6 @@
 QCursorProperty::QCursorProperty(QAbstractProperty * parent):
     QEnumProperty(parent)
 {
-    setType("Cursor");
     ComboItems items;
     tagComboItem item;
     item.m_icon=":/inner/images/cursors/arrow.png";
@@ -113,7 +112,6 @@ QCursorProperty::QCursorProperty(QAbstractProperty * parent):
 void QCursorProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
-    setType(xml->getProperty("type"));
     QCursor c((Qt::CursorShape)xml->getProperty("value").toInt());
     setValue(QVariant::fromValue<QCursor>(c));
 
@@ -122,7 +120,6 @@ void QCursorProperty::makeValue(XmlNode *xml)
 void QCursorProperty::writeValue(XmlNode *xml)
 {
     xml->setProperty("name",getName());
-    xml->setProperty("type",getType());
     QCursor c=getValue().value<QCursor>();
     xml->setProperty("value",QString::number(c.shape()));
 }

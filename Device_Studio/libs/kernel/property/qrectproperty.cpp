@@ -6,7 +6,6 @@
 QRectProperty::QRectProperty(QAbstractProperty * parent):
     QAbstractProperty(parent)
 {
-    setType("Rect");
 
     m_x = new QIntProperty(this);
     m_x->setShowName(tr("x"));
@@ -102,13 +101,11 @@ void QRectProperty::updateValue()
 void QRectProperty::writeValue(XmlNode *xml)
 {
     xml->setProperty("name",getName());
-    xml->setProperty("type",getType());
 }
 
 void QRectProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
-    setType(xml->getProperty("type"));
 }
 
 void QRectProperty::setSizeType(bool sizeType)

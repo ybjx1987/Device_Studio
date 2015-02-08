@@ -8,7 +8,6 @@
 QBoolProperty::QBoolProperty(QAbstractProperty * parent):
     QAbstractProperty(parent)
 {
-    setType("Bool");
     m_value = true;
 }
 

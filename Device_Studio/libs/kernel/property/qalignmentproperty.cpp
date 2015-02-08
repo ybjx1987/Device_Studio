@@ -8,7 +8,6 @@
 QAlignmentProperty::QAlignmentProperty(QAbstractProperty * parent):
     QAbstractProperty(parent)
 {
-    setType("Alignment");
 
     m_horizonta = new QEnumProperty(this);
     m_horizonta->setShowName(tr("Horizonta"));
@@ -71,11 +70,9 @@ void QAlignmentProperty::setValue(const QVariant &value)
 void QAlignmentProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
-    setType(xml->getProperty("type"));
 }
 
 void QAlignmentProperty::writeValue(XmlNode *xml)
 {
     xml->setProperty("name",getName());
-    xml->setProperty("type",getType());
 }
