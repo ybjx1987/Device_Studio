@@ -4,6 +4,14 @@
 
 #include "qwidgethost.h"
 #include "qlineedithost.h"
+#include "qframehost.h"
+#include "qpushbuttonhost.h"
+#include "qcheckboxhost.h"
+#include "qradiobuttonhost.h"
+
+#include "qformhost.h"
+
+#include <QVariant>
 
 QMap<QString,QAbstractHostInfo*>     QHostFactory::m_metaMap;
 QList<QAbstractHostInfo*>            QHostFactory::m_metas;
@@ -31,6 +39,8 @@ QAbstractHost* QHostFactory::createHost(const QString &name)
     if(host!=NULL)
     {
         host->init();
+        host->setProperty("hostType",info->m_type);
+        host->setProperty("hostName",info->m_name);
     }
     return host;
 }
@@ -48,5 +58,11 @@ QAbstractHostInfo * QHostFactory::getHostInfo(const QString &name)
 void QHostFactory::registerInnerHost()
 {
     registerHost(QWidgetHost::getHostInfo());
+    registerHost(QFrameHost::getHostInfo());
     registerHost(QLineEditHost::getHostInfo());
+    registerHost(QPushButtonHost::getHostInfo());
+    registerHost(QCheckBoxHost::getHostInfo());
+    registerHost(QRadioButtonHost::getHostInfo());
+
+    registerHost(QFormHost::getHostInfo());
 }

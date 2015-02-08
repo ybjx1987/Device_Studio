@@ -291,3 +291,13 @@ void QAbstractHost::setPropertyValue(const QString &name, const QVariant &value)
         pro->setValue(value);
     }
 }
+
+QObject * QAbstractHost::getObject()
+{
+    return m_object;
+}
+
+QList<QAbstractHost*> QAbstractHost::getChildrenHost()
+{
+    return m_children;
+}

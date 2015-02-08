@@ -22,6 +22,7 @@ public slots:
     void        setReadOnly(bool readOnly);
     bool        getReadOnly();
 
+public:
     static QWidgetHostInfo * getHostInfo();
 
 protected:

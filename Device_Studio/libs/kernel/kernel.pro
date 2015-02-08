@@ -41,7 +41,13 @@ SOURCES += \
     property/qmemerydataproperty.cpp \
     property/qfontproperty.cpp \
     property/qstringproperty.cpp \
-    property/qscriptproperty.cpp
+    property/qscriptproperty.cpp \
+    host/qframehost.cpp \
+    host/qabstractbuttonhost.cpp \
+    host/qpushbuttonhost.cpp \
+    host/qcheckboxhost.cpp \
+    host/qradiobuttonhost.cpp \
+    host/qformhost.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -68,7 +74,13 @@ HEADERS +=\
     property/qmemerydataproperty.h \
     property/qfontproperty.h \
     property/qstringproperty.h \
-    property/qscriptproperty.h
+    property/qscriptproperty.h \
+    host/qframehost.h \
+    host/qabstractbuttonhost.h \
+    host/qpushbuttonhost.h \
+    host/qcheckboxhost.h \
+    host/qradiobuttonhost.h \
+    host/qformhost.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

@@ -1,6 +1,7 @@
 #include "qdesignerwidget.h"
 
 #include "qwidgetboxlist.h"
+#include "formeditor/qformeditor.h"
 
 #include "../../../libs/platform/propertylist/qpropertylistview.h"
 #include "../../../libs/platform/styledbar.h"
@@ -17,7 +18,9 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     m_propertyView(new QPropertyListView(this)),
     m_propertyViewBar(new StyledBar(this)),
     m_widgetBoxList(new QWidgetBoxList(this)),
-    m_widgetBoxListBar(new StyledBar(this))
+    m_widgetBoxListBar(new StyledBar(this)),
+    m_formEditor(new QFormEditor(this)),
+    m_formEditorBar(new StyledBar(this))
 {
     MiniSplitter  *splitter = new MiniSplitter(this);
 
@@ -40,6 +43,15 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     layout = new QVBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
+    layout->addWidget(m_formEditorBar);
+    layout->addWidget(m_formEditor);
+    wid->setLayout(layout);
+    splitter->addWidget(wid);
+
+    wid = new QWidget;
+    layout = new QVBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(0);
     layout->addWidget(m_propertyViewBar);
     layout->addWidget(m_propertyView);
     wid->setLayout(layout);
@@ -47,15 +59,17 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
 
     splitter->setStretchFactor(0,0);
     splitter->setStretchFactor(1,1);
+    splitter->setStretchFactor(2,0);
 
-    QAbstractHost * host = QHostFactory::createHost("lineedit");
+    QAbstractWidgetHost * host = (QAbstractWidgetHost*)QHostFactory::createHost("form");
     if(host == NULL)
     {
         qDebug("Host is NULL");
     }
     else
     {
-        m_propertyView->setPropertys(host->getPropertys());
+        m_formEditor->setHostList(QList<QAbstractWidgetHost*>()<<host);
+        //m_propertyView->setPropertys(host->getPropertys());
     }
 }
 

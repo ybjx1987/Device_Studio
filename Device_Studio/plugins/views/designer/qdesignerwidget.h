@@ -6,6 +6,7 @@
 class QPropertyListView;
 class StyledBar;
 class QWidgetBoxList;
+class QFormEditor;
 
 class QDesignerWidget : public QAbstractPageWidget
 {
@@ -19,6 +20,9 @@ protected:
 
     QWidgetBoxList          *m_widgetBoxList;
     StyledBar               *m_widgetBoxListBar;
+
+    QFormEditor             *m_formEditor;
+    StyledBar               *m_formEditorBar;
 };
 
 #endif // QDESIGNERWIDGET_H

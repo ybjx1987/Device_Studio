@@ -35,12 +35,16 @@ public:
     void                    setUuid(const QString &uuid);
     QString                 getUuid();
 
+    QObject*                getObject();
+
     static QAbstractHostInfo*      getHostInfo();
 
     void                    init();
 
     QList<QAbstractProperty*>   getPropertys();
     QAbstractProperty*      getProperty(const QString &name);
+
+    QList<QAbstractHost*>   getChildrenHost();
 
     QVariant                getPropertyValue(const QString &name);
     void                    setPropertyValue(const QString &name,const QVariant &value);

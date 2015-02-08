@@ -23,11 +23,19 @@ RCC_DIR=../../../../temp/pages/designer/rcc
 
 SOURCES += qdesignerplugin.cpp \
     qdesignerwidget.cpp \
-    qwidgetboxlist.cpp
+    qwidgetboxlist.cpp \
+    formeditor/qformeditor.cpp \
+    formeditor/qformpanel.cpp \
+    formeditor/formresizer.cpp \
+    formeditor/sizehandlerect.cpp
 
 HEADERS += qdesignerplugin.h \
     qdesignerwidget.h \
-    qwidgetboxlist.h
+    qwidgetboxlist.h \
+    formeditor/qformeditor.h \
+    formeditor/qformpanel.h \
+    formeditor/formresizer.h \
+    formeditor/sizehandlerect.h
 
 unix {
     target.path = /usr/lib
