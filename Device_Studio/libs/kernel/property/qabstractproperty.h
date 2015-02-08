@@ -35,6 +35,8 @@ public:
     QAbstractProperty*  getChild(const QString & name);
     QList<QAbstractProperty*>       getChildren();
 
+    QAbstractProperty*  getParent();
+
     QString             getName();
     void                setName(const QString &name);
 

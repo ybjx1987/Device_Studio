@@ -1,5 +1,7 @@
 #include "qwidgetboxlist.h"
 
+#include "qdesignerdnditem.h"
+
 #include "../../../libs/platform/stylehelper.h"
 #include "../../../libs/kernel/host/qhostfactory.h"
 #include "../../../libs/kernel/host/qwidgethost.h"
@@ -71,4 +73,37 @@ void QWidgetBoxList::addWidget(QWidgetHostInfo *info)
     item->setData(0,DarkRole,false);
     m_infoToItem.insert(info,item);
     m_itemToInfo.insert(item,info);
+}
+
+void QWidgetBoxList::clickEditItem(QTreeWidgetItem * item,int index)
+{
+
+    if(m_itemToInfo.keys().contains(item))
+    {
+        //if(event->button()!=Qt::LeftButton)
+        //{
+        //    return;
+        //}
+        QWidgetHostInfo *info=m_itemToInfo.value(item);
+        if(info!=NULL)
+        {
+            handleMousePress(info);
+        }
+    }
+}
+
+void QWidgetBoxList::handleMousePress(QWidgetHostInfo *info)
+{
+    QList<QDesignerDnDItemInterface*> item_list;
+    item_list.append(new WidgetBoxDnDItem(info->m_name,QCursor::pos()));
+
+    foreach(QDesignerDnDItemInterface *item,item_list)
+    {
+        if(item->host()==NULL)
+        {
+            return;
+        }
+    }
+
+    QDesignerMimeData::execDrag(item_list,this);
 }

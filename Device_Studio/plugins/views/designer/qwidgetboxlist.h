@@ -14,6 +14,10 @@ public:
 protected:
     void    addWidget(QWidgetHostInfo * info);
     void    initWidgetBox();
+
+    void    clickEditItem(QTreeWidgetItem *item, int index);
+
+    void    handleMousePress(QWidgetHostInfo *info);
 protected:
     QMap<QWidgetHostInfo*,QTreeWidgetItem*> m_infoToItem;
     QMap<QTreeWidgetItem*,QWidgetHostInfo*> m_itemToInfo;

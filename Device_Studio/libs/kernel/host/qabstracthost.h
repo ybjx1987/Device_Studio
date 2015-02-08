@@ -48,6 +48,9 @@ public:
 
     QVariant                getPropertyValue(const QString &name);
     void                    setPropertyValue(const QString &name,const QVariant &value);
+
+    void                    insertHost(QAbstractHost * host,int index);
+    void                    removeHost(QAbstractHost * host);
 protected:
     virtual void    createObject();
     virtual void    initProperty();

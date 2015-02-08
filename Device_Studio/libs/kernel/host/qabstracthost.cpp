@@ -289,6 +289,13 @@ void QAbstractHost::setPropertyValue(const QString &name, const QVariant &value)
     if(pro != NULL)
     {
         pro->setValue(value);
+
+        while(pro->getParent() != NULL)
+        {
+            pro = pro->getParent();
+        }
+
+        m_object->setProperty(pro->getName().toLocal8Bit(),pro->getValue());
     }
 }
 
@@ -300,4 +307,29 @@ QObject * QAbstractHost::getObject()
 QList<QAbstractHost*> QAbstractHost::getChildrenHost()
 {
     return m_children;
+}
+
+void QAbstractHost::insertHost(QAbstractHost *host, int index)
+{
+    if(index < 0 || index >= m_children.size())
+    {
+        m_children.insert(index,host);
+        if(m_object->isWidgetType())
+        {
+            QWidget * wid = (QWidget*)host->getObject();
+            wid->setParent((QWidget*)m_object);
+            wid->setVisible(true);
+        }
+        else
+        {
+            host->getObject()->setParent(m_object);
+        }
+    }
+}
+
+void QAbstractHost::removeHost(QAbstractHost *host)
+{
+    m_children.removeAll(host);
+    host->getObject()->setParent(NULL);
+    host->getObject()->setProperty("visible",false);
 }

@@ -3,6 +3,7 @@
 
 #include <QScrollArea>
 #include <QMap>
+#include <QUndoStack>
 
 class QAbstractWidgetHost;
 class QFormContainer;
@@ -25,6 +26,8 @@ protected:
 
     bool    hostPaintEvent(QAbstractWidgetHost * host);
 
+    bool    hostDragEnterEvent(QAbstractWidgetHost* host,QDragEnterEvent *e);
+    bool    hostDropEvent(QAbstractWidgetHost* host,QDropEvent * e);
 protected:
     void    paintEvent(QPaintEvent *);
 protected:
@@ -35,6 +38,7 @@ protected:
     QAbstractWidgetHost * m_host;
     FormResizer         * m_formResizer;
     QMap<QObject*,QAbstractWidgetHost*>     m_objectToHost;
+    QUndoStack          * m_undoStack;
 };
 
 #endif // QFORMPANEL_H

@@ -15,6 +15,7 @@ void QFrameHost::createObject()
 {
     m_object = new QFrame();
     m_object->setObjectName("frame");
+    m_object->setProperty("geometry",QRect(0,0,100,100));
 }
 
 void QFrameHost::initProperty()

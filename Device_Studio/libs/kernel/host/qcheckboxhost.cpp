@@ -17,6 +17,7 @@ void QCheckBoxHost::createObject()
     m_object = new QCheckBox();
     m_object->setObjectName("checkbox");
     m_object->setProperty("text","checkbox");
+    m_object->setProperty("geometry",QRect(0,0,100,30));
 }
 
 void QCheckBoxHost::initProperty()

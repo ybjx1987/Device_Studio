@@ -18,6 +18,7 @@ void QLineEditHost::createObject()
 {
     m_object = new QLineEdit();
     m_object->setObjectName("lineedit");
+    m_object->setProperty("geometry",QRect(0,0,100,20));
 }
 
 void QLineEditHost::initProperty()

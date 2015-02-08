@@ -32,7 +32,9 @@ HEADERS += \
     propertylist/qpropertyeditorpane.h \
     propertylist/qcommoneditor.h \
     qabstractpage.h \
-    qabstractpagewidget.h
+    qabstractpagewidget.h \
+    undocommand/qbaseundocommand.h \
+    undocommand/qaddhostundocommand.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -47,7 +49,9 @@ SOURCES += \
     propertylist/qpropertyeditorpane.cpp \
     propertylist/qcommoneditor.cpp \
     qabstractpage.cpp \
-    qabstractpagewidget.cpp
+    qabstractpagewidget.cpp \
+    undocommand/qbaseundocommand.cpp \
+    undocommand/qaddhostundocommand.cpp
 
 RESOURCES += \
     platform.qrc

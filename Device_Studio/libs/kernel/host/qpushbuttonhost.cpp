@@ -15,6 +15,7 @@ void QPushButtonHost::createObject()
     m_object=new QPushButton();
     m_object->setObjectName("pushbutton");
     m_object->setProperty("text","button");
+    m_object->setProperty("geometry",QRect(0,0,100,30));
 }
 
 void QPushButtonHost::initProperty()

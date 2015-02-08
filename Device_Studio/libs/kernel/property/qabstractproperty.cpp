@@ -265,3 +265,8 @@ void QAbstractProperty::updateValue()
 {
 
 }
+
+QAbstractProperty* QAbstractProperty::getParent()
+{
+    return m_parent;
+}

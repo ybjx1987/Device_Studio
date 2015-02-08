@@ -38,9 +38,9 @@ QAbstractHost* QHostFactory::createHost(const QString &name)
     QAbstractHost *host = (QAbstractHost*)info->m_metaObject->newInstance();
     if(host!=NULL)
     {
-        host->init();
         host->setProperty("hostType",info->m_type);
         host->setProperty("hostName",info->m_name);
+        host->init();
     }
     return host;
 }

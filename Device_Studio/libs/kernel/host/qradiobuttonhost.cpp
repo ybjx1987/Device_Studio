@@ -15,6 +15,7 @@ void QRadioButtonHost::createObject()
     m_object=new QRadioButton();
     m_object->setObjectName("radiobutton");
     m_object->setProperty("text","radio button");
+    m_object->setProperty("geometry",QRect(0,0,100,30));
 }
 
 void QRadioButtonHost::initProperty()

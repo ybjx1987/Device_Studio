@@ -18,6 +18,7 @@ void QWidgetHost::createObject()
 {
     m_object = new QWidget();
     m_object->setObjectName("widget");
+    m_object->setProperty("geometry",QRect(0,0,100,100));
 }
 
 void QWidgetHost::setVisible(bool visible)
