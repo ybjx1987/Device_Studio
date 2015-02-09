@@ -72,5 +72,11 @@
         <file>images/widgets/vslider.png</file>
         <file>images/widgets/vspacer.png</file>
         <file>images/widgets/widget.png</file>
+        <file>images/filenew.png</file>
+        <file>images/fileopen.png</file>
+        <file>images/filesave.png</file>
+        <file>images/save.png</file>
+        <file>images/close.png</file>
+        <file>files/project/project.pfl.h</file>
     </qresource>
 </RCC>

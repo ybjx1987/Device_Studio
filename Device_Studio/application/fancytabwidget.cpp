@@ -6,6 +6,7 @@
 #include "../libs/platform/stylehelper.h"
 #include "../libs/platform/styledbar.h"
 #include "../libs/platform/minisplitter.h"
+#include "../libs/platform/qsoftactionmap.h"
 
 #include <QStyleFactory>
 #include <QHelpEvent>
@@ -542,6 +543,20 @@ FancyTabWidget::FancyTabWidget(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(m_selectionWidget);
     mainLayout->addLayout(vlayout);
     setLayout(mainLayout);
+
+    QAction* ac;
+
+    QStringList list;
+    list<<"project.new"<<"project.open"<<"project.save"<<"project.close";
+
+    foreach(QString id,list)
+    {
+        ac = QSoftActionMap::getAction(id);
+        if(ac != NULL)
+        {
+            m_actionBar->addProjectSelector(ac);
+        }
+    }
 }
 
 void FancyTabWidget::paintEvent(QPaintEvent *)

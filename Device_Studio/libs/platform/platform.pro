@@ -34,7 +34,9 @@ HEADERS += \
     qabstractpage.h \
     qabstractpagewidget.h \
     undocommand/qbaseundocommand.h \
-    undocommand/qaddhostundocommand.h
+    undocommand/qaddhostundocommand.h \
+    qsoftcore.h \
+    qsoftactionmap.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -51,7 +53,9 @@ SOURCES += \
     qabstractpage.cpp \
     qabstractpagewidget.cpp \
     undocommand/qbaseundocommand.cpp \
-    undocommand/qaddhostundocommand.cpp
+    undocommand/qaddhostundocommand.cpp \
+    qsoftcore.cpp \
+    qsoftactionmap.cpp
 
 RESOURCES += \
     platform.qrc

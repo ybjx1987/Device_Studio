@@ -8,7 +8,8 @@
 
 QProject::QProject():
     QObject(NULL),
-    m_projectHost(NULL)
+    m_projectHost(NULL),
+    m_projectStatus(PS_CLOSED)
 {
 
 }
@@ -22,9 +23,12 @@ bool QProject::open(const QString &proFileName)
 {
     close();
 
+    setProjectStatus(PS_OPENING);
+
     QFile f(proFileName);
     if(!f.open(QFile::ReadOnly))
     {
+        setProjectStatus(PS_CLOSED);
         return false;
     }
 
@@ -35,6 +39,7 @@ bool QProject::open(const QString &proFileName)
 
     if(!xml.load(buffer))
     {
+        setProjectStatus(PS_CLOSED);
         return false;
     }
 
@@ -43,6 +48,8 @@ bool QProject::open(const QString &proFileName)
     m_projectHost->fromXml(&xml);
 
 
+    emit projectOpened();
+    setProjectStatus(PS_OPENED);
     return true;
 }
 
@@ -52,10 +59,26 @@ void QProject::close()
     {
         delete m_projectHost;
         m_projectHost = NULL;
+        emit projectClosed();
     }
+    setProjectStatus(PS_CLOSED);
 }
 
 QProjectHost* QProject::getProjectHost()
 {
     return m_projectHost;
+}
+
+void QProject::setProjectStatus(enProjectStatus newStatus)
+{
+    if(m_projectStatus != newStatus)
+    {
+        m_projectStatus = newStatus;
+        emit projectStatusChanged(m_projectStatus);
+    }
+}
+
+enProjectStatus QProject::getProjectStatus()
+{
+    return m_projectStatus;
 }

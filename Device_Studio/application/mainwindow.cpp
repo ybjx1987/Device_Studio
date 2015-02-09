@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include "fancytabwidget.h"
+#include "qnewprojectdialog.h"
 
 #include "../libs/platform/platformlibglobal.h"
 #include "../libs/platform/qplatformcore.h"
@@ -9,9 +10,14 @@
 
 #include "../libs/kernel/pluginloader.h"
 #include "../libs/platform/qabstractpage.h"
+#include "../libs/platform/qsoftactionmap.h"
+#include "../libs/platform/qsoftcore.h"
+#include "../libs/kernel/qproject.h"
 
 #include <QDesktopWidget>
 #include <QApplication>
+#include <QMessageBox>
+#include <QFileDialog>
 
 bool pageCheck(QAbstractPlugin *plugin1,QAbstractPlugin * plugin2)
 {
@@ -42,6 +48,25 @@ MainWindow::MainWindow(QWidget *parent) :
     {
         m_fancyTab->setCurrentIndex(0);
     }
+
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectStatusChanged(enProjectStatus)),
+            this,SLOT(projectStatusChanged()));
+
+    QAction* ac;
+
+    ac = QSoftActionMap::getAction("project.open");
+    if(ac != NULL)
+    {
+        connect(ac,SIGNAL(triggered()),this,SLOT(openProject()));
+    }
+
+    ac = QSoftActionMap::getAction("project.new");
+    if(ac != NULL)
+    {
+        connect(ac,SIGNAL(triggered()),this,SLOT(newProject()));
+    }
+
+    projectStatusChanged();
 }
 
 MainWindow::~MainWindow()
@@ -81,4 +106,66 @@ void MainWindow::closeEvent(QCloseEvent *e)
 {
     saveSetting();
     QMainWindow::closeEvent(e);
+}
+
+void MainWindow::openProject()
+{
+    QProject * project = QSoftCore::getInstance()->getProject();
+    if(project->getProjectStatus() == PS_OPENED)
+    {
+        if(QMessageBox::warning(this,tr("Warning"),tr("This action will close the current project, would you continue?")
+                                ,QMessageBox::Yes | QMessageBox::No)
+                != QMessageBox::Yes)
+        {
+            return;
+        }
+    }
+    else if(project->getProjectStatus() == PS_OPENING)
+    {
+        return;
+    }
+
+    QString path = QFileDialog::getOpenFileName(this,tr("Open Project"),
+                                 QDir::currentPath(),tr("Project File (*.pfl)"));
+    if(path != "")
+    {
+        qDebug(path.toLocal8Bit());
+    }
+}
+
+void MainWindow::projectStatusChanged()
+{
+    enProjectStatus status = QSoftCore::getInstance()->getProject()->getProjectStatus();
+    QAction *ac;
+
+    ac = QSoftActionMap::getAction("project.new");
+    if(ac != NULL)
+    {
+        ac->setEnabled(status != PS_OPENING);
+    }
+
+    ac = QSoftActionMap::getAction("project.close");
+    if(ac != NULL)
+    {
+        ac->setEnabled(status == PS_OPENED);
+    }
+
+    ac = QSoftActionMap::getAction("project.save");
+    if(ac != NULL)
+    {
+        ac->setEnabled(status == PS_OPENED);
+    }
+
+    ac = QSoftActionMap::getAction("project.new");
+    if(ac != NULL)
+    {
+        ac->setEnabled(status != PS_OPENING);
+    }
+}
+
+void MainWindow::newProject()
+{
+    QNewProjectDialog dlg(this);
+
+    dlg.exec();
 }

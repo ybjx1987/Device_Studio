@@ -14,6 +14,11 @@ public:
 public:
     void show();
     void closeEvent(QCloseEvent *);
+protected slots:
+    void    openProject();
+    void    newProject();
+
+    void    projectStatusChanged();
 protected:
     void saveSetting();
 protected:
