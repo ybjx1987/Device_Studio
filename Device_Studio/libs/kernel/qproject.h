@@ -4,6 +4,7 @@
 #include "kernellibglobal.h"
 
 #include <QObject>
+#include <QList>
 
 class QProjectHost;
 
@@ -14,6 +15,8 @@ enum enProjectStatus
     PS_OPENED,
     PS_BOTTOM
 };
+
+class QAbstractWidgetHost;
 
 class KERNEL_EXPORT QProject :public QObject
 {
@@ -29,6 +32,8 @@ public:
     QProjectHost * getProjectHost();
 
     enProjectStatus getProjectStatus();
+
+    void        addForm(QAbstractWidgetHost* host,int index = -1);
 protected:
     void        setProjectStatus(enProjectStatus newStatus);
 signals:
@@ -36,10 +41,14 @@ signals:
     void        projectClosed();
 
     void        projectStatusChanged(enProjectStatus newStatus);
+
+    void        hostAdded(QAbstractWidgetHost* host,int index);
 protected:
     QProjectHost    *m_projectHost;
 
     enProjectStatus m_projectStatus;
+
+    QList<QAbstractWidgetHost*>     m_forms;
 };
 
 #endif // QPROJECT_H

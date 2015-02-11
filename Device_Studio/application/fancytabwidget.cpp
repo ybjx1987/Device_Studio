@@ -557,6 +557,8 @@ FancyTabWidget::FancyTabWidget(QWidget *parent) : QWidget(parent)
             m_actionBar->addProjectSelector(ac);
         }
     }
+
+    connect(m_tabBar,SIGNAL(currentChanged(int)),m_modesStack,SLOT(setCurrentIndex(int)));
 }
 
 void FancyTabWidget::paintEvent(QPaintEvent *)
@@ -594,6 +596,7 @@ void FancyTabWidget::setCurrentIndex(int index)
     if(m_tabBar->getTabEnabled(index))
     {
         m_tabBar->setCurrentIndex(index);
+        m_modesStack->setCurrentIndex(index);
     }
 }
 

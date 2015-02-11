@@ -10,6 +10,10 @@
 
 #include "../../../libs/kernel/host/qhostfactory.h"
 #include "../../../libs/kernel/host/qabstracthost.h"
+#include "../../../libs/platform/qsoftcore.h"
+#include "../../../libs/kernel/qproject.h"
+#include "../../../libs/kernel/qproject.h"
+#include "../../../libs/platform/qsoftcore.h"
 
 #include <QVBoxLayout>
 
@@ -61,15 +65,12 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     splitter->setStretchFactor(1,1);
     splitter->setStretchFactor(2,0);
 
-    QAbstractWidgetHost * host = (QAbstractWidgetHost*)QHostFactory::createHost("form");
-    if(host == NULL)
-    {
-        qDebug("Host is NULL");
-    }
-    else
-    {
-        m_formEditor->setHostList(QList<QAbstractWidgetHost*>()<<host);
-        //m_propertyView->setPropertys(host->getPropertys());
-    }
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(hostAdded(QAbstractWidgetHost*,int)),
+            this,SLOT(formAdded(QAbstractWidgetHost*,int)));
+}
+
+void QDesignerWidget::formAdded(QAbstractWidgetHost *host, int index)
+{
+    m_formEditor->setHostList(QList<QAbstractWidgetHost*>()<<host);
 }
 

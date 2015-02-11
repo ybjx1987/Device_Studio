@@ -13,6 +13,7 @@
 #include "../libs/platform/qsoftactionmap.h"
 #include "../libs/platform/qsoftcore.h"
 #include "../libs/kernel/qproject.h"
+#include "../libs/kernel/host/qhostfactory.h"
 
 #include <QDesktopWidget>
 #include <QApplication>
@@ -67,6 +68,16 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     projectStatusChanged();
+
+    QAbstractWidgetHost * host = (QAbstractWidgetHost*)QHostFactory::createHost("form");
+    if(host == NULL)
+    {
+        qDebug("Host is NULL");
+    }
+    else
+    {
+        QSoftCore::getInstance()->getProject()->addForm(host);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -168,4 +179,12 @@ void MainWindow::newProject()
     QNewProjectDialog dlg(this);
 
     dlg.exec();
+
+    QString name = dlg.getName();
+    QString path = dlg.getPath();
+
+    if(name != "" && path != "")
+    {
+        QSoftCore::getInstance()->newProject(path,name);
+    }
 }

@@ -36,7 +36,8 @@ HEADERS += \
     undocommand/qbaseundocommand.h \
     undocommand/qaddhostundocommand.h \
     qsoftcore.h \
-    qsoftactionmap.h
+    qsoftactionmap.h \
+    qvalidatoredit.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -55,7 +56,8 @@ SOURCES += \
     undocommand/qbaseundocommand.cpp \
     undocommand/qaddhostundocommand.cpp \
     qsoftcore.cpp \
-    qsoftactionmap.cpp
+    qsoftactionmap.cpp \
+    qvalidatoredit.cpp
 
 RESOURCES += \
     platform.qrc

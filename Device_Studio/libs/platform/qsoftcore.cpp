@@ -68,7 +68,17 @@ bool QSoftCore::newProject(const QString &path,const QString &name)
         return false;
     }
 
-    lf.write(f.readAll());
+    if(!f.open(QFile::ReadOnly))
+    {
+        return false;
+    }
 
-    return true;
+    QString buffer = f.readAll();
+
+    lf.write(buffer.toLocal8Bit());
+
+    lf.close();
+    f.close();
+
+    return m_project->open(path + "/" + name + "/project.pfl");
 }

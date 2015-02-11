@@ -82,3 +82,18 @@ enProjectStatus QProject::getProjectStatus()
 {
     return m_projectStatus;
 }
+
+void QProject::addForm(QAbstractWidgetHost *host, int index)
+{
+    if(m_forms.contains(host))
+    {
+        return;
+    }
+    if(index < 0 || index > m_forms.size())
+    {
+        index = m_forms.size();
+    }
+    m_forms.insert(index,host);
+
+    emit hostAdded(host,index);
+}
