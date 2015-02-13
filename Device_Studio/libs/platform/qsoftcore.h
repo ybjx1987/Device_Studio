@@ -18,12 +18,16 @@ public:
     static QSoftCore*  getInstance();
     static void        releaseInstance();
 
+
+
 public:
     QProject*   getProject();
 
     bool        newProject(const QString & path, const QString & name);
+    bool        saveProject();
 protected:
     void        initAction();
+    void        copyFile(const QString &src,const QString des);
 signals:
 
 public slots:

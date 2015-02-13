@@ -5,6 +5,7 @@
 #include "../kernel/xmlnode.h"
 
 #include <QFile>
+#include <QVariant>
 
 QProject::QProject():
     QObject(NULL),
@@ -47,6 +48,9 @@ bool QProject::open(const QString &proFileName)
     m_projectHost->init();
     m_projectHost->fromXml(&xml);
 
+
+    QString path = proFileName.left(proFileName.lastIndexOf("/"));
+    m_projectHost->setPropertyValue("path",path);
 
     emit projectOpened();
     setProjectStatus(PS_OPENED);

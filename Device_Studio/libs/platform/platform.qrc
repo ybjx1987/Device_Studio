@@ -79,5 +79,6 @@
         <file>images/close.png</file>
         <file>files/project/project.pfl</file>
         <file>images/project.png</file>
+        <file>files/project/pages/form.pg</file>
     </qresource>
 </RCC>

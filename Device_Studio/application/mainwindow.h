@@ -17,6 +17,7 @@ public:
 protected slots:
     void    openProject();
     void    newProject();
+    void    saveProject();
 
     void    projectStatusChanged();
 protected:

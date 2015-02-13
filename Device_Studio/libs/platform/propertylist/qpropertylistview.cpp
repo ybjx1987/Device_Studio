@@ -7,6 +7,7 @@
 
 #include <QHeaderView>
 #include <QMouseEvent>
+#include <QList>
 
 QWidget * QPropertyListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
@@ -42,7 +43,18 @@ QPropertyListView::QPropertyListView(QWidget* parent):
 void QPropertyListView::setPropertys(const QList<QAbstractProperty *> &propertys)
 {
     clear();
+    foreach(QAbstractProperty* pro,m_propertys)
+    {
+        disconnect(pro,SIGNAL(valueChanged(QVariant,QVariant)),this,
+                   SLOT(propertyValueChanged()));
+    }
+
     m_propertys = propertys;
+    foreach(QAbstractProperty* pro,m_propertys)
+    {
+        connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),this,
+                   SLOT(propertyValueChanged()));
+    }
     updateView();
 }
 
@@ -138,5 +150,20 @@ void QPropertyListView::clickEditItem(QTreeWidgetItem* item,int index)
     if(index == 1)
     {
         editItem(item,1);
+    }
+}
+
+void QPropertyListView::propertyValueChanged()
+{
+    QAbstractProperty* pro =(QAbstractProperty*)sender();
+    QList<QAbstractProperty*> list;
+    list.append(pro);
+    while(list.size()>0)
+    {
+        pro = list.takeFirst();
+        QTreeWidgetItem *item = m_propertyToItem.value(pro);
+        item->setText(1,pro->getValueText());
+        item->setIcon(1,pro->getValueIcon());
+        item->setToolTip(1,pro->getValueText());
     }
 }

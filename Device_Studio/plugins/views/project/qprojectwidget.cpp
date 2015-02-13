@@ -8,6 +8,7 @@
 
 #include "../../../libs/kernel/qproject.h"
 #include "../../../libs/platform/qsoftcore.h"
+#include "../../../libs/kernel/host/qprojecthost.h"
 
 #include <QVBoxLayout>
 #include <QScrollArea>
@@ -58,5 +59,15 @@ QProjectWidget::QProjectWidget(QWidget * parent):
 
     connect(QSoftCore::getInstance()->getProject(),SIGNAL(hostAdded(QAbstractWidgetHost*,int)),
             m_pageView,SLOT(addHost(QAbstractWidgetHost*,int)));
+
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectOpened()),
+            this,SLOT(projectOpened()));
 }
 
+void QProjectWidget::projectOpened()
+{
+    QProject * project = (QProject*)sender();
+    QProjectHost * host = project->getProjectHost();
+
+    m_projectPropertyView->setPropertys(host->getPropertys());
+}

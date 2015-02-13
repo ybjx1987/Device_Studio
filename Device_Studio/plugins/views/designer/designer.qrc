@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/inner">
+        <file>images/bottom.png</file>
+        <file>images/h-center.png</file>
+        <file>images/left.png</file>
+        <file>images/right.png</file>
+        <file>images/same-height.png</file>
+        <file>images/same-rect.png</file>
+        <file>images/same-width.png</file>
+        <file>images/top.png</file>
+        <file>images/v-center.png</file>
+    </qresource>
+</RCC>

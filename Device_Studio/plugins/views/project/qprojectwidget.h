@@ -10,9 +10,11 @@ class QPageView;
 
 class QProjectWidget : public QAbstractPageWidget
 {
+    Q_OBJECT
 public:
     QProjectWidget(QWidget * parent = NULL);
-
+protected slots:
+    void    projectOpened();
 protected:
     QPropertyListView   *m_projectPropertyView;
     StyledBar           *m_projectBar;

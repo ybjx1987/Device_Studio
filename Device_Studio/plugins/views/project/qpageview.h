@@ -22,12 +22,13 @@ protected:
     void    paintEvent(QPaintEvent *);
 signals:
 
-public slots:
-
+protected slots:
+    void    pagePaneSelect();
 protected:
     QList<QPagePane*>       m_pagePaneList;
 
     QMap<QAbstractWidgetHost*,QPagePane*>   m_hostToPane;
+    QPagePane*              m_select;
 };
 
 #endif // QPAGEVIEW_H

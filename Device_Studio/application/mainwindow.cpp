@@ -13,7 +13,6 @@
 #include "../libs/platform/qsoftactionmap.h"
 #include "../libs/platform/qsoftcore.h"
 #include "../libs/kernel/qproject.h"
-#include "../libs/kernel/host/qhostfactory.h"
 
 #include <QDesktopWidget>
 #include <QApplication>
@@ -67,17 +66,13 @@ MainWindow::MainWindow(QWidget *parent) :
         connect(ac,SIGNAL(triggered()),this,SLOT(newProject()));
     }
 
-    projectStatusChanged();
+    ac = QSoftActionMap::getAction("project.save");
+    if(ac != NULL)
+    {
+        connect(ac,SIGNAL(triggered()),this,SLOT(saveProject()));
+    }
 
-    QAbstractWidgetHost * host = (QAbstractWidgetHost*)QHostFactory::createHost("form");
-    if(host == NULL)
-    {
-        qDebug("Host is NULL");
-    }
-    else
-    {
-        QSoftCore::getInstance()->getProject()->addForm(host);
-    }
+    projectStatusChanged();
 }
 
 MainWindow::~MainWindow()
@@ -140,7 +135,7 @@ void MainWindow::openProject()
                                  QDir::currentPath(),tr("Project File (*.pfl)"));
     if(path != "")
     {
-        qDebug(path.toLocal8Bit());
+        project->open(path);
     }
 }
 
@@ -187,4 +182,9 @@ void MainWindow::newProject()
     {
         QSoftCore::getInstance()->newProject(path,name);
     }
+}
+
+void MainWindow::saveProject()
+{
+    QSoftCore::getInstance()->saveProject();
 }

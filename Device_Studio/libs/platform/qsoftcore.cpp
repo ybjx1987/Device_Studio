@@ -2,6 +2,7 @@
 
 #include "../kernel/qproject.h"
 #include "qsoftactionmap.h"
+#include "../kernel/host/qprojecthost.h"
 
 #include <QDir>
 #include <QFile>
@@ -61,16 +62,40 @@ bool QSoftCore::newProject(const QString &path,const QString &name)
     QDir dir;
     dir.mkdir(path+"/"+name);
 
-    QFile f(":/inner/files/project/project.pfl");
-    QFile lf(path+"/"+name+"/project.pfl");
-    if(!lf.open(QFile::ReadWrite))
+    copyFile(":/inner/files/project/project.pfl",path+"/"+name+"/project.pfl");
+
+    dir.mkdir(path+"/"+name+"/pages");
+
+    copyFile(":/inner/files/project/pages/form.pg",path+"/"+name+"/pages/form.pg");
+
+    if(m_project->open(path + "/" + name + "/project.pfl"))
+    {
+        m_project->getProjectHost()->setPropertyValue("objectName",name);
+        saveProject();
+        return true;
+    }
+    else
     {
         return false;
+    }
+}
+
+void QSoftCore::copyFile(const QString &src, const QString des)
+{
+    QFile f(src);
+    if(!f.exists())
+    {
+        return;
+    }
+    QFile lf(des);
+    if(!lf.open(QFile::ReadWrite))
+    {
+        return;
     }
 
     if(!f.open(QFile::ReadOnly))
     {
-        return false;
+        return;
     }
 
     QString buffer = f.readAll();
@@ -79,6 +104,18 @@ bool QSoftCore::newProject(const QString &path,const QString &name)
 
     lf.close();
     f.close();
+}
 
-    return m_project->open(path + "/" + name + "/project.pfl");
+bool QSoftCore::saveProject()
+{
+    QString name = m_project->getProjectHost()->getPropertyValue("path").toString()
+            +"/project.pfl";
+    if(!m_project->getProjectHost()->save(name))
+    {
+        return false;
+    }
+
+    return true;
+
+
 }

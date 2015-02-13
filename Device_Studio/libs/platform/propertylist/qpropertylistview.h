@@ -27,7 +27,8 @@ public:
     void    clear();
 
     void    setPropertys(const QList<QAbstractProperty*>    & propertys);
-
+protected slots:
+    void    propertyValueChanged();
 protected:
     void        updateView();
     void        insertItem(QAbstractProperty * property,
