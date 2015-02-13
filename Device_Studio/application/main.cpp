@@ -1,18 +1,9 @@
 #include <QApplication>
 
 #include "mainwindow.h"
-#include "../libs/platform/propertylist/qpropertylistview.h"
-#include "../libs/kernel/property/qfloatproperty.h"
-#include "../libs/kernel/property/qenumproperty.h"
-#include "../libs/kernel/qvarianttype.h"
-#include "../libs/kernel/property/qalignmentproperty.h"
-
-#include "../libs/kernel/host/qabstractwidgethost.h"
-#include "../libs/kernel/host/qwidgethost.h"
-
-
-#include "../libs/kernel/host/qhostfactory.h"
 #include "../libs/kernel/pluginloader.h"
+#include "../libs/platform/qsoftcore.h"
+#include "../libs/kernel/host/qhostfactory.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -38,6 +29,8 @@ int main(int argc,char *argv[])
     f.setPointSize(12);
     a.setFont(f);
 
+    QSoftCore::getInstance();
+
     QHostFactory::registerInnerHost();
 
     PluginLoader::loadPlugin("plugins.xml");
@@ -48,5 +41,7 @@ int main(int argc,char *argv[])
 
     //进入主循环
     int ret=a.exec();
+
+    QSoftCore::releaseInstance();
     return ret;
 }

@@ -34,7 +34,12 @@ HEADERS += \
     qabstractpage.h \
     qabstractpagewidget.h \
     undocommand/qbaseundocommand.h \
-    undocommand/qaddhostundocommand.h
+    undocommand/qaddhostundocommand.h \
+    qsoftcore.h \
+    qsoftactionmap.h \
+    qvalidatoredit.h \
+    qactiontoolbar.h \
+    qtoolbarbutton.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -51,7 +56,15 @@ SOURCES += \
     qabstractpage.cpp \
     qabstractpagewidget.cpp \
     undocommand/qbaseundocommand.cpp \
-    undocommand/qaddhostundocommand.cpp
+    undocommand/qaddhostundocommand.cpp \
+    qsoftcore.cpp \
+    qsoftactionmap.cpp \
+    qvalidatoredit.cpp \
+    qactiontoolbar.cpp \
+    qtoolbarbutton.cpp
 
 RESOURCES += \
     platform.qrc
+
+DISTFILES += \
+    files/project/pages/form.pg

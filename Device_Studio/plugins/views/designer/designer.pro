@@ -46,3 +46,6 @@ unix {
 
 DISTFILES += \
     designer.json
+
+RESOURCES += \
+    designer.qrc
