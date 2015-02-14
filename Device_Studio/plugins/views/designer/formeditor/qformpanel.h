@@ -41,6 +41,8 @@ protected:
     bool    eventFilter(QObject *, QEvent *);
 
     QAbstractWidgetHost * getHost(QObject * obj);
+protected slots:
+    void    formSizeChanged();
 protected:
     QAbstractWidgetHost * m_host;
     FormResizer         * m_formResizer;

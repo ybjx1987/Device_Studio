@@ -10,11 +10,8 @@ class PLATFORM_EXPORT QBasicEditor : public QAbstractPropertyEditor
     Q_OBJECT
 public:
     Q_INVOKABLE QBasicEditor(QAbstractProperty* property);
-
-signals:
-
-public slots:
-    void    propertyValueChanged();
+protected:
+    void propertyValueChanged();
 protected:
 
     QLabel      *m_icon;

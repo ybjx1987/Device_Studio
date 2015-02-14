@@ -6,6 +6,7 @@
 #include "../../../../libs/kernel/host/qhostfactory.h"
 #include "../../../../libs/kernel/host/qabstractwidgethost.h"
 #include "../../../../libs/platform/undocommand/qaddhostundocommand.h"
+#include "../../../../libs/kernel/property/qabstractproperty.h"
 
 #include <QVariant>
 #include <QMouseEvent>
@@ -38,6 +39,10 @@ QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
     }
 
     m_formResizer->hideHandle();
+
+    QAbstractProperty * pro = m_host->getProperty("geometry");
+    connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
+            this,SLOT(formSizeChanged()));
 }
 
 QFormPanel::~QFormPanel()
@@ -315,4 +320,9 @@ void QFormPanel::select(QAbstractWidgetHost *host)
 QUndoStack * QFormPanel::getUndoStack()
 {
     return m_undoStack;
+}
+
+void QFormPanel::formSizeChanged()
+{
+    m_formResizer->updateFormGeometry();
 }

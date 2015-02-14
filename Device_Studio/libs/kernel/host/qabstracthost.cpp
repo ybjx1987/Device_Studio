@@ -4,7 +4,7 @@
 
 #include "../property/qabstractproperty.h"
 #include "../property/qbytearrayproperty.h"
-
+#include "../qhostsyncmanager.h"
 #include "../xmlnode.h"
 
 #include <QVariant>
@@ -19,6 +19,7 @@ QAbstractHost::QAbstractHost(QAbstractHost *parent) :
     {
         m_parent->m_children.append(this);
     }
+    QHostSyncManager::getInstance()->insertHost(this);
 }
 
 QAbstractHost::~QAbstractHost()
@@ -301,14 +302,14 @@ void QAbstractHost::setPropertyValue(const QString &name, const QVariant &value)
     QAbstractProperty * pro = getProperty(name);
     if(pro != NULL)
     {
-        pro->setValue(value);
-
+        QAbstractProperty *p = pro;
         while(pro->getParent() != NULL)
         {
             pro = pro->getParent();
         }
 
         m_object->setProperty(pro->getName().toLocal8Bit(),pro->getValue());
+        p->setValue(value);
     }
 }
 
@@ -345,4 +346,12 @@ void QAbstractHost::removeHost(QAbstractHost *host)
     m_children.removeAll(host);
     host->getObject()->setParent(NULL);
     host->getObject()->setProperty("visible",false);
+}
+
+void QAbstractHost::updateProperty()
+{
+    foreach(QAbstractProperty *property,m_propertys)
+    {
+        property->setValue(m_object->property(property->getName().toLocal8Bit()));
+    }
 }
