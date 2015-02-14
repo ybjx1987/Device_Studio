@@ -7,8 +7,6 @@
 
 class QAbstractHost;
 
-#define HOST_ADD_UNDO_COMMAND  1007
-
 enum enAddHostType
 {
     AHT_ADD,

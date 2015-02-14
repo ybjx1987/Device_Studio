@@ -15,6 +15,8 @@ public:
     ~QPageView();
 
     void setHosts(QList<QAbstractWidgetHost*> hosts);
+
+    void clear();
 public slots:
     void addHost(QAbstractWidgetHost* host,int index = -1);
 

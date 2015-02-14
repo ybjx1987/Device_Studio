@@ -13,7 +13,7 @@ QPageView::QPageView(QWidget *parent) :
 
 QPageView::~QPageView()
 {
-
+    clear();
 }
 
 void QPageView::addHost(QAbstractWidgetHost *host,int index)
@@ -94,4 +94,13 @@ void QPageView::setHosts(QList<QAbstractWidgetHost *> hosts)
     }
 
     calcSize();
+}
+
+void QPageView::clear()
+{
+    m_select = NULL;
+    qDeleteAll(m_pagePaneList);
+    m_pagePaneList.clear();
+    m_hostToPane.clear();
+    this->update();
 }

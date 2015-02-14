@@ -311,3 +311,8 @@ void QFormPanel::select(QAbstractWidgetHost *host)
         emit hostSelected(host);
     }
 }
+
+QUndoStack * QFormPanel::getUndoStack()
+{
+    return m_undoStack;
+}

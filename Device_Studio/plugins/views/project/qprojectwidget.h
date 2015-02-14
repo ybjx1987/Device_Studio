@@ -15,6 +15,7 @@ public:
     QProjectWidget(QWidget * parent = NULL);
 protected slots:
     void    projectOpened();
+    void    projectClosed();
 protected:
     QPropertyListView   *m_projectPropertyView;
     StyledBar           *m_projectBar;

@@ -168,7 +168,8 @@ void QDesignerWidget::projectOpened()
 
 void QDesignerWidget::projectClosed()
 {
-
+    m_formEditor->clear();
+    m_formlist->clear();
 }
 
 void QDesignerWidget::hostSelect(QAbstractWidgetHost *host)
@@ -178,8 +179,14 @@ void QDesignerWidget::hostSelect(QAbstractWidgetHost *host)
         m_currentHost = host;
         if(m_currentHost!= NULL)
         {
-            m_propertyView->setPropertys(m_currentHost->getPropertys());
+            m_propertyView->setPropertys(m_currentHost->getPropertys(),
+                                         m_formEditor->getUndoStack(m_currentHost));
             m_formlist->setCurrentText(m_currentHost->getPropertyValue("objectName").toString());
+        }
+        else
+        {
+            m_formlist->setCurrentIndex(-1);
+            m_propertyView->setPropertys(QList<QAbstractProperty*>());
         }
     }
 }

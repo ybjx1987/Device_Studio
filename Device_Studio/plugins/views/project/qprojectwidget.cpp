@@ -62,6 +62,8 @@ QProjectWidget::QProjectWidget(QWidget * parent):
 
     connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectOpened()),
             this,SLOT(projectOpened()));
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectClosed()),
+            this,SLOT(projectClosed()));
 }
 
 void QProjectWidget::projectOpened()
@@ -74,4 +76,10 @@ void QProjectWidget::projectOpened()
     QList<QAbstractWidgetHost*> forms = project->getForms();
 
     m_pageView->setHosts(forms);
+}
+
+void QProjectWidget::projectClosed()
+{
+    m_pageView->clear();
+    m_projectPropertyView->setPropertys(QList<QAbstractProperty*>());
 }

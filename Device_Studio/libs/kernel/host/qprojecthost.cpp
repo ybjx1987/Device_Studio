@@ -33,10 +33,14 @@ void QProjectHost::initProperty()
 
     QAbstractProperty * pro;
 
+    pro = getProperty("objectName");
+    pro->setEditable(false);
+
     pro = new QByteArrayProperty;
     pro->setName("path");
     pro->setShowName(tr("Path"));
     pro->setGroup("Attributes");
+    pro->setEditable(false);
     insertProperty(pro);
 
     pro = new QBoolProperty;

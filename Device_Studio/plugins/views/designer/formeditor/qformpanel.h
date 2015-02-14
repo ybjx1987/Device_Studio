@@ -17,6 +17,9 @@ public:
     ~QFormPanel();
 
     void    select(QAbstractWidgetHost* host);
+
+    QUndoStack *getUndoStack();
+
 protected:
     void    installHostEventFilter(QAbstractWidgetHost * host);
     void    removeHostEventFilter(QAbstractWidgetHost * host);

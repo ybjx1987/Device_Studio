@@ -5,16 +5,18 @@
 #include "xmlnode.h"
 #include "host/qhostfactory.h"
 #include "host/qabstracthost.h"
+#include "host/qabstractwidgethost.h"
 
 #include <QFile>
 #include <QVariant>
-
+#include <QUuid>
 #include <QDir>
 
 QProject::QProject():
     QObject(NULL),
     m_projectHost(NULL),
-    m_projectStatus(PS_CLOSED)
+    m_projectStatus(PS_CLOSED),
+    m_projectModified(PM_NOT_MODIFIED)
 {
 
 }
@@ -26,7 +28,6 @@ QProject::~QProject()
 
 bool QProject::open(const QString &proFileName)
 {
-    close();
 
     setProjectStatus(PS_OPENING);
 
@@ -60,6 +61,7 @@ bool QProject::open(const QString &proFileName)
 
     emit projectOpened();
     setProjectStatus(PS_OPENED);
+    setModified(PM_NOT_MODIFIED);
     return true;
 }
 
@@ -67,11 +69,16 @@ void QProject::close()
 {
     if(m_projectHost != NULL)
     {
+        emit projectClosed();
         delete m_projectHost;
         m_projectHost = NULL;
-        emit projectClosed();
     }
+
+    qDeleteAll(m_forms);
+    m_forms.clear();
+
     setProjectStatus(PS_CLOSED);
+    setModified(PM_NOT_MODIFIED);
 }
 
 QProjectHost* QProject::getProjectHost()
@@ -149,6 +156,10 @@ void QProject::loadPages(const QString &path)
                     if(host != NULL)
                     {
                         host->fromXml(&xml);
+                        if(host->getUuid() == "")
+                        {
+                            host->setUuid(QUuid::createUuid().toString());
+                        }
                         m_forms.append((QAbstractWidgetHost*)host);
                     }
                 }
@@ -160,4 +171,40 @@ void QProject::loadPages(const QString &path)
 QList<QAbstractWidgetHost*> QProject::getForms()
 {
     return m_forms;
+}
+
+void QProject::setModified(enProjectModified modified)
+{
+    if(m_projectModified != modified)
+    {
+        m_projectModified = modified;
+        emit modifiedChanged();
+    }
+}
+
+enProjectModified QProject::getProjectModified()
+{
+    return m_projectModified;
+}
+
+QAbstractHost * QProject::getHostByUuid(const QString &uuid)
+{
+    QList<QAbstractHost*> list;
+
+    foreach(QAbstractWidgetHost * h,m_forms)
+    {
+        list.append((QAbstractHost*)h);
+    }
+
+    while(list.size()>0)
+    {
+        QAbstractHost * host = list.takeFirst();
+        if(host->getUuid() == uuid)
+        {
+            return host;
+        }
+        list += host->getChildrenHost();
+    }
+
+    return NULL;
 }

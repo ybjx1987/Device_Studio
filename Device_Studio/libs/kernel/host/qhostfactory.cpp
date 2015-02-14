@@ -11,6 +11,7 @@
 
 #include "qformhost.h"
 
+#include <QUuid>
 #include <QVariant>
 
 QMap<QString,QAbstractHostInfo*>     QHostFactory::m_metaMap;

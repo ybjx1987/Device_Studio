@@ -270,3 +270,13 @@ QAbstractProperty* QAbstractProperty::getParent()
 {
     return m_parent;
 }
+
+void QAbstractProperty::setHostUuid(const QString &uuid)
+{
+    m_hostUuid = uuid;
+}
+
+QString QAbstractProperty::getHostUuid()
+{
+    return m_hostUuid;
+}
