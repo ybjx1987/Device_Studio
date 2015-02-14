@@ -81,3 +81,17 @@ void QPageView::pagePaneSelect()
         m_select->setSelect(true);
     }
 }
+
+void QPageView::setHosts(QList<QAbstractWidgetHost *> hosts)
+{
+    foreach(QAbstractWidgetHost* host,hosts)
+    {
+        QPagePane *page = new QPagePane(host,this);
+        connect(page,SIGNAL(select()),this,SLOT(pagePaneSelect()));
+        page->setVisible(true);
+        m_pagePaneList.append(page);
+        m_hostToPane.insert(host,page);
+    }
+
+    calcSize();
+}

@@ -18,7 +18,8 @@ public:
     void    clear();
 
     void    showHost(QAbstractWidgetHost * host);
-
+signals:
+    void    select(QAbstractWidgetHost* host);
 protected:
     void    paintEvent(QPaintEvent *);
 protected:

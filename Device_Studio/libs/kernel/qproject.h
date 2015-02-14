@@ -34,8 +34,11 @@ public:
     enProjectStatus getProjectStatus();
 
     void        addForm(QAbstractWidgetHost* host,int index = -1);
+
+    QList<QAbstractWidgetHost*> getForms();
 protected:
     void        setProjectStatus(enProjectStatus newStatus);
+    void        loadPages(const QString &path);
 signals:
     void        projectOpened();
     void        projectClosed();

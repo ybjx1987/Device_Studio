@@ -2,10 +2,14 @@
 
 #include "host/qprojecthost.h"
 
-#include "../kernel/xmlnode.h"
+#include "xmlnode.h"
+#include "host/qhostfactory.h"
+#include "host/qabstracthost.h"
 
 #include <QFile>
 #include <QVariant>
+
+#include <QDir>
 
 QProject::QProject():
     QObject(NULL),
@@ -17,7 +21,7 @@ QProject::QProject():
 
 QProject::~QProject()
 {
-
+    close();
 }
 
 bool QProject::open(const QString &proFileName)
@@ -51,6 +55,8 @@ bool QProject::open(const QString &proFileName)
 
     QString path = proFileName.left(proFileName.lastIndexOf("/"));
     m_projectHost->setPropertyValue("path",path);
+
+    loadPages(path+"/pages");
 
     emit projectOpened();
     setProjectStatus(PS_OPENED);
@@ -100,4 +106,58 @@ void QProject::addForm(QAbstractWidgetHost *host, int index)
     m_forms.insert(index,host);
 
     emit hostAdded(host,index);
+}
+
+void QProject::loadPages(const QString &path)
+{
+    QFile file(path+"/page.list");
+
+    if(!file.exists())
+    {
+        return;
+    }
+
+    if(!file.open(QFile::ReadOnly))
+    {
+        return;
+    }
+
+    XmlNode node;
+    if(!node.load(file.readAll()))
+    {
+        return;
+    }
+
+    if(node.getTitle() != "Pages")
+    {
+        return;
+    }
+
+    foreach(XmlNode* p,node.getChildren())
+    {
+        if(p->getTitle() == "Page")
+        {
+            QString fileName = path + "/" + p->getText();
+            QFile f(fileName);
+            if(f.exists() && f.open(QFile::ReadOnly))
+            {
+                XmlNode xml;
+                if(xml.load(f.readAll()))
+                {
+                    QAbstractHost * host = QHostFactory::createHost(
+                                xml.getProperty("type"));
+                    if(host != NULL)
+                    {
+                        host->fromXml(&xml);
+                        m_forms.append((QAbstractWidgetHost*)host);
+                    }
+                }
+            }
+        }
+    }
+}
+
+QList<QAbstractWidgetHost*> QProject::getForms()
+{
+    return m_forms;
 }

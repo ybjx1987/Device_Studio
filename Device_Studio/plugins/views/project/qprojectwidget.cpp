@@ -70,4 +70,8 @@ void QProjectWidget::projectOpened()
     QProjectHost * host = project->getProjectHost();
 
     m_projectPropertyView->setPropertys(host->getPropertys());
+
+    QList<QAbstractWidgetHost*> forms = project->getForms();
+
+    m_pageView->setHosts(forms);
 }

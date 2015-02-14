@@ -15,6 +15,8 @@ class QFormPanel : public QScrollArea
 public:
     explicit QFormPanel(QAbstractWidgetHost * host,QWidget *parent = 0);
     ~QFormPanel();
+
+    void    select(QAbstractWidgetHost* host);
 protected:
     void    installHostEventFilter(QAbstractWidgetHost * host);
     void    removeHostEventFilter(QAbstractWidgetHost * host);
@@ -28,6 +30,8 @@ protected:
 
     bool    hostDragEnterEvent(QAbstractWidgetHost* host,QDragEnterEvent *e);
     bool    hostDropEvent(QAbstractWidgetHost* host,QDropEvent * e);
+signals:
+    void    hostSelected(QAbstractWidgetHost * host);
 protected:
     void    paintEvent(QPaintEvent *);
 protected:

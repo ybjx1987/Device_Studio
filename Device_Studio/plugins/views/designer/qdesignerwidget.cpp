@@ -31,7 +31,8 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     m_widgetBoxList(new QWidgetBoxList(this)),
     m_widgetBoxListBar(new StyledBar(this)),
     m_formEditor(new QFormEditor(this)),
-    m_formEditorBar(new StyledBar(this))
+    m_formEditorBar(new StyledBar(this)),
+    m_currentHost(NULL)
 {
     initDesignerViewAction();
     MiniSplitter  *splitter = new MiniSplitter(this);
@@ -108,6 +109,15 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
 
     connect(QSoftCore::getInstance()->getProject(),SIGNAL(hostAdded(QAbstractWidgetHost*,int)),
             this,SLOT(formAdded(QAbstractWidgetHost*,int)));
+
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectOpened()),
+            this,SLOT(projectOpened()));
+
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectClosed()),
+            this,SLOT(projectClosed()));
+
+    connect(m_formEditor,SIGNAL(select(QAbstractWidgetHost*)),
+            this,SLOT(hostSelect(QAbstractWidgetHost*)));
 }
 
 void QDesignerWidget::formAdded(QAbstractWidgetHost *host, int index)
@@ -137,4 +147,39 @@ void QDesignerWidget::initDesignerViewAction()
     QSoftActionMap::insertAction("designer.same-height",ac);
     ac=new QAction(QIcon(":/inner/images/same-rect.png"),tr("Same Rect"),NULL);
     QSoftActionMap::insertAction("designer.same-rect",ac);
+}
+
+void QDesignerWidget::projectOpened()
+{
+    QProject * project = QSoftCore::getInstance()->getProject();
+
+    QList<QAbstractWidgetHost*> forms = project->getForms();
+
+    m_formEditor->setHostList(forms);
+    if(forms.size()>0)
+    {
+        m_formEditor->showHost(forms.first());
+    }
+    foreach(QAbstractWidgetHost* host,forms)
+    {
+        m_formlist->addItem(host->getPropertyValue("objectName").toString());
+    }
+}
+
+void QDesignerWidget::projectClosed()
+{
+
+}
+
+void QDesignerWidget::hostSelect(QAbstractWidgetHost *host)
+{
+    if(host != m_currentHost)
+    {
+        m_currentHost = host;
+        if(m_currentHost!= NULL)
+        {
+            m_propertyView->setPropertys(m_currentHost->getPropertys());
+            m_formlist->setCurrentText(m_currentHost->getPropertyValue("objectName").toString());
+        }
+    }
 }

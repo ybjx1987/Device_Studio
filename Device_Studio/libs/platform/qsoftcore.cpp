@@ -67,6 +67,7 @@ bool QSoftCore::newProject(const QString &path,const QString &name)
     dir.mkdir(path+"/"+name+"/pages");
 
     copyFile(":/inner/files/project/pages/form.pg",path+"/"+name+"/pages/form.pg");
+    copyFile(":/inner/files/project/pages/page.list",path+"/"+name+"/pages/page.list");
 
     if(m_project->open(path + "/" + name + "/project.pfl"))
     {

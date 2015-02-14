@@ -13,8 +13,10 @@ class QPageView : public QWidget
 public:
     explicit QPageView(QWidget *parent = 0);
     ~QPageView();
+
+    void setHosts(QList<QAbstractWidgetHost*> hosts);
 public slots:
-    void addHost(QAbstractWidgetHost* host,int index);
+    void addHost(QAbstractWidgetHost* host,int index = -1);
 
 protected:
     void    calcSize();

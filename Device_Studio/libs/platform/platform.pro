@@ -67,4 +67,5 @@ RESOURCES += \
     platform.qrc
 
 DISTFILES += \
-    files/project/pages/form.pg
+    files/project/pages/form.pg \
+    files/project/pages/page.list
