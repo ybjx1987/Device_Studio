@@ -302,14 +302,13 @@ void QAbstractHost::setPropertyValue(const QString &name, const QVariant &value)
     QAbstractProperty * pro = getProperty(name);
     if(pro != NULL)
     {
-        QAbstractProperty *p = pro;
+        pro->setValue(value);
         while(pro->getParent() != NULL)
         {
             pro = pro->getParent();
         }
 
         m_object->setProperty(pro->getName().toLocal8Bit(),pro->getValue());
-        p->setValue(value);
     }
 }
 
@@ -352,6 +351,10 @@ void QAbstractHost::updateProperty()
 {
     foreach(QAbstractProperty *property,m_propertys)
     {
+        if(property->property("notSync").toBool())
+        {
+            continue;
+        }
         property->setValue(m_object->property(property->getName().toLocal8Bit()));
     }
 }

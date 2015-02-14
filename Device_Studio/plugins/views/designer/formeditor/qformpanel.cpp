@@ -3,6 +3,7 @@
 #include "formresizer.h"
 #include "qdesignerdnditem.h"
 
+#include "../../../../libs/platform/undocommand/qpropertyeditundocommand.h"
 #include "../../../../libs/kernel/host/qhostfactory.h"
 #include "../../../../libs/kernel/host/qabstractwidgethost.h"
 #include "../../../../libs/platform/undocommand/qaddhostundocommand.h"
@@ -43,6 +44,8 @@ QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
     QAbstractProperty * pro = m_host->getProperty("geometry");
     connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
             this,SLOT(formSizeChanged()));
+    connect(m_formResizer,SIGNAL(size_changed(QRect,QRect)),
+            this,SLOT(formResize(QRect,QRect)));
 }
 
 QFormPanel::~QFormPanel()
@@ -325,4 +328,12 @@ QUndoStack * QFormPanel::getUndoStack()
 void QFormPanel::formSizeChanged()
 {
     m_formResizer->updateFormGeometry();
+}
+
+void QFormPanel::formResize(const QRect &, const QRect &now)
+{
+    QPropertyEditUndoCommand *cmd = new QPropertyEditUndoCommand(
+                m_host->getUuid(),"geometry",
+                now,m_host->getPropertyValue("geometry"));
+    m_undoStack->push(cmd);
 }

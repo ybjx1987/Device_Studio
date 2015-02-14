@@ -43,6 +43,7 @@ protected:
     QAbstractWidgetHost * getHost(QObject * obj);
 protected slots:
     void    formSizeChanged();
+    void    formResize(const QRect& old,const QRect &now);
 protected:
     QAbstractWidgetHost * m_host;
     FormResizer         * m_formResizer;

@@ -40,6 +40,22 @@ QPropertyEditorPane::QPropertyEditorPane(QAbstractProperty* property,QWidget* pa
     layout->addWidget(m_resetButton);
 
     this->setLayout(layout);
+    QAbstractProperty * pro = m_property;
+    while(pro->getParent() != NULL)
+    {
+        pro = pro->getParent();
+    }
+    pro->setProperty("notSync",true);
+}
+
+QPropertyEditorPane::~QPropertyEditorPane()
+{
+    QAbstractProperty * pro = m_property;
+    while(pro->getParent() != NULL)
+    {
+        pro = pro->getParent();
+    }
+    pro->setProperty("notSync",false);
 }
 
 void QPropertyEditorPane::paintEvent(QPaintEvent *)

@@ -24,7 +24,6 @@ public:
 
 
 protected:
-    void    resizeEvent(QResizeEvent *);
     void    paintEvent(QPaintEvent *);
 signals:
     void    size_changed(const QRect &,const QRect &);
