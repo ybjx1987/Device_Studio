@@ -21,24 +21,46 @@ void QFormEditor::setHostList(QList<QAbstractWidgetHost *> list)
         QFormPanel * panel = new QFormPanel(host);
         m_panelToHost.insert(panel,host);
         m_hostToPanel.insert(host,panel);
+        connect(panel,SIGNAL(hostSelected(QAbstractWidgetHost*)),
+                this,SIGNAL(select(QAbstractWidgetHost*)));
         addWidget(panel);
     }
 }
 
 void QFormEditor::clear()
 {
-    qDeleteAll(m_panelToHost.values());
+    showHost(NULL);
+    qDeleteAll(m_hostToPanel.values());
     m_panelToHost.clear();
     m_hostToPanel.clear();
 }
 
 void QFormEditor::showHost(QAbstractWidgetHost *host)
 {
-    setCurrentWidget(m_hostToPanel.value(host));
+    QFormPanel *panel = m_hostToPanel.value(host);
+    if(panel != NULL)
+    {
+        panel->select(host);
+        setCurrentWidget(m_hostToPanel.value(host));
+    }
+    else
+    {
+        emit select(NULL);
+    }
 }
 
 void QFormEditor::paintEvent(QPaintEvent *)
 {
     QPainter p(this);
     p.fillRect(this->rect(),QColor(255,255,255));
+}
+
+QUndoStack *QFormEditor::getUndoStack(QAbstractWidgetHost *host)
+{
+    QFormPanel *panel = m_hostToPanel.value(host);
+    if(panel!=NULL)
+    {
+        return panel->getUndoStack();
+    }
+    return NULL;
 }

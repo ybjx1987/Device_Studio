@@ -115,6 +115,10 @@ bool QAbstractHost::fromXml(XmlNode *xml)
                     xml->clear();
                     return false;
                 }
+                if(h->getUuid() == "")
+                {
+                    h->setUuid(QUuid::createUuid().toString());
+                }
                 h->m_parent = this;
                 m_children.append(h);
                 if(h->m_object->isWidgetType())
@@ -166,6 +170,15 @@ QString QAbstractHost::getName()
 void QAbstractHost::setUuid(const QString &uuid)
 {
     m_uuid = uuid;
+
+    QList<QAbstractProperty*> list = m_propertys;
+
+    while(list.size()>0)
+    {
+        QAbstractProperty * pro = list.takeFirst();
+        pro->setHostUuid(uuid);
+        list += pro->getChildren();
+    }
 }
 
 QString QAbstractHost::getUuid()

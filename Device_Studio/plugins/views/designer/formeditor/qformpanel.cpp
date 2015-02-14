@@ -168,16 +168,16 @@ bool QFormPanel::hostPaintEvent(QAbstractWidgetHost *host)
         QPainter p(wid);
         p.fillRect(wid->rect(),QColor(240,240,240));
         p.drawRect(wid->rect().adjusted(0,0,-1,-1));
-        int x_count = wid->width()/10;
-        int y_count = wid->height()/10;
+//        int x_count = wid->width()/10;
+//        int y_count = wid->height()/10;
 
-        for(int i=1; i<x_count;i++)
-        {
-            for(int j =1;j<y_count;j++)
-            {
-                p.drawPoint(10*i,10*j);
-            }
-        }
+//        for(int i=1; i<x_count;i++)
+//        {
+//            for(int j =1;j<y_count;j++)
+//            {
+//                p.drawPoint(10*i,10*j);
+//            }
+//        }
 
     }
     else
@@ -296,4 +296,23 @@ bool QFormPanel::hostDropEvent(QAbstractWidgetHost *host, QDropEvent *e)
     }
 
     return true;
+}
+
+void QFormPanel::select(QAbstractWidgetHost *host)
+{
+    if(host == m_host || host == NULL)
+    {
+        m_formResizer->showHandle();
+        emit hostSelected(m_host);
+    }
+    else
+    {
+        m_formResizer->hideHandle();
+        emit hostSelected(host);
+    }
+}
+
+QUndoStack * QFormPanel::getUndoStack()
+{
+    return m_undoStack;
 }

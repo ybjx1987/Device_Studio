@@ -4,13 +4,15 @@
 
 #include "../stylehelper.h"
 #include "../../kernel/property/qabstractproperty.h"
+#include "../undocommand/qpropertyeditundocommand.h"
 
 #include <QHeaderView>
 #include <QMouseEvent>
+#include <QList>
 
 QWidget * QPropertyListDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-    QWidget* wid = NULL;
+    QPropertyEditorPane* wid = NULL;
     if(index.column() ==1)
     {
         QTreeWidgetItem *item = m_listView->itemFromIndex(index);
@@ -18,6 +20,8 @@ QWidget * QPropertyListDelegate::createEditor(QWidget *parent, const QStyleOptio
         if(property != NULL && property->getVisible() && property->getEditable())
         {
             wid = new QPropertyEditorPane(property,parent);
+            connect(wid,SIGNAL(propertyValueEdit(QAbstractProperty*,QVariant)),
+                    m_listView,SLOT(propertyValueEdit(QAbstractProperty*,QVariant)));
         }
     }
     return wid;
@@ -29,7 +33,8 @@ void QPropertyListDelegate::updateEditorGeometry(QWidget *editor, const QStyleOp
 }
 
 QPropertyListView::QPropertyListView(QWidget* parent):
-    QBaseListView(parent)
+    QBaseListView(parent),
+    m_undoStack(NULL)
 {
     setColumnCount(2);
     setHeaderLabels(QStringList()<<tr("Property")<<tr("Value"));
@@ -39,11 +44,25 @@ QPropertyListView::QPropertyListView(QWidget* parent):
     m_expandIcon = StyleHelper::drawIndicatorIcon(palette(),style());
 }
 
-void QPropertyListView::setPropertys(const QList<QAbstractProperty *> &propertys)
+void QPropertyListView::setPropertys(const QList<QAbstractProperty *> &propertys,
+                                     QUndoStack* undoStack)
 {
     clear();
+    foreach(QAbstractProperty* pro,m_propertys)
+    {
+        disconnect(pro,SIGNAL(valueChanged(QVariant,QVariant)),this,
+                   SLOT(propertyValueChanged()));
+    }
+
     m_propertys = propertys;
+    foreach(QAbstractProperty* pro,m_propertys)
+    {
+        connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),this,
+                   SLOT(propertyValueChanged()));
+    }
     updateView();
+
+    m_undoStack = undoStack;
 }
 
 void QPropertyListView::updateView()
@@ -131,6 +150,7 @@ void QPropertyListView::clear()
     m_propertyToItem.clear();
     m_itemToProperty.clear();
     m_groups.clear();
+    m_undoStack = NULL;
 }
 
 void QPropertyListView::clickEditItem(QTreeWidgetItem* item,int index)
@@ -138,5 +158,33 @@ void QPropertyListView::clickEditItem(QTreeWidgetItem* item,int index)
     if(index == 1)
     {
         editItem(item,1);
+    }
+}
+
+void QPropertyListView::propertyValueChanged()
+{
+    QAbstractProperty* pro =(QAbstractProperty*)sender();
+    QList<QAbstractProperty*> list;
+    list.append(pro);
+    while(list.size()>0)
+    {
+        pro = list.takeFirst();
+        QTreeWidgetItem *item = m_propertyToItem.value(pro);
+        item->setText(1,pro->getValueText());
+        item->setIcon(1,pro->getValueIcon());
+        item->setToolTip(1,pro->getValueText());
+    }
+}
+
+void QPropertyListView::propertyValueEdit(QAbstractProperty *property, const QVariant &value)
+{
+    if(m_undoStack != NULL && m_propertys.contains(property))
+    {
+        QPropertyEditUndoCommand *cmd = new QPropertyEditUndoCommand(
+                    property->getHostUuid(),
+                    property->getName(),
+                    value,
+                    property->getValue());
+        m_undoStack->push(cmd);
     }
 }

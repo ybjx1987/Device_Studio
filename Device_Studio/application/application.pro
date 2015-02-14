@@ -18,10 +18,15 @@ SOURCES += \
     mainwindow.cpp \
     fancyactionbar.cpp \
     fancytabwidget.cpp \
-    qstatuswidget.cpp
+    qstatuswidget.cpp \
+    qnewprojectdialog.cpp
 
 HEADERS += \
     mainwindow.h \
     fancyactionbar.h \
     fancytabwidget.h \
-    qstatuswidget.h
+    qstatuswidget.h \
+    qnewprojectdialog.h
+
+FORMS += \
+    qnewprojectdialog.ui

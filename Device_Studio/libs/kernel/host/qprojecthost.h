@@ -10,6 +10,8 @@ public:
     QProjectHost();
     ~QProjectHost();
 
+    bool        save(const QString & filename);
+
 protected:
     void        createObject();
     void        initProperty();

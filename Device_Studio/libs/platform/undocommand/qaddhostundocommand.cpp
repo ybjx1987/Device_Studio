@@ -1,5 +1,7 @@
 #include "qaddhostundocommand.h"
 
+#include "qundocommandid.h"
+
 #include "../../kernel/host/qabstracthost.h"
 
 QAddHostUndoCommand::QAddHostUndoCommand(QAbstractHost *parentHost,
@@ -25,7 +27,7 @@ QAddHostUndoCommand::~QAddHostUndoCommand()
 
 int QAddHostUndoCommand::id()const
 {
-    return HOST_ADD_UNDO_COMMAND;
+    return HOST_ADD_AND_REMOVE;
 }
 
 void QAddHostUndoCommand::redo()

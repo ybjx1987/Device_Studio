@@ -1,6 +1,7 @@
 #include "qpropertyeditorpane.h"
 
-#include "qcommoneditor.h"
+#include "qpropertyeditorfactory.h"
+#include "editor/qabstractpropertyeditor.h"
 
 #include "../../kernel/property/qabstractproperty.h"
 
@@ -29,11 +30,9 @@ QPropertyEditorPane::QPropertyEditorPane(QAbstractProperty* property,QWidget* pa
     connect(m_property,SIGNAL(valueChanged(QVariant,QVariant)),
             this,SLOT(propertyRefresh()));
 
-    if(m_widget == NULL)
-    {
-        m_widget = new QCommonEditor(property,this);
-    }
-
+    m_widget = QPropertyEditorFactory::createEditor(m_property->metaObject()->className(),m_property);
+    connect(m_widget,SIGNAL(valueChanged(QVariant)),
+            this,SLOT(propertyEdit(QVariant)));
     QHBoxLayout *layout = new QHBoxLayout();
     layout->setMargin(0);
     layout->setSpacing(0);
@@ -61,4 +60,9 @@ bool QPropertyEditorPane::eventFilter(QObject *o, QEvent *e)
 void QPropertyEditorPane::propertyRefresh()
 {
     m_resetButton->setEnabled(m_property->isModified());
+}
+
+void QPropertyEditorPane::propertyEdit(const QVariant &value)
+{
+    emit propertyValueEdit(m_property,value);
 }

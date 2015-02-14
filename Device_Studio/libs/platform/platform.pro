@@ -30,11 +30,22 @@ HEADERS += \
     qbaselistview.h \
     propertylist/qpropertylistview.h \
     propertylist/qpropertyeditorpane.h \
-    propertylist/qcommoneditor.h \
     qabstractpage.h \
     qabstractpagewidget.h \
     undocommand/qbaseundocommand.h \
-    undocommand/qaddhostundocommand.h
+    undocommand/qaddhostundocommand.h \
+    qsoftcore.h \
+    qsoftactionmap.h \
+    qvalidatoredit.h \
+    qactiontoolbar.h \
+    qtoolbarbutton.h \
+    propertylist/qpropertyeditorfactory.h \
+    propertylist/editor/qbasiceditor.h \
+    propertylist/editor/qabstractpropertyeditor.h \
+    propertylist/editor/qboolpropertyeditor.h \
+    undocommand/qpropertyeditundocommand.h \
+    undocommand/qundocommandid.h \
+    propertylist/editor/qbytearrayeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -47,11 +58,25 @@ SOURCES += \
     qbaselistview.cpp \
     propertylist/qpropertylistview.cpp \
     propertylist/qpropertyeditorpane.cpp \
-    propertylist/qcommoneditor.cpp \
     qabstractpage.cpp \
     qabstractpagewidget.cpp \
     undocommand/qbaseundocommand.cpp \
-    undocommand/qaddhostundocommand.cpp
+    undocommand/qaddhostundocommand.cpp \
+    qsoftcore.cpp \
+    qsoftactionmap.cpp \
+    qvalidatoredit.cpp \
+    qactiontoolbar.cpp \
+    qtoolbarbutton.cpp \
+    propertylist/qpropertyeditorfactory.cpp \
+    propertylist/editor/qbasiceditor.cpp \
+    propertylist/editor/qabstractpropertyeditor.cpp \
+    propertylist/editor/qboolpropertyeditor.cpp \
+    undocommand/qpropertyeditundocommand.cpp \
+    propertylist/editor/qbytearrayeditor.cpp
 
 RESOURCES += \
     platform.qrc
+
+DISTFILES += \
+    files/project/pages/form.pg \
+    files/project/pages/page.list

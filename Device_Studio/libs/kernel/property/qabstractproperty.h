@@ -61,6 +61,9 @@ public:
     bool                getCanSame();
     void                setCanSame(bool canSame);
 
+    QString             getHostUuid();
+    void                setHostUuid(const QString &uuid);
+
     QAbstractProperty&  operator =(const QAbstractProperty & pro);
 public slots:
     void                reset();
@@ -83,6 +86,8 @@ protected:
 
     QVariant                    m_value;
     QVariant                    m_defaultValue;
+
+    QString                     m_hostUuid;
 
     bool                        m_visible;
     QString                     m_group;
