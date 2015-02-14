@@ -3,7 +3,7 @@
 
 #include <QStackedWidget>
 #include <QMap>
-
+#include <QUndoStack>
 class QFormPanel;
 class QAbstractWidgetHost;
 
@@ -19,6 +19,10 @@ public:
 
     void    showHost(QAbstractWidgetHost * host);
 
+    QUndoStack* getUndoStack(QAbstractWidgetHost * host);
+
+signals:
+    void    select(QAbstractWidgetHost* host);
 protected:
     void    paintEvent(QPaintEvent *);
 protected:

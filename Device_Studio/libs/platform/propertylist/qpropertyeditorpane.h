@@ -5,6 +5,7 @@
 #include <QToolButton>
 
 class QAbstractProperty;
+class QAbstractPropertyEditor;
 
 class QPropertyEditorPane : public QWidget
 {
@@ -16,10 +17,13 @@ protected:
     bool        eventFilter(QObject *, QEvent *);
 protected slots:
     void    propertyRefresh();
+    void    propertyEdit(const QVariant & value);
+signals:
+    void    propertyValueEdit(QAbstractProperty * property,const QVariant &value);
 protected:
     QToolButton                 *m_resetButton;
     QAbstractProperty           *m_property;
-    QWidget                     *m_widget;
+    QAbstractPropertyEditor     *m_widget;
 };
 
 #endif // QPROPERTYEDITORPANE_H

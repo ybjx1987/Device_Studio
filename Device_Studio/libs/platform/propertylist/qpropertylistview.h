@@ -4,6 +4,8 @@
 #include "../qbaseitemdelegate.h"
 #include "../qbaselistview.h"
 
+#include <QUndoStack>
+
 class QPropertyListView;
 class QAbstractProperty;
 
@@ -26,9 +28,13 @@ public:
 
     void    clear();
 
-    void    setPropertys(const QList<QAbstractProperty*>    & propertys);
+    void    setPropertys(const QList<QAbstractProperty*>    & propertys,
+                         QUndoStack* undoStack = NULL);
 protected slots:
     void    propertyValueChanged();
+public slots:
+    void    propertyValueEdit(QAbstractProperty* property,
+                              const QVariant &value);
 protected:
     void        updateView();
     void        insertItem(QAbstractProperty * property,
@@ -43,6 +49,7 @@ protected:
     QMap<QAbstractProperty*,QTreeWidgetItem*>       m_propertyToItem;
     QMap<QTreeWidgetItem*,QAbstractProperty*>       m_itemToProperty;
     QIcon                                           m_expandIcon;
+    QUndoStack*                                     m_undoStack;
 };
 
 #endif // QPROPERTYLISTVIEW_H

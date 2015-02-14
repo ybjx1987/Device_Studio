@@ -297,3 +297,22 @@ bool QFormPanel::hostDropEvent(QAbstractWidgetHost *host, QDropEvent *e)
 
     return true;
 }
+
+void QFormPanel::select(QAbstractWidgetHost *host)
+{
+    if(host == m_host || host == NULL)
+    {
+        m_formResizer->showHandle();
+        emit hostSelected(m_host);
+    }
+    else
+    {
+        m_formResizer->hideHandle();
+        emit hostSelected(host);
+    }
+}
+
+QUndoStack * QFormPanel::getUndoStack()
+{
+    return m_undoStack;
+}

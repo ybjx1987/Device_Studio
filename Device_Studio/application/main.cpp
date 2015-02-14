@@ -4,6 +4,7 @@
 #include "../libs/kernel/pluginloader.h"
 #include "../libs/platform/qsoftcore.h"
 #include "../libs/kernel/host/qhostfactory.h"
+#include "../libs/platform/propertylist/qpropertyeditorfactory.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -32,6 +33,7 @@ int main(int argc,char *argv[])
     QSoftCore::getInstance();
 
     QHostFactory::registerInnerHost();
+    QPropertyEditorFactory::registerInnerEditor();
 
     PluginLoader::loadPlugin("plugins.xml");
 

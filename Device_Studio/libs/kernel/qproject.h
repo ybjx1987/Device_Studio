@@ -16,7 +16,15 @@ enum enProjectStatus
     PS_BOTTOM
 };
 
+enum enProjectModified
+{
+    PM_MODIFIED,
+    PM_NOT_MODIFIED,
+    PM_BOTTOM
+};
+
 class QAbstractWidgetHost;
+class QAbstractHost;
 
 class KERNEL_EXPORT QProject :public QObject
 {
@@ -32,15 +40,24 @@ public:
     QProjectHost * getProjectHost();
 
     enProjectStatus getProjectStatus();
+    enProjectModified getProjectModified();
 
     void        addForm(QAbstractWidgetHost* host,int index = -1);
+
+    QAbstractHost * getHostByUuid(const QString &uuid);
+
+    QList<QAbstractWidgetHost*> getForms();
+
+    void        setModified(enProjectModified modified);
 protected:
     void        setProjectStatus(enProjectStatus newStatus);
+    void        loadPages(const QString &path);
 signals:
     void        projectOpened();
     void        projectClosed();
 
     void        projectStatusChanged(enProjectStatus newStatus);
+    void        modifiedChanged();
 
     void        hostAdded(QAbstractWidgetHost* host,int index);
 protected:
@@ -49,6 +66,7 @@ protected:
     enProjectStatus m_projectStatus;
 
     QList<QAbstractWidgetHost*>     m_forms;
+    enProjectModified   m_projectModified;
 };
 
 #endif // QPROJECT_H

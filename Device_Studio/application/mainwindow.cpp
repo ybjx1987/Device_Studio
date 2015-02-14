@@ -13,11 +13,13 @@
 #include "../libs/platform/qsoftactionmap.h"
 #include "../libs/platform/qsoftcore.h"
 #include "../libs/kernel/qproject.h"
+#include "../libs/kernel/host/qprojecthost.h"
 
 #include <QDesktopWidget>
 #include <QApplication>
 #include <QMessageBox>
 #include <QFileDialog>
+#include <QVariant>
 
 bool pageCheck(QAbstractPlugin *plugin1,QAbstractPlugin * plugin2)
 {
@@ -52,6 +54,10 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectStatusChanged(enProjectStatus)),
             this,SLOT(projectStatusChanged()));
 
+    connect(QSoftCore::getInstance()->getProject(),SIGNAL(modifiedChanged()),
+            this,SLOT(projectModifiedChanged()));
+
+
     QAction* ac;
 
     ac = QSoftActionMap::getAction("project.open");
@@ -70,6 +76,12 @@ MainWindow::MainWindow(QWidget *parent) :
     if(ac != NULL)
     {
         connect(ac,SIGNAL(triggered()),this,SLOT(saveProject()));
+    }
+
+    ac = QSoftActionMap::getAction("project.close");
+    if(ac != NULL)
+    {
+        connect(ac,SIGNAL(triggered()),this,SLOT(closeProject()));
     }
 
     projectStatusChanged();
@@ -130,7 +142,7 @@ void MainWindow::openProject()
     {
         return;
     }
-
+    project->close();
     QString path = QFileDialog::getOpenFileName(this,tr("Open Project"),
                                  QDir::currentPath(),tr("Project File (*.pfl)"));
     if(path != "")
@@ -167,6 +179,8 @@ void MainWindow::projectStatusChanged()
     {
         ac->setEnabled(status != PS_OPENING);
     }
+
+    updateTitle();
 }
 
 void MainWindow::newProject()
@@ -180,6 +194,21 @@ void MainWindow::newProject()
 
     if(name != "" && path != "")
     {
+        QProject * project = QSoftCore::getInstance()->getProject();
+        if(project->getProjectStatus() == PS_OPENED)
+        {
+            if(QMessageBox::warning(this,tr("Warning"),tr("This action will close the current project, would you continue?")
+                                    ,QMessageBox::Yes | QMessageBox::No)
+                    != QMessageBox::Yes)
+            {
+                return;
+            }
+        }
+        else if(project->getProjectStatus() == PS_OPENING)
+        {
+            return;
+        }
+        project->close();
         QSoftCore::getInstance()->newProject(path,name);
     }
 }
@@ -187,4 +216,36 @@ void MainWindow::newProject()
 void MainWindow::saveProject()
 {
     QSoftCore::getInstance()->saveProject();
+}
+
+void MainWindow::closeProject()
+{
+    QSoftCore::getInstance()->getProject()->close();
+}
+
+void MainWindow::projectModifiedChanged()
+{
+    updateTitle();
+}
+
+void MainWindow::updateTitle()
+{
+    QProject *project = QSoftCore::getInstance()->getProject();
+    enProjectModified modified = project->getProjectModified();
+    enProjectStatus   status = project->getProjectStatus();
+
+    QString str;
+    str = "Device Studio";
+    if(status == PS_OPENED)
+    {
+        str += " [";
+        str += project->getProjectHost()->getPropertyValue("objectName").toString();
+        if(modified == PM_MODIFIED)
+        {
+            str +="*";
+        }
+        str += "]";
+    }
+
+    setWindowTitle(str);
 }

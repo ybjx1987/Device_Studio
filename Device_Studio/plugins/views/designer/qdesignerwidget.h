@@ -17,6 +17,10 @@ public:
     QDesignerWidget(QWidget* parent = 0);
 protected slots:
     void    formAdded(QAbstractWidgetHost* host,int index);
+    void    projectOpened();
+    void    projectClosed();
+
+    void    hostSelect(QAbstractWidgetHost* host);
 protected:
     void    initDesignerViewAction();
 protected:
@@ -30,6 +34,8 @@ protected:
     StyledBar               *m_formEditorBar;
 
     QComboBox               *m_formlist;
+
+    QAbstractWidgetHost     *m_currentHost;
 };
 
 #endif // QDESIGNERWIDGET_H

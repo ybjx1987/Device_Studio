@@ -80,5 +80,6 @@
         <file>files/project/project.pfl</file>
         <file>images/project.png</file>
         <file>files/project/pages/form.pg</file>
+        <file>files/project/pages/page.list</file>
     </qresource>
 </RCC>
