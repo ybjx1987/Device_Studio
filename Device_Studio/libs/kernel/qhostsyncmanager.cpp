@@ -10,7 +10,7 @@ QHostSyncManager::QHostSyncManager(QObject *parent) :
     m_timer(new QTimer(this))
 {
     connect(m_timer,SIGNAL(timeout()),this,SLOT(hostSync()));
-    //m_timer->start(100);
+    m_timer->start(100);
 }
 
 QHostSyncManager::~QHostSyncManager()

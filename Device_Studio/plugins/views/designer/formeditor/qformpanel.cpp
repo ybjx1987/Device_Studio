@@ -1,7 +1,8 @@
 #include "qformpanel.h"
 
-#include "formresizer.h"
 #include "qdesignerdnditem.h"
+#include "sizehandlerect.h"
+#include "qselectwidget.h"
 
 #include "../../../../libs/platform/undocommand/qpropertyeditundocommand.h"
 #include "../../../../libs/kernel/host/qhostfactory.h"
@@ -15,19 +16,32 @@
 #include <QPen>
 #include <QDragEnterEvent>
 #include <QUuid>
+#include <QGraphicsDropShadowEffect>
+#include <QVBoxLayout>
 
 QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
-    QScrollArea(parent),
+    QWidget(parent),
     m_host(host),
-    m_formResizer(new FormResizer(this)),
-    m_undoStack(new QUndoStack)
+    m_undoStack(new QUndoStack),
+    m_frame(new QFrame),
+    m_selection(new Selection(m_frame))
 {
-    setWidget(m_formResizer);
-    this->setFrameStyle(QFrame::NoFrame);
-    ((QWidget*)m_host->getObject())->setAcceptDrops(true);
-    m_formResizer->setWidget((QWidget*)m_host->getObject());
-
+    QWidget* wid = ((QWidget*)m_host->getObject());
+    wid->setAcceptDrops(true);
     installHostEventFilter(m_host);
+
+    QVBoxLayout *l = new QVBoxLayout;
+    l->setMargin(0);
+    l->setSpacing(0);
+    l->addWidget(wid);
+    m_frame->setLayout(l);
+    m_frame->setAutoFillBackground(true);
+
+    l = new QVBoxLayout;
+    l->setMargin(FRAME_SIZE);
+    l->setSpacing(0);
+    l->addWidget(m_frame);
+    setLayout(l);
 
     QList<QAbstractHost*>  list;
     list.append(m_host);
@@ -39,17 +53,31 @@ QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
         list += h->getChildrenHost();
     }
 
-    m_formResizer->hideHandle();
+    this->resize(wid->size()+QSize(2*FRAME_SIZE+1,2*FRAME_SIZE+1));
 
-    QAbstractProperty * pro = m_host->getProperty("geometry");
-    connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
-            this,SLOT(formSizeChanged()));
-    connect(m_formResizer,SIGNAL(size_changed(QRect,QRect)),
-            this,SLOT(formResize(QRect,QRect)));
+    QGraphicsDropShadowEffect *effect = new QGraphicsDropShadowEffect();
+    effect->setColor(QColor(192,192,192));
+    effect->setBlurRadius(10);
+    m_frame->setGraphicsEffect(effect);
+
+    for(int i=SizeHandleRect::LeftTop;i<=SizeHandleRect::Left;i++)
+    {
+        m_handles[i]=new SizeHandleRect(this,(SizeHandleRect::Direction)i,m_frame);
+        connect(m_handles[i],SIGNAL(sizeChanged(QSize)),
+                this,SLOT(formResize(QSize)));
+    }
+    m_rubberBand = new QRubberBand(QRubberBand::Rectangle,wid);
+    m_rubberBand->setVisible(false);
+
+    connect(m_host,SIGNAL(hostAdded(QAbstractHost*,int)),
+            this,SLOT(hostAdded(QAbstractHost*,int)));
+    connect(m_host,SIGNAL(hostRemoved(QAbstractHost*)),
+            this,SLOT(hostRemoved(QAbstractHost*)));
 }
 
 QFormPanel::~QFormPanel()
 {
+    delete m_rubberBand;
     removeHostEventFilter(m_host);
 }
 
@@ -117,6 +145,10 @@ bool QFormPanel::eventFilter(QObject *o, QEvent *e)
         {
             return hostDropEvent(host,(QDropEvent*)e);
         }
+        else if(e->type() == QEvent::Resize)
+        {
+            return hostResizeEvent(host,e);
+        }
     }
 
     return false;
@@ -142,30 +174,99 @@ QAbstractWidgetHost *QFormPanel::getHost(QObject *obj)
 
 bool QFormPanel::hostMouseMove(QAbstractWidgetHost *host, QMouseEvent *e)
 {
-    return false;
+    if(!m_clickPoint.isNull())
+    {
+        QRect re(QRect(m_clickPoint,e->pos()).normalized());
+        m_rubberBand->setGeometry(re);
+    }
+    return true;
 }
 
 bool QFormPanel::hostDBMouseClick(QAbstractWidgetHost *host, QMouseEvent *e)
 {
-    return false;
+    return true;
 }
 
 bool QFormPanel::hostMousePress(QAbstractWidgetHost *host, QMouseEvent *e)
 {
-    return false;
+    if(e->button()==Qt::RightButton)
+    {
+        if(m_selection->selectedWidgets().contains((QWidget*)host->getObject()))
+        {
+            select(host);
+            return true;
+        }
+
+    }
+    else if(e->button() == Qt::LeftButton)
+    {
+        if(m_host==host)
+        {
+            m_clickPoint=e->pos();
+            m_rubberBand->setGeometry(QRect(m_clickPoint,QSize()));
+            m_rubberBand->show();
+            m_selection->clear();
+        }
+        else
+        {
+
+        }
+    }
+    return true;
+}
+
+bool QFormPanel::hostResizeEvent(QAbstractWidgetHost *host, QEvent *)
+{
+    QSize re=host->getPropertyValue("geometry").toRect().size();
+    this->resize(re+QSize(FRAME_SIZE*2,FRAME_SIZE*2));
 }
 
 bool QFormPanel::hostMouseRelease(QAbstractWidgetHost *host, QMouseEvent *e)
 {
-    if(e->button() == Qt::LeftButton)
+    if(!m_clickPoint.isNull())
     {
-        m_formResizer->showHandle();
+        m_clickPoint=QPoint();
+        QRect re=m_rubberBand->geometry();
+        m_rubberBand->setGeometry(QRect(0,0,0,0));
+        m_rubberBand->hide();
+
+        m_selection->clear();
+
+        foreach(QObject* obj,m_objectToHost.keys())
+        {
+            if(obj==m_host->getObject())
+            {
+                continue;
+            }
+            QAbstractWidgetHost *h=m_objectToHost.value(obj);
+            if(h->getParent()!=m_host)
+            {
+                continue;
+            }
+            QWidget* wid=(QWidget*)obj;
+            if(!(re & wid->geometry()).isNull())
+            {
+                m_selection->addWidget(wid);
+            }
+        }
+
+        if(m_selection->selectedWidgets().size()>0)
+        {
+            select(m_objectToHost.value((QObject*)m_selection->selectedWidgets().first()));
+        }
+        else
+        {
+            select(m_host);
+        }
+
+        this->update();
+
     }
     else
     {
-        m_formResizer->hideHandle();
+        m_click=false;
     }
-    return false;
+    return true;
 }
 
 bool QFormPanel::hostPaintEvent(QAbstractWidgetHost *host)
@@ -174,19 +275,7 @@ bool QFormPanel::hostPaintEvent(QAbstractWidgetHost *host)
     if(host->property("hostType") == "form")
     {
         QPainter p(wid);
-        p.fillRect(wid->rect(),QColor(240,240,240));
         p.drawRect(wid->rect().adjusted(0,0,-1,-1));
-//        int x_count = wid->width()/10;
-//        int y_count = wid->height()/10;
-
-//        for(int i=1; i<x_count;i++)
-//        {
-//            for(int j =1;j<y_count;j++)
-//            {
-//                p.drawPoint(10*i,10*j);
-//            }
-//        }
-
     }
     else
     {
@@ -210,7 +299,7 @@ bool QFormPanel::hostPaintEvent(QAbstractWidgetHost *host)
 
 void QFormPanel::paintEvent(QPaintEvent *)
 {
-    QPainter p(viewport());
+    QPainter p(this);
     p.fillRect(this->rect(),QColor(255,255,255));
 }
 
@@ -308,14 +397,24 @@ bool QFormPanel::hostDropEvent(QAbstractWidgetHost *host, QDropEvent *e)
 
 void QFormPanel::select(QAbstractWidgetHost *host)
 {
+    QWidget * wid = (QWidget *)host->getObject();
     if(host == m_host || host == NULL)
     {
-        m_formResizer->showHandle();
+        m_selection->clear();
+        setHandelVisible(true);
         emit hostSelected(m_host);
     }
     else
     {
-        m_formResizer->hideHandle();
+        setHandelVisible(false);
+        if(m_selection->selectedWidgets().contains(wid))
+        {
+            m_selection->setCurrent(wid);
+        }
+        else
+        {
+            m_selection->addWidget(wid);
+        }
         emit hostSelected(host);
     }
 }
@@ -325,15 +424,107 @@ QUndoStack * QFormPanel::getUndoStack()
     return m_undoStack;
 }
 
-void QFormPanel::formSizeChanged()
+void QFormPanel::formResize(const QSize &size)
 {
-    m_formResizer->updateFormGeometry();
-}
-
-void QFormPanel::formResize(const QRect &, const QRect &now)
-{
+    QRect rect = m_host->getPropertyValue("geometry").toRect();
+    rect.setWidth(size.width());
+    rect.setHeight(size.height());
     QPropertyEditUndoCommand *cmd = new QPropertyEditUndoCommand(
                 m_host->getUuid(),"geometry",
-                now,m_host->getPropertyValue("geometry"));
+                rect,m_host->getPropertyValue("geometry"));
     m_undoStack->push(cmd);
+    this->resize(size+QSize(2*FRAME_SIZE,2*FRAME_SIZE));
+}
+
+void QFormPanel::setOwner(QWidget *owner)
+{
+    m_owner = owner;
+}
+
+QWidget* QFormPanel::getOwner()
+{
+    return m_owner;
+}
+
+void QFormPanel::updateGeometry()
+{
+    const QRect &geom=m_frame->geometry();
+
+    const int w=6;
+    const int h=6;
+
+    for(int i=0;i<8;i++)
+    {
+        switch(m_handles[i]->dir())
+        {
+        case SizeHandleRect::LeftTop:
+            m_handles[i]->move(geom.x()-w/2,geom.y()-h/2);
+            break;
+        case SizeHandleRect::Top:
+            m_handles[i]->move(geom.x()+geom.width()/2-w/2,geom.y()-h/2);
+            break;
+        case SizeHandleRect::RightTop:
+            m_handles[i]->move(geom.x()+geom.width()-w/2,geom.y()-h/2);
+            break;
+        case SizeHandleRect::Right:
+            m_handles[i]->move(geom.x()+geom.width()-w/2,geom.y()+geom.height()/2-h/2);
+            break;
+        case SizeHandleRect::RightBottom:
+            m_handles[i]->move(geom.x()+geom.width()-w/2,geom.y()+geom.height()-h/2);
+            break;
+        case SizeHandleRect::Bottom:
+            m_handles[i]->move(geom.x()+geom.width()/2-w/2,geom.y()+geom.height()-h/2);
+            break;
+        case SizeHandleRect::LeftBottom:
+            m_handles[i]->move(geom.x()-w/2,geom.y()+geom.height()-h/2);
+            break;
+        case SizeHandleRect::Left:
+            m_handles[i]->move(geom.x()-w/2,geom.y()+geom.height()/2-h/2);
+            break;
+        }
+    }
+}
+
+void QFormPanel::resizeEvent(QResizeEvent *)
+{
+    updateGeometry();
+}
+
+void QFormPanel::setHandelVisible(bool visible)
+{
+    for(int i=0;i<8;i++)
+    {
+        m_handles[i]->setVisible(visible);
+    }
+}
+
+void QFormPanel::hostAdded(QAbstractHost *host, int)
+{
+    QList<QAbstractHost*>  list;
+    list.append(host);
+
+    while(list.size()>0)
+    {
+        QAbstractHost * h = list.takeFirst();
+        m_objectToHost.insert(h->getObject(),(QAbstractWidgetHost*)h);
+        list += h->getChildrenHost();
+    }
+    installHostEventFilter((QAbstractWidgetHost*)host);
+    m_selection->clear();
+    setHandelVisible(false);
+    m_selection->addWidget((QWidget*)host->getObject());
+    m_selection->setCurrent((QWidget*)host->getObject());
+}
+
+void QFormPanel::hostRemoved(QAbstractHost *host)
+{
+    removeHostEventFilter((QAbstractWidgetHost*)host);
+    QList<QAbstractHost*>  list;
+    list.append(host);
+    while(list.size()>0)
+    {
+        QAbstractHost * h = list.takeFirst();
+        m_objectToHost.remove(h->getObject());
+        list += h->getChildrenHost();
+    }
 }

@@ -45,6 +45,7 @@ public:
     QAbstractProperty*      getProperty(const QString &name);
 
     QList<QAbstractHost*>   getChildrenHost();
+    QAbstractHost*          getParent();
 
     QVariant                getPropertyValue(const QString &name);
     void                    setPropertyValue(const QString &name,const QVariant &value);
@@ -56,6 +57,8 @@ public:
 protected:
     virtual void    createObject();
     virtual void    initProperty();
+protected slots:
+    void    propertyChanged();
 public:
     bool                    toXml(XmlNode * xml);
     bool                    fromXml(XmlNode * xml);
@@ -66,6 +69,10 @@ protected:
 protected:
     virtual     void        writeAttribute(XmlNode * xml);
     virtual     void        readAttribute(XmlNode * xml);
+signals:
+    void    hostAdded(QAbstractHost * host,int index);
+    void    hostRemoved(QAbstractHost * host);
+
 protected:
     QAbstractHost               *m_parent;
     QList<QAbstractHost*>       m_children;

@@ -32,6 +32,10 @@ void QPropertyListDelegate::updateEditorGeometry(QWidget *editor, const QStyleOp
     editor->setGeometry(option.rect.adjusted(0,0,0,-1));
 }
 
+void QPropertyListDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
+{
+}
+
 QPropertyListView::QPropertyListView(QWidget* parent):
     QBaseListView(parent),
     m_undoStack(NULL)

@@ -237,6 +237,8 @@ void QAbstractHost::insertProperty(QAbstractProperty *property, int index)
 
     m_propertys.insert(index,property);
     m_nameToProperty.insert(property->getName(),property);
+    connect(property,SIGNAL(valueChanged(QVariant,QVariant)),
+            this,SLOT(propertyChanged()));
 }
 
 void QAbstractHost::removeProperty(const QString &name)
@@ -303,12 +305,6 @@ void QAbstractHost::setPropertyValue(const QString &name, const QVariant &value)
     if(pro != NULL)
     {
         pro->setValue(value);
-        while(pro->getParent() != NULL)
-        {
-            pro = pro->getParent();
-        }
-
-        m_object->setProperty(pro->getName().toLocal8Bit(),pro->getValue());
     }
 }
 
@@ -322,10 +318,16 @@ QList<QAbstractHost*> QAbstractHost::getChildrenHost()
     return m_children;
 }
 
+QAbstractHost* QAbstractHost::getParent()
+{
+    return m_parent;
+}
+
 void QAbstractHost::insertHost(QAbstractHost *host, int index)
 {
-    if(index < 0 || index >= m_children.size())
+    if(index >=0 && index <= m_children.size())
     {
+        host->m_parent= this;
         m_children.insert(index,host);
         if(m_object->isWidgetType())
         {
@@ -337,11 +339,13 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
         {
             host->getObject()->setParent(m_object);
         }
+        emit hostAdded(host,index);
     }
 }
 
 void QAbstractHost::removeHost(QAbstractHost *host)
 {
+    emit hostRemoved(host);
     m_children.removeAll(host);
     host->getObject()->setParent(NULL);
     host->getObject()->setProperty("visible",false);
@@ -357,4 +361,11 @@ void QAbstractHost::updateProperty()
         }
         property->setValue(m_object->property(property->getName().toLocal8Bit()));
     }
+}
+
+void QAbstractHost::propertyChanged()
+{
+    QAbstractProperty * pro = (QAbstractProperty*) sender();
+    m_object->setProperty(pro->getName().toLocal8Bit(),
+                          pro->getValue());
 }

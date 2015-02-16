@@ -23,7 +23,12 @@ void QFormEditor::setHostList(QList<QAbstractWidgetHost *> list)
         m_hostToPanel.insert(host,panel);
         connect(panel,SIGNAL(hostSelected(QAbstractWidgetHost*)),
                 this,SIGNAL(select(QAbstractWidgetHost*)));
-        addWidget(panel);
+        QScrollArea *area = new QScrollArea;
+        area->setWidget(panel);
+        panel->setOwner(area);
+        area->viewport()->setStyleSheet(
+                    "#"+area->viewport()->objectName()+"{background-color:rgb(255,255,255);}");
+        addWidget(area);
     }
 }
 
@@ -41,7 +46,7 @@ void QFormEditor::showHost(QAbstractWidgetHost *host)
     if(panel != NULL)
     {
         panel->select(host);
-        setCurrentWidget(m_hostToPanel.value(host));
+        setCurrentWidget(m_hostToPanel.value(host)->getOwner());
     }
     else
     {

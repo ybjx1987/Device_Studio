@@ -25,6 +25,7 @@ QPropertyEditorPane::QPropertyEditorPane(QAbstractProperty* property,QWidget* pa
     m_resetButton->setFocusPolicy(Qt::NoFocus);
     m_resetButton->setEnabled(m_property->isModified());
     m_resetButton->setVisible(m_property->parent() == NULL);
+    m_resetButton->setProperty("no-ManhattanStyle",true);
 
     connect(m_resetButton,SIGNAL(clicked()),m_property,SLOT(reset()));
     connect(m_property,SIGNAL(valueChanged(QVariant,QVariant)),
@@ -46,6 +47,7 @@ QPropertyEditorPane::QPropertyEditorPane(QAbstractProperty* property,QWidget* pa
         pro = pro->getParent();
     }
     pro->setProperty("notSync",true);
+    setProperty("propertyValue",pro->getValue());
 }
 
 QPropertyEditorPane::~QPropertyEditorPane()
@@ -76,6 +78,7 @@ bool QPropertyEditorPane::eventFilter(QObject *o, QEvent *e)
 void QPropertyEditorPane::propertyRefresh()
 {
     m_resetButton->setEnabled(m_property->isModified());
+    setProperty("propertyValue",m_property->getValue());
 }
 
 void QPropertyEditorPane::propertyEdit(const QVariant &value)
