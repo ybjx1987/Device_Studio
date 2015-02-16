@@ -13,6 +13,8 @@ public:
 public slots:
     void    edit();
 protected:
+    void    propertyValueChanged();
+protected:
     QValidatorEdit       *m_lineEdit;
 };
 

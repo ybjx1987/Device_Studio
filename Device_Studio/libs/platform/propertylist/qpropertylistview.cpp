@@ -32,6 +32,10 @@ void QPropertyListDelegate::updateEditorGeometry(QWidget *editor, const QStyleOp
     editor->setGeometry(option.rect.adjusted(0,0,0,-1));
 }
 
+void QPropertyListDelegate::setModelData(QWidget *, QAbstractItemModel *, const QModelIndex &) const
+{
+}
+
 QPropertyListView::QPropertyListView(QWidget* parent):
     QBaseListView(parent),
     m_undoStack(NULL)
@@ -48,17 +52,23 @@ void QPropertyListView::setPropertys(const QList<QAbstractProperty *> &propertys
                                      QUndoStack* undoStack)
 {
     clear();
-    foreach(QAbstractProperty* pro,m_propertys)
+    QList<QAbstractProperty*> list = m_propertys;
+    while(list.size()>0)
     {
+        QAbstractProperty * pro = list.takeFirst();
         disconnect(pro,SIGNAL(valueChanged(QVariant,QVariant)),this,
                    SLOT(propertyValueChanged()));
+        list +=pro->getChildren();
     }
 
     m_propertys = propertys;
-    foreach(QAbstractProperty* pro,m_propertys)
+    list = m_propertys;
+    while(list.size()>0)
     {
+        QAbstractProperty * pro = list.takeFirst();
         connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),this,
                    SLOT(propertyValueChanged()));
+        list +=pro->getChildren();
     }
     updateView();
 
@@ -164,25 +174,26 @@ void QPropertyListView::clickEditItem(QTreeWidgetItem* item,int index)
 void QPropertyListView::propertyValueChanged()
 {
     QAbstractProperty* pro =(QAbstractProperty*)sender();
-    QList<QAbstractProperty*> list;
-    list.append(pro);
-    while(list.size()>0)
-    {
-        pro = list.takeFirst();
-        QTreeWidgetItem *item = m_propertyToItem.value(pro);
-        item->setText(1,pro->getValueText());
-        item->setIcon(1,pro->getValueIcon());
-        item->setToolTip(1,pro->getValueText());
-    }
+    QTreeWidgetItem * item = m_propertyToItem.value(pro);
+    item->setText(1,pro->getValueText());
+    item->setToolTip(1,pro->getValueText());
+    item->setIcon(1,pro->getValueIcon());
 }
 
 void QPropertyListView::propertyValueEdit(QAbstractProperty *property, const QVariant &value)
 {
-    if(m_undoStack != NULL && m_propertys.contains(property))
+    QAbstractProperty * pro = property;
+    QString str = pro->getName();
+    while(pro->getParent() != NULL)
+    {
+        pro = pro->getParent();
+        str = pro->getName()+"."+str;
+    }
+    if(m_undoStack != NULL && m_propertys.contains(pro))
     {
         QPropertyEditUndoCommand *cmd = new QPropertyEditUndoCommand(
                     property->getHostUuid(),
-                    property->getName(),
+                    str,
                     value,
                     property->getValue());
         m_undoStack->push(cmd);

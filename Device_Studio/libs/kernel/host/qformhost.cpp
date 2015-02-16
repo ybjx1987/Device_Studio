@@ -33,6 +33,7 @@ void QFormHost::initProperty()
     QRectProperty * pro;
     pro = (QRectProperty*)getProperty("geometry");
     pro->setSizeType(true);
+    pro->setDefaultValue(QRect(0,0,800,600));
 
     removeProperty("enabled");
     removeProperty("level");

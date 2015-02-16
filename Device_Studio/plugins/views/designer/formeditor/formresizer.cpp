@@ -104,16 +104,6 @@ void FormResizer::setWidget(QWidget *wid)
     }
 }
 
-void FormResizer::resizeEvent(QResizeEvent *e)
-{
-    updateGeometry();
-    if(m_widget!=NULL)
-    {
-        m_widget->resize(m_frame->size());
-    }
-    QWidget::resizeEvent(e);
-}
-
 void FormResizer::showHandle()
 {
     for(int i=0;i<8;i++)

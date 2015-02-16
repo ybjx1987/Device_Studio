@@ -85,6 +85,9 @@ MainWindow::MainWindow(QWidget *parent) :
     }
 
     projectStatusChanged();
+
+    QProject * project = QSoftCore::getInstance()->getProject();
+    project->open("/Users/yubing/Documents/Qt/xyz/project.pfl");
 }
 
 MainWindow::~MainWindow()

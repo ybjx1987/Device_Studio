@@ -14,6 +14,8 @@ QAbstractProperty::QAbstractProperty(QAbstractProperty* parent):
     if(m_parent != NULL)
     {
         m_parent->m_children.append(this);
+        connect(this,SIGNAL(valueChanged(QVariant,QVariant)),
+                m_parent,SLOT(updateValue()));
     }
 }
 

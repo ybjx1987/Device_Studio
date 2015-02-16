@@ -45,7 +45,8 @@ HEADERS += \
     propertylist/editor/qboolpropertyeditor.h \
     undocommand/qpropertyeditundocommand.h \
     undocommand/qundocommandid.h \
-    propertylist/editor/qbytearrayeditor.h
+    propertylist/editor/qbytearrayeditor.h \
+    propertylist/editor/qintpropertyeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -72,7 +73,8 @@ SOURCES += \
     propertylist/editor/qabstractpropertyeditor.cpp \
     propertylist/editor/qboolpropertyeditor.cpp \
     undocommand/qpropertyeditundocommand.cpp \
-    propertylist/editor/qbytearrayeditor.cpp
+    propertylist/editor/qbytearrayeditor.cpp \
+    propertylist/editor/qintpropertyeditor.cpp
 
 RESOURCES += \
     platform.qrc

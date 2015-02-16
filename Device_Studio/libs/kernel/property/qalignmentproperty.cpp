@@ -62,9 +62,11 @@ QIcon QAlignmentProperty::getValueIcon()
 void QAlignmentProperty::setValue(const QVariant &value)
 {
     int align = value.toInt();
-
+    disconnectUpdateValue();
     m_horizonta->setValue(align & Qt::AlignHorizontal_Mask);
     m_vertical->setValue(align & Qt::AlignVertical_Mask);
+    connectUpdateValue();
+    QAbstractProperty::setValue(value);
 }
 
 void QAlignmentProperty::makeValue(XmlNode *xml)

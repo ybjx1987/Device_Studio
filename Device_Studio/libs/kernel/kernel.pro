@@ -47,7 +47,8 @@ SOURCES += \
     host/qpushbuttonhost.cpp \
     host/qcheckboxhost.cpp \
     host/qradiobuttonhost.cpp \
-    host/qformhost.cpp
+    host/qformhost.cpp \
+    qhostsyncmanager.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -80,7 +81,8 @@ HEADERS +=\
     host/qpushbuttonhost.h \
     host/qcheckboxhost.h \
     host/qradiobuttonhost.h \
-    host/qformhost.h
+    host/qformhost.h \
+    qhostsyncmanager.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

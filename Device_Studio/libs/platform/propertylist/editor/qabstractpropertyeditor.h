@@ -13,7 +13,8 @@ class PLATFORM_EXPORT QAbstractPropertyEditor : public QWidget
 public:
     explicit QAbstractPropertyEditor(QAbstractProperty * property,QWidget *parent = 0);
     ~QAbstractPropertyEditor();
-
+protected slots:
+    virtual void propertyValueChanged();
 signals:
     void    valueChanged(const QVariant &value);
 protected:

@@ -79,13 +79,15 @@ QIcon QFontProperty::getValueIcon()
 void QFontProperty::setValue(const QVariant &value)
 {
     QFont f = value.value<QFont>();
-
+    disconnectUpdateValue();
     m_family->setValue(f.family());
     m_bold->setValue(f.bold());
     m_underline->setValue(f.underline());
     m_pointSize->setValue(f.pointSize());
     m_italic->setValue(f.italic());
     m_strikeout->setValue(f.strikeOut());
+    connectUpdateValue();
+    QAbstractProperty::setValue(value);
 }
 
 void QFontProperty::makeValue(XmlNode *xml)

@@ -84,21 +84,6 @@ void SizeHandleRect::mouseMoveEvent(QMouseEvent *e)
     }
 }
 
-void SizeHandleRect::mouseReleaseEvent(QMouseEvent *e)
-{
-    if(e->button()!=Qt::LeftButton)
-    {
-        return;
-    }
-    e->accept();
-    if(m_startSize!=m_curSize)
-    {
-        const QRect startRect=QRect(0,0,m_startSize.width(),m_startSize.height());
-        const QRect newRect=QRect(0,0,m_curSize.width(),m_curSize.height());
-        emit mouseButtonReleased(startRect.adjusted(0,0,-20,-20),newRect.adjusted(0,0,-20,-20));
-    }
-}
-
 void SizeHandleRect::tryResize(const QSize &delta)
 {
     QSize newSize=m_startSize+delta;
@@ -112,4 +97,5 @@ void SizeHandleRect::tryResize(const QSize &delta)
 
     m_resizable->resize(newSize);
     m_curSize=m_resizable->size();
+    emit sizeChanged(newSize);
 }
