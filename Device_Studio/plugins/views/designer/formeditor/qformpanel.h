@@ -30,6 +30,18 @@ public:
     void    setOwner(QWidget* owner);
     QWidget* getOwner();
 
+    bool    enableAction();
+public:
+    void    sameLeft();
+    void    sameTop();
+    void    sameRight();
+    void    sameBottom();
+    void    sameVCenter();
+    void    sameHCenter();
+    void    sameWidth();
+    void    sameHeight();
+    void    sameGeometry();
+
 protected:
     void    setHandelVisible(bool visible);
 
@@ -49,13 +61,13 @@ protected:
     bool    hostResizeEvent(QAbstractWidgetHost * host,QEvent * e);
 signals:
     void    hostSelected(QAbstractWidgetHost * host);
+    void    updateAction();
 protected:
     void    paintEvent(QPaintEvent *);
     void    updateGeometry();
     void    resizeEvent(QResizeEvent *);
 protected:
     bool    eventFilter(QObject *, QEvent *);
-
     QAbstractWidgetHost * getHost(QObject * obj);
 protected slots:
     void    formResize(const QSize &size);

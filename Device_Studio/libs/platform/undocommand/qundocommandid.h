@@ -3,6 +3,7 @@
 
 #define HOST_ADD_AND_REMOVE     1000
 #define PROPERTY_EDIT           1001
+#define PROPERTY_EDIT_MORE      1002
 
 #endif // QUNDOCOMMANDID
 
