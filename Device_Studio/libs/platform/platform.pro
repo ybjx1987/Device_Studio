@@ -47,7 +47,9 @@ HEADERS += \
     undocommand/qundocommandid.h \
     propertylist/editor/qbytearrayeditor.h \
     propertylist/editor/qintpropertyeditor.h \
-    undocommand/qpropertyeditundocommandmore.h
+    undocommand/qpropertyeditundocommandmore.h \
+    qfancytabview.h \
+    qfancytabviewwidget.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -76,11 +78,16 @@ SOURCES += \
     undocommand/qpropertyeditundocommand.cpp \
     propertylist/editor/qbytearrayeditor.cpp \
     propertylist/editor/qintpropertyeditor.cpp \
-    undocommand/qpropertyeditundocommandmore.cpp
+    undocommand/qpropertyeditundocommandmore.cpp \
+    qfancytabview.cpp \
+    qfancytabviewwidget.cpp
 
 RESOURCES += \
     platform.qrc
 
 DISTFILES += \
     files/project/pages/form.pg \
-    files/project/pages/page.list
+    files/project/pages/page.list \
+    files/project/languages/language.xml \
+    files/project/languages/zh-CN.xml \
+    files/project/languages/EN.xml

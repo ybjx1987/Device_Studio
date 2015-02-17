@@ -49,7 +49,9 @@ SOURCES += \
     host/qradiobuttonhost.cpp \
     host/qformhost.cpp \
     qhostsyncmanager.cpp \
-    host/qcomboboxhost.cpp
+    host/qcomboboxhost.cpp \
+    language/qlanguagemanager.cpp \
+    language/qlanguage.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -84,7 +86,9 @@ HEADERS +=\
     host/qradiobuttonhost.h \
     host/qformhost.h \
     qhostsyncmanager.h \
-    host/qcomboboxhost.h
+    host/qcomboboxhost.h \
+    language/qlanguagemanager.h \
+    language/qlanguage.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

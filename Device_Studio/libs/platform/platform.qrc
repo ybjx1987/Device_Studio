@@ -81,5 +81,8 @@
         <file>images/project.png</file>
         <file>files/project/pages/form.pg</file>
         <file>files/project/pages/page.list</file>
+        <file>files/project/languages/EN.xml</file>
+        <file>files/project/languages/language.xml</file>
+        <file>files/project/languages/zh-CN.xml</file>
     </qresource>
 </RCC>

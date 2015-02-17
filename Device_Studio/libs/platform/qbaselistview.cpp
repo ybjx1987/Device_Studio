@@ -60,7 +60,10 @@ void QBaseListView::mousePressEvent(QMouseEvent *event)
         {
             if(event->pos().x()+header()->offset()<20)
             {
-                item->setExpanded(!item->isExpanded());
+                if(!rootIsDecorated())
+                {
+                    item->setExpanded(!item->isExpanded());
+                }
             }
         }
         else

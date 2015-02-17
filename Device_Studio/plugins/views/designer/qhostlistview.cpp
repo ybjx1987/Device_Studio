@@ -14,6 +14,7 @@ QHostListView::QHostListView(QWidget* parent ):
     m_selectHost(NULL),
     m_rootHost(NULL)
 {
+    setRootIsDecorated(true);
     header()->hide();
     connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(selectChanged()));
 }
