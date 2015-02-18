@@ -175,9 +175,12 @@ void QPropertyListView::propertyValueChanged()
 {
     QAbstractProperty* pro =(QAbstractProperty*)sender();
     QTreeWidgetItem * item = m_propertyToItem.value(pro);
-    item->setText(1,pro->getValueText());
-    item->setToolTip(1,pro->getValueText());
-    item->setIcon(1,pro->getValueIcon());
+    if(item != NULL)
+    {
+        item->setText(1,pro->getValueText());
+        item->setToolTip(1,pro->getValueText());
+        item->setIcon(1,pro->getValueIcon());
+    }
 }
 
 void QPropertyListView::propertyValueEdit(QAbstractProperty *property, const QVariant &value)

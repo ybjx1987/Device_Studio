@@ -6,6 +6,7 @@
 #include "host/qhostfactory.h"
 #include "host/qabstracthost.h"
 #include "host/qabstractwidgethost.h"
+#include "language/qlanguagemanager.h"
 
 #include <QFile>
 #include <QVariant>
@@ -16,7 +17,8 @@ QProject::QProject():
     QObject(NULL),
     m_projectHost(NULL),
     m_projectStatus(PS_CLOSED),
-    m_projectModified(PM_NOT_MODIFIED)
+    m_projectModified(PM_NOT_MODIFIED),
+    m_languageManager(NULL)
 {
 
 }
@@ -59,6 +61,9 @@ bool QProject::open(const QString &proFileName)
 
     loadPages(path+"/pages");
 
+    m_languageManager = new QLanguageManager(this);
+    m_languageManager->load(path+"/languages");
+
     emit projectOpened();
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
@@ -72,6 +77,11 @@ void QProject::close()
         emit projectClosed();
         delete m_projectHost;
         m_projectHost = NULL;
+    }
+    if(m_languageManager != NULL)
+    {
+        delete m_languageManager;
+        m_languageManager = NULL;
     }
 
     qDeleteAll(m_forms);

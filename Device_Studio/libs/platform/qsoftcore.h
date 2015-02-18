@@ -26,6 +26,7 @@ public:
     bool        newProject(const QString & path, const QString & name);
     bool        saveProject();
 protected:
+    void        clearPath(const QString &path);
     void        initAction();
     void        copyFile(const QString &src,const QString des);
 signals:

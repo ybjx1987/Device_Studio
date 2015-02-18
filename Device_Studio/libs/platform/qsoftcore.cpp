@@ -62,13 +62,21 @@ bool QSoftCore::newProject(const QString &path,const QString &name)
     QDir dir;
     dir.mkdir(path+"/"+name);
 
+    clearPath(path+"/"+name);
+
     copyFile(":/inner/files/project/project.pfl",path+"/"+name+"/project.pfl");
 
     dir.mkdir(path+"/"+name+"/pages");
+    dir.mkdir(path+"/"+name+"/languages");
 
     copyFile(":/inner/files/project/pages/form.pg",path+"/"+name+"/pages/form.pg");
     copyFile(":/inner/files/project/pages/page.list",path+"/"+name+"/pages/page.list");
-
+    copyFile(":/inner/files/project/languages/language.xml",
+             path+"/"+name+"/languages/language.xml");
+    copyFile(":/inner/files/project/languages/zh-CN.xml",
+             path+"/"+name+"/languages/zh-CN.xml");
+    copyFile(":/inner/files/project/languages/EN.xml",
+             path+"/"+name+"/languages/EN.xml");
     if(m_project->open(path + "/" + name + "/project.pfl"))
     {
         m_project->getProjectHost()->setPropertyValue("objectName",name);
@@ -117,6 +125,27 @@ bool QSoftCore::saveProject()
     }
 
     return true;
+}
 
+void QSoftCore::clearPath(const QString &path)
+{
+    QDir dir(path);
 
+    QFileInfoList list = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDot | QDir::NoDotDot);
+    while(list.size()>0)
+    {
+        QFileInfo info = list.takeFirst();
+        if(info.isFile())
+        {
+            QFile f(info.filePath());
+            f.remove();
+        }
+        else
+        {
+            QString str = info.filePath();
+            clearPath(str);
+            QDir dir(info.filePath());
+            dir.rmdir(info.filePath());
+        }
+    }
 }
