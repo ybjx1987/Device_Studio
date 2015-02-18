@@ -14,6 +14,8 @@
 #include "qscrollbarhost.h"
 #include "qlcdnumberhost.h"
 #include "qlabelhost.h"
+#include "qspinboxhost.h"
+#include "qdoublespinboxhost.h"
 
 #include "qformhost.h"
 
@@ -76,6 +78,8 @@ void QHostFactory::registerInnerHost()
     registerHost(QScrollBarHost::getHostInfo());
     registerHost(QLCDNumberHost::getHostInfo());
     registerHost(QLabelHost::getHostInfo());
+    registerHost(QSpinBoxHost::getHostInfo());
+    registerHost(QDoubleSpinBoxHost::getHostInfo());
 
     registerHost(QFormHost::getHostInfo());
 }

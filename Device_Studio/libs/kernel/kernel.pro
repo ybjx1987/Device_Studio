@@ -57,7 +57,10 @@ SOURCES += \
     host/qsliderhost.cpp \
     host/qscrollbarhost.cpp \
     host/qlcdnumberhost.cpp \
-    host/qlabelhost.cpp
+    host/qlabelhost.cpp \
+    host/qspinboxhost.cpp \
+    host/qabstractspinboxhost.cpp \
+    host/qdoublespinboxhost.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -100,7 +103,10 @@ HEADERS +=\
     host/qsliderhost.h \
     host/qscrollbarhost.h \
     host/qlcdnumberhost.h \
-    host/qlabelhost.h
+    host/qlabelhost.h \
+    host/qspinboxhost.h \
+    host/qabstractspinboxhost.h \
+    host/qdoublespinboxhost.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
