@@ -6,6 +6,7 @@
 #include <QObject>
 #include <QList>
 
+class QLanguageManager;
 class QProjectHost;
 
 enum enProjectStatus
@@ -67,6 +68,8 @@ protected:
 
     QList<QAbstractWidgetHost*>     m_forms;
     enProjectModified   m_projectModified;
+
+    QLanguageManager                *m_languageManager;
 };
 
 #endif // QPROJECT_H

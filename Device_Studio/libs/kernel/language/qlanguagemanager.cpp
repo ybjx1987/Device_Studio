@@ -40,7 +40,7 @@ void QLanguageManager::load(const QString &path)
     QString buffer = f.readAll();
 
     XmlNode xml;
-    if(xml.load(buffer))
+    if(!xml.load(buffer))
     {
         return;
     }

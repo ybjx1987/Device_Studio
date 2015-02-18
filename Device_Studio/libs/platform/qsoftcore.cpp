@@ -131,21 +131,21 @@ void QSoftCore::clearPath(const QString &path)
 {
     QDir dir(path);
 
-    QFileInfoList list = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDot | QDir::NoDotDot5);
+    QFileInfoList list = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDot | QDir::NoDotDot);
     while(list.size()>0)
     {
         QFileInfo info = list.takeFirst();
         if(info.isFile())
         {
-            QFile f(info.fileName());
+            QFile f(info.filePath());
             f.remove();
         }
         else
         {
-            QString str = info.fileName();
+            QString str = info.filePath();
             clearPath(str);
-            QDir dir;
-            dir.remove(info.fileName());
+            QDir dir(info.filePath());
+            dir.rmdir(info.filePath());
         }
     }
 }
