@@ -60,7 +60,13 @@ SOURCES += \
     host/qlabelhost.cpp \
     host/qspinboxhost.cpp \
     host/qabstractspinboxhost.cpp \
-    host/qdoublespinboxhost.cpp
+    host/qdoublespinboxhost.cpp \
+    host/qtimeedithost.cpp \
+    property/qtimeproperty.cpp \
+    property/qdateproperty.cpp \
+    property/qdatetimeproperty.cpp \
+    host/qdatehost.cpp \
+    host/qdatetimeedithost.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -106,7 +112,13 @@ HEADERS +=\
     host/qlabelhost.h \
     host/qspinboxhost.h \
     host/qabstractspinboxhost.h \
-    host/qdoublespinboxhost.h
+    host/qdoublespinboxhost.h \
+    host/qtimeedithost.h \
+    property/qtimeproperty.h \
+    property/qdateproperty.h \
+    property/qdatetimeproperty.h \
+    host/qdatehost.h \
+    host/qdatetimeedithost.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

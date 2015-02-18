@@ -16,6 +16,9 @@
 #include "qlabelhost.h"
 #include "qspinboxhost.h"
 #include "qdoublespinboxhost.h"
+#include "qtimeedithost.h"
+#include "qdatehost.h"
+#include "qdatetimeedithost.h"
 
 #include "qformhost.h"
 
@@ -80,6 +83,9 @@ void QHostFactory::registerInnerHost()
     registerHost(QLabelHost::getHostInfo());
     registerHost(QSpinBoxHost::getHostInfo());
     registerHost(QDoubleSpinBoxHost::getHostInfo());
+    registerHost(QTimeEditHost::getHostInfo());
+    registerHost(QDateHost::getHostInfo());
+    registerHost(QDateTimeEditHost::getHostInfo());
 
     registerHost(QFormHost::getHostInfo());
 }
