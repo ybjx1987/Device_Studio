@@ -15,6 +15,7 @@ public:
 
     void    load(const QString &path);
 
+    QList<QLanguage*>   getLanguages();
 protected:
     void    clear();
     void    loadLanguage(const QString &fileName);

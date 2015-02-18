@@ -84,5 +84,7 @@
         <file>files/project/languages/EN.xml</file>
         <file>files/project/languages/language.xml</file>
         <file>files/project/languages/zh-CN.xml</file>
+        <file>images/add.png</file>
+        <file>images/del.png</file>
     </qresource>
 </RCC>

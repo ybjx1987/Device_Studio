@@ -58,7 +58,7 @@ void QLanguageManager::load(const QString &path)
 void QLanguageManager::loadLanguage(const QString &fileName)
 {
 
-   QLanguage *language = new QLanguage("",this);
+   QLanguage *language = new QLanguage();
 
    if(!language->load(fileName))
    {
@@ -69,4 +69,9 @@ void QLanguageManager::loadLanguage(const QString &fileName)
    {
        m_languages.append(language);
    }
+}
+
+QList<QLanguage*> QLanguageManager::getLanguages()
+{
+    return m_languages;
 }

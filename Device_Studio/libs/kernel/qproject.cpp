@@ -218,3 +218,8 @@ QAbstractHost * QProject::getHostByUuid(const QString &uuid)
 
     return NULL;
 }
+
+QLanguageManager* QProject::getLanguageManager()
+{
+    return m_languageManager;
+}
