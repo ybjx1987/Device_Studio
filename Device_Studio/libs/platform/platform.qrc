@@ -86,5 +86,6 @@
         <file>files/project/languages/zh-CN.xml</file>
         <file>images/add.png</file>
         <file>images/del.png</file>
+        <file>images/language.png</file>
     </qresource>
 </RCC>
