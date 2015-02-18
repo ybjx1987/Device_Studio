@@ -39,6 +39,7 @@ public:
     void    close();
 
     QProjectHost * getProjectHost();
+    QLanguageManager* getLanguageManager();
 
     enProjectStatus getProjectStatus();
     enProjectModified getProjectModified();

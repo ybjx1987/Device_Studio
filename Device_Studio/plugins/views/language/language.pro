@@ -33,9 +33,13 @@ DISTFILES += \
 HEADERS += \
     qlanguageplugin.h \
     qlanguagewidget.h \
-    qonelanguageview.h
+    qonelanguageview.h \
+    qlanguagelist.h \
+    qalllanguageview.h
 
 SOURCES += \
     qlanguageplugin.cpp \
     qlanguagewidget.cpp \
-    qonelanguageview.cpp
+    qonelanguageview.cpp \
+    qlanguagelist.cpp \
+    qalllanguageview.cpp

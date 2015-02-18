@@ -5,8 +5,11 @@
 #include <QFile>
 #include <QUuid>
 
-QLanguage::QLanguage(const QString &name,QObject *parent) : QObject(parent),
-    m_name(name)
+QLanguage::QLanguage(const QString &name,
+                     const QString &icon,
+                     QObject *parent) : QObject(parent),
+    m_name(name),
+    m_icon(icon)
 {
     if(m_name == "")
     {
@@ -66,4 +69,19 @@ bool QLanguage::load(const QString &fileName)
     }
 
     return true;
+}
+
+QString QLanguage::getName()
+{
+    return m_name;
+}
+
+QString QLanguage::getUuid()
+{
+    return m_uuid;
+}
+
+QString QLanguage::getIcon()
+{
+    return m_icon;
 }
