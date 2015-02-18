@@ -7,6 +7,7 @@ QAbstractPropertyEditor::QAbstractPropertyEditor(QAbstractProperty* property,
     QWidget(parent),
     m_property(property)
 {
+    setProperty("no-ManhattanStyle",true);
     connect(property,SIGNAL(valueChanged(QVariant,QVariant)),
             this,SLOT(propertyValueChanged()));
 }
