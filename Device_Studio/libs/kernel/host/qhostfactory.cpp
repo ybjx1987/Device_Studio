@@ -9,6 +9,8 @@
 #include "qcheckboxhost.h"
 #include "qradiobuttonhost.h"
 #include "qcomboboxhost.h"
+#include "qdialhost.h"
+#include "qsliderhost.h"
 
 #include "qformhost.h"
 
@@ -66,6 +68,8 @@ void QHostFactory::registerInnerHost()
     registerHost(QCheckBoxHost::getHostInfo());
     registerHost(QRadioButtonHost::getHostInfo());
     registerHost(QComboBoxHost::getHostInfo());
+    registerHost(QDialHost::getHostInfo());
+    registerHost(QSliderHost::getHostInfo());
 
     registerHost(QFormHost::getHostInfo());
 }
