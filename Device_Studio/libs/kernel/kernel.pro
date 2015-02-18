@@ -54,7 +54,10 @@ SOURCES += \
     language/qlanguage.cpp \
     host/qabstractsliderhost.cpp \
     host/qdialhost.cpp \
-    host/qsliderhost.cpp
+    host/qsliderhost.cpp \
+    host/qscrollbarhost.cpp \
+    host/qlcdnumberhost.cpp \
+    host/qlabelhost.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -94,7 +97,10 @@ HEADERS +=\
     language/qlanguage.h \
     host/qabstractsliderhost.h \
     host/qdialhost.h \
-    host/qsliderhost.h
+    host/qsliderhost.h \
+    host/qscrollbarhost.h \
+    host/qlcdnumberhost.h \
+    host/qlabelhost.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
