@@ -27,6 +27,10 @@ protected:
     void    updateAction();
 protected slots:
     void    addLanguage();
+    void    languageAdded(const QString &id);
+
+    void    delLanguage();
+    void    languageDeled(const QString &id);
 protected:
     StyledBar       *m_languageListBar;
     QLanguageList   *m_languageList;

@@ -4,6 +4,7 @@
 #include "qonelanguageview.h"
 #include "qalllanguageview.h"
 #include "qnewlanguagedialog.h"
+#include "qdellanguagedialog.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/kernel/qproject.h"
@@ -15,6 +16,7 @@
 #include "../../../libs/platform/qactiontoolbar.h"
 
 #include <QVBoxLayout>
+#include <QMessageBox>
 
 QLanguageWidget::QLanguageWidget(QWidget* parent):
     QAbstractPageWidget(parent),
@@ -100,6 +102,9 @@ QLanguageWidget::QLanguageWidget(QWidget* parent):
 
     connect(QSoftActionMap::getAction("language.add"),
             SIGNAL(triggered()),this,SLOT(addLanguage()));
+
+    connect(QSoftActionMap::getAction("language.del"),
+            SIGNAL(triggered()),this,SLOT(delLanguage()));
 }
 
 void QLanguageWidget::projectClosed()
@@ -139,6 +144,8 @@ void QLanguageWidget::projectOpened()
     }
 
     updateAction();
+
+    connect(manager,SIGNAL(languageAdd(QString)),this,SLOT(languageAdded(QString)));
 }
 
 void QLanguageWidget::insertLanguage(QLanguage *language,int index)
@@ -229,6 +236,32 @@ void QLanguageWidget::addLanguage()
 
     if(id != "")
     {
-
+        QLanguageManager * manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
+        QString str = manager->addLanguage(id);
+        if(str != "")
+        {
+            QMessageBox::warning(this,tr("Error"),str);
+        }
     }
+}
+
+void QLanguageWidget::languageAdded(const QString &id)
+{
+    QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
+
+    QLanguage *language = manager->getLanguage(id);
+
+    insertLanguage(language,-1);
+}
+
+void QLanguageWidget::languageDeled(const QString &id)
+{
+
+}
+
+void QLanguageWidget::delLanguage()
+{
+    QDelLanguageDialog dlg(this);
+
+    dlg.exec();
 }

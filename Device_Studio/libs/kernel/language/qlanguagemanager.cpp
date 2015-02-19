@@ -21,7 +21,7 @@ void QLanguageManager::clear()
 {
     qDeleteAll(m_languages);
     m_languages.clear();
-    m_uuidToLanguage.clear();
+    m_idToLanguage.clear();
 }
 
 void QLanguageManager::load(const QString &path)
@@ -69,10 +69,33 @@ void QLanguageManager::loadLanguage(const QString &fileName)
    else
    {
        m_languages.append(language);
+       m_idToLanguage.insert(language->getID(),language);
    }
 }
 
 QList<QLanguage*> QLanguageManager::getLanguages()
 {
     return m_languages;
+}
+
+QString QLanguageManager::addLanguage(const QString &id)
+{
+    QLanguage* language = m_idToLanguage.value(id);
+    if(language != NULL)
+    {
+        return tr("This language has been added!");
+    }
+
+    language = new QLanguage(id);
+
+    m_languages.append(language);
+    m_idToLanguage.insert(id,language);
+
+    emit languageAdd(id);
+    return "";
+}
+
+QLanguage* QLanguageManager::getLanguage(const QString &id)
+{
+    return m_idToLanguage.value(id);
 }
