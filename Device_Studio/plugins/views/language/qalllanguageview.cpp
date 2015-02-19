@@ -2,6 +2,7 @@
 
 #include "../../../libs/kernel/language/qlanguagemanager.h"
 #include "../../../libs/kernel/language/qlanguage.h"
+#include "../../../libs/platform/qlanguageid.h"
 
 QAllLanguageView::QAllLanguageView(QLanguageManager* manager,QWidget* parent):
     QBaseListView(parent),
@@ -12,7 +13,8 @@ QAllLanguageView::QAllLanguageView(QLanguageManager* manager,QWidget* parent):
 
     foreach(QLanguage * language,m_languageManager->getLanguages())
     {
-        list.append(language->getName());
+        QLanguageInfo info = QLanguageID::getLanguageInfo(language->getID());
+        list.append(info.m_name);
     }
 
     setHeaderLabels(list);

@@ -6,7 +6,8 @@
 
 #include <QFile>
 
-QLanguageManager::QLanguageManager(QObject *parent) : QObject(parent)
+QLanguageManager::QLanguageManager(QObject *parent) :
+    QObject(parent)
 {
 
 }

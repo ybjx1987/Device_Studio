@@ -160,7 +160,7 @@ void QLanguageWidget::insertLanguage(QLanguage *language,int index)
     QOneLanguageView *view = new QOneLanguageView(language);
     m_languageView->insertWidget(index,view);
 
-    m_uuidToQWidget.insert(language->getUuid(),view);
+    m_uuidToQWidget.insert(language->getID(),view);
 }
 
 void QLanguageWidget::initAction()
@@ -225,9 +225,9 @@ void QLanguageWidget::addLanguage()
 
     dialog.exec();
 
-    LanguageInfo info = dialog.getLanguageInfo();
+    QString  id = dialog.getLanguageID();
 
-    if(info.m_id != "")
+    if(id != "")
     {
 
     }

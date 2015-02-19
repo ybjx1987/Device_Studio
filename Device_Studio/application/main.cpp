@@ -5,6 +5,7 @@
 #include "../libs/platform/qsoftcore.h"
 #include "../libs/kernel/host/qhostfactory.h"
 #include "../libs/platform/propertylist/qpropertyeditorfactory.h"
+#include "../libs/platform/qlanguageid.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -29,6 +30,8 @@ int main(int argc,char *argv[])
     f.setFamily("Arial");
     f.setPointSize(12);
     a.setFont(f);
+
+    QLanguageID::load();
 
     QSoftCore::getInstance();
 

@@ -50,7 +50,8 @@ HEADERS += \
     undocommand/qpropertyeditundocommandmore.h \
     qfancytabview.h \
     qfancytabviewwidget.h \
-    propertylist/editor/qenumpropertyeditor.h
+    propertylist/editor/qenumpropertyeditor.h \
+    qlanguageid.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -82,7 +83,8 @@ SOURCES += \
     undocommand/qpropertyeditundocommandmore.cpp \
     qfancytabview.cpp \
     qfancytabviewwidget.cpp \
-    propertylist/editor/qenumpropertyeditor.cpp
+    propertylist/editor/qenumpropertyeditor.cpp \
+    qlanguageid.cpp
 
 RESOURCES += \
     platform.qrc

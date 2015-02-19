@@ -1,19 +1,13 @@
 #ifndef QNEWLANGUAGEDIALOG_H
 #define QNEWLANGUAGEDIALOG_H
 
+#include "../.././../libs/platform/qlanguageid.h"
+
 #include <QDialog>
 
 namespace Ui {
 class QNewLanguageDialog;
 }
-
-class LanguageInfo
-{
-public:
-    QString m_name;
-    QString m_icon;
-    QString m_id;
-};
 
 class QNewLanguageDialog : public QDialog
 {
@@ -23,14 +17,12 @@ public:
     explicit QNewLanguageDialog(QWidget *parent = 0);
     ~QNewLanguageDialog();
 
-    LanguageInfo getLanguageInfo();
-protected:
-    void    load();
+    QString getLanguageID();
 private:
     Ui::QNewLanguageDialog *ui;
 protected:
-    QList<LanguageInfo>     m_languageInfos;
-    LanguageInfo            m_languageInfo;
+    QList<QLanguageInfo>    m_languageInfos;
+    QString                 m_id;
 private slots:
     void on_pushButton_2_clicked();
     void on_pushButton_clicked();
