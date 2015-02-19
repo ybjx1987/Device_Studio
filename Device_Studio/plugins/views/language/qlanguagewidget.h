@@ -30,7 +30,7 @@ protected slots:
     void    languageAdded(const QString &id);
 
     void    delLanguage();
-    void    languageDeled(const QString &id);
+    void    languageDeled(QLanguage * language);
 protected:
     StyledBar       *m_languageListBar;
     QLanguageList   *m_languageList;

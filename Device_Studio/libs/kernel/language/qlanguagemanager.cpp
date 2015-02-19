@@ -95,6 +95,20 @@ QString QLanguageManager::addLanguage(const QString &id)
     return "";
 }
 
+void QLanguageManager::removeLanguage(QLanguage *language)
+{
+    if(!m_languages.contains(language))
+    {
+        return;
+    }
+
+    emit languageDel(language);
+
+    m_languages.removeAll(language);
+    m_idToLanguage.remove(language->getID());
+    delete language;
+}
+
 QLanguage* QLanguageManager::getLanguage(const QString &id)
 {
     return m_idToLanguage.value(id);

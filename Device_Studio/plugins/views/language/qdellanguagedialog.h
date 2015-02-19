@@ -22,10 +22,15 @@ public:
 
 private:
     Ui::QDelLanguageDialog *ui;
+protected slots:
+    void    clicked(QTreeWidgetItem * item);
 protected:
     QBaseListView   *m_listview;
     QMap<QLanguage*,QTreeWidgetItem*>   m_languageToItem;
     QMap<QTreeWidgetItem*,QLanguage*>   m_ItemToLanguage;
+private slots:
+    void on_cancelBtn_clicked();
+    void on_okBtn_clicked();
 };
 
 #endif // QDELLANGUAGEDIALOG_H

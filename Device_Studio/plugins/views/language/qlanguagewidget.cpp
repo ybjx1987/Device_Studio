@@ -146,6 +146,8 @@ void QLanguageWidget::projectOpened()
     updateAction();
 
     connect(manager,SIGNAL(languageAdd(QString)),this,SLOT(languageAdded(QString)));
+    connect(manager,SIGNAL(languageDel(QLanguage*)),
+            this,SLOT(languageDeled(QLanguage*)));
 }
 
 void QLanguageWidget::insertLanguage(QLanguage *language,int index)
@@ -214,7 +216,7 @@ void QLanguageWidget::updateAction()
         ac = QSoftActionMap::getAction("language.add");
         ac->setEnabled(true);
         ac = QSoftActionMap::getAction("language.del");
-        ac->setEnabled(false);
+        ac->setEnabled(true);
     }
     else
     {
@@ -254,9 +256,17 @@ void QLanguageWidget::languageAdded(const QString &id)
     insertLanguage(language,-1);
 }
 
-void QLanguageWidget::languageDeled(const QString &id)
+void QLanguageWidget::languageDeled(QLanguage * language)
 {
+    m_languageList->removeLanguage(language);
+    QWidget* wid = m_uuidToQWidget.value(language->getID());
+    delete wid;
+    m_uuidToQWidget.remove(language->getID());
 
+    if(m_uuidToQWidget.count() == 1)
+    {
+        delete m_uuidToQWidget.take("rootItem");
+    }
 }
 
 void QLanguageWidget::delLanguage()

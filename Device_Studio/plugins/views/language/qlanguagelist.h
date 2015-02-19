@@ -16,7 +16,7 @@ public:
 
     void    clear();
     void    insertLanguage(QLanguage * language,int index=-1);
-
+    void    removeLanguage(QLanguage* language);
 protected slots:
     void    itemSelected();
 signals:

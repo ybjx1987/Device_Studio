@@ -32,12 +32,51 @@ QDelLanguageDialog::QDelLanguageDialog(QWidget *parent) :
         item->setText(0,info.m_name);
         item->setIcon(0,QIcon(info.m_icon));
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
+        item->setCheckState(0,Qt::Unchecked);
         m_ItemToLanguage.insert(item,language);
         m_languageToItem.insert(language,item);
     }
+
+    connect(m_listview,SIGNAL(itemClicked(QTreeWidgetItem*,int)),
+            this,SLOT(clicked(QTreeWidgetItem*)));
 }
 
 QDelLanguageDialog::~QDelLanguageDialog()
 {
     delete ui;
+}
+
+void QDelLanguageDialog::clicked(QTreeWidgetItem *item)
+{
+    if(item->checkState(0) == Qt::Checked)
+    {
+        item->setCheckState(0,Qt::Unchecked);
+    }
+    else
+    {
+        item->setCheckState(0,Qt::Checked);
+    }
+}
+
+void QDelLanguageDialog::on_cancelBtn_clicked()
+{
+    close();
+}
+
+void QDelLanguageDialog::on_okBtn_clicked()
+{
+    QMapIterator<QTreeWidgetItem*,QLanguage*> it(m_ItemToLanguage);
+
+    QLanguageManager * manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
+
+    while(it.hasNext())
+    {
+        it.next();
+        if(it.key()->checkState(0) == Qt::Checked)
+        {
+            manager->removeLanguage(it.value());
+        }
+    }
+
+    close();
 }

@@ -78,3 +78,22 @@ void QLanguageList::itemSelected()
         }
     }
 }
+
+void QLanguageList::removeLanguage(QLanguage *language)
+{
+    if(!m_languages.contains(language))
+    {
+        return;
+    }
+    QTreeWidgetItem * item = m_languageToItem.value(language);
+
+    m_languages.removeAll(language);
+    m_itemToLanguage.remove(item);
+    m_languageToItem.remove(language);
+    delete item;
+    if(m_languages.size() == 0)
+    {
+        delete m_rootItem;
+        m_rootItem = NULL;
+    }
+}

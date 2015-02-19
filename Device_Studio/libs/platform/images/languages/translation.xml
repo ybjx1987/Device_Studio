@@ -4,6 +4,6 @@
   <Language name="US English" id="us-EN" icon="us.png"/>
   <Language name="French" id="fr" icon="fr.png"/>
   <Language name="Russion" id="ru" icon="ru.png"/>
-  <Language name="Japanese" is="jp" icon="jp.png"/>
-  <Language name="Korean" is="kr" icon="kr.png"/>
+  <Language name="Japanese" id="jp" icon="jp.png"/>
+  <Language name="Korean" id="kr" icon="kr.png"/>
 </Languages>
