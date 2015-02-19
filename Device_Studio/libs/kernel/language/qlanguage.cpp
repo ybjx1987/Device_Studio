@@ -5,16 +5,10 @@
 #include <QFile>
 #include <QUuid>
 
-QLanguage::QLanguage(const QString &name,
-                     const QString &icon,
+QLanguage::QLanguage(const QString &id,
                      QObject *parent) : QObject(parent),
-    m_name(name),
-    m_icon(icon)
+    m_id(id)
 {
-    if(m_name == "")
-    {
-        m_uuid = QUuid::createUuid().toString();
-    }
 }
 
 QLanguage::~QLanguage()
@@ -46,17 +40,11 @@ bool QLanguage::load(const QString &fileName)
     }
 
     if(xml.getTitle() != "Language"
-            || xml.getProperty("name") == "")
+            || xml.getProperty("id") == "")
     {
         return false;
     }
-
-    m_name = xml.getProperty("name");
-    m_uuid = xml.getProperty("uuid");
-    if(m_uuid == "")
-    {
-        m_uuid = QUuid::createUuid().toString();
-    }
+    m_id = xml.getProperty("id");
 
     foreach(XmlNode *obj,xml.getChildren())
     {
@@ -71,17 +59,7 @@ bool QLanguage::load(const QString &fileName)
     return true;
 }
 
-QString QLanguage::getName()
+QString QLanguage::getID()
 {
-    return m_name;
-}
-
-QString QLanguage::getUuid()
-{
-    return m_uuid;
-}
-
-QString QLanguage::getIcon()
-{
-    return m_icon;
+    return m_id;
 }

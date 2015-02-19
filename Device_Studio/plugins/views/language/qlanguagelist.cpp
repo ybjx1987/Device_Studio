@@ -2,6 +2,7 @@
 
 #include "../../../libs/kernel/language/qlanguage.h"
 #include "../../../libs/platform/qbaseitemdelegate.h"
+#include "../../../libs/platform/qlanguageid.h"
 
 #include <QIcon>
 #include <QHeaderView>
@@ -37,10 +38,11 @@ void QLanguageList::insertLanguage(QLanguage *language, int index)
     {
         index = m_languages.size();
     }
+    QLanguageInfo info = QLanguageID::getLanguageInfo(language->getID());
     QTreeWidgetItem * item = new QTreeWidgetItem(m_rootItem);
-    item->setText(0,language->getName());
-    item->setToolTip(0,language->getName());
-    item->setIcon(0,QIcon(language->getIcon()));
+    item->setText(0,info.m_name);
+    item->setToolTip(0,info.m_name);
+    item->setIcon(0,QIcon(info.m_icon));
     item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
 
     m_languages.insert(index,language);
@@ -71,8 +73,27 @@ void QLanguageList::itemSelected()
         it.next();
         if(it.value()->isSelected())
         {
-            emit select(it.key()->getUuid());
+            emit select(it.key()->getID());
             return;
         }
+    }
+}
+
+void QLanguageList::removeLanguage(QLanguage *language)
+{
+    if(!m_languages.contains(language))
+    {
+        return;
+    }
+    QTreeWidgetItem * item = m_languageToItem.value(language);
+
+    m_languages.removeAll(language);
+    m_itemToLanguage.remove(item);
+    m_languageToItem.remove(language);
+    delete item;
+    if(m_languages.size() == 0)
+    {
+        delete m_rootItem;
+        m_rootItem = NULL;
     }
 }

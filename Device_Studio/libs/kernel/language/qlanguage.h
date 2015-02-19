@@ -9,23 +9,14 @@ class QLanguage : public QObject
 {
     Q_OBJECT
 public:
-    explicit QLanguage(const QString &name="",
-                       const QString &icon="",QObject *parent = 0);
+    explicit QLanguage(const QString &id="",QObject *parent = 0);
     ~QLanguage();
 
     bool    load(const QString &fileName);
 
-    QString getName();
-    QString getUuid();
-    QString getIcon();
-signals:
-
-public slots:
-
+    QString getID();
 protected:
-    QString m_name;
-    QString m_uuid;
-    QString m_icon;
+    QString m_id;
 
     QStringList     m_keys;
     QMap<QString,QString>   m_keyToValue;

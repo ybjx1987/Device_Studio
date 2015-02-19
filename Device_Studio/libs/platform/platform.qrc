@@ -88,12 +88,12 @@
         <file>images/del.png</file>
         <file>images/language.png</file>
         <file>images/languages/cn.png</file>
-        <file>images/languages/england.png</file>
         <file>images/languages/fr.png</file>
         <file>images/languages/jp.png</file>
-        <file>images/languages/kp.png</file>
         <file>images/languages/kr.png</file>
         <file>images/languages/ru.png</file>
         <file>images/languages/us.png</file>
+        <file>images/languages/translation.xml</file>
+        <file>images/languages/en.png</file>
     </qresource>
 </RCC>
