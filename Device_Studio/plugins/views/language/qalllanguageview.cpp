@@ -23,6 +23,26 @@ QAllLanguageView::QAllLanguageView(QLanguageManager* manager,QWidget* parent):
     {
         setColumnWidth(i,200);
     }
+
+    QStringList l = m_languageManager->getAllKeyword();
+    foreach(QString str,l)
+    {
+        QTreeWidgetItem *item = new QTreeWidgetItem(this);
+        item->setText(0,str);
+        for(int i = 0;i<list.size();i++)
+        {
+            item->setText(i+1,m_languageManager->getLanguages().at(i)->getValue(str));
+        }
+        m_itemToKey.insert(item,str);
+        m_keyToItem.insert(str,item);
+    }
+
+    connect(m_languageManager,SIGNAL(itemDeled(QString)),
+            this,SLOT(itemDeled(QString)));
+    connect(m_languageManager,SIGNAL(itemAdded(QString)),
+            this,SLOT(itemAdded(QString)));
+    connect(m_languageManager,SIGNAL(updateItem(QString,QString)),
+            this,SLOT(updateItem(QString,QString)));
 }
 
 QAllLanguageView::~QAllLanguageView()
@@ -30,3 +50,42 @@ QAllLanguageView::~QAllLanguageView()
 
 }
 
+void QAllLanguageView::itemAdded(const QString &key)
+{
+    QTreeWidgetItem * item = m_keyToItem.value(key);
+    if(item != NULL)
+    {
+        return;
+    }
+
+    item = new QTreeWidgetItem(this);
+    item->setText(0,key);
+    m_keyToItem.insert(key,item);
+    m_itemToKey.insert(item,key);
+}
+
+void QAllLanguageView::itemDeled(const QString &key)
+{
+    QTreeWidgetItem * item = m_keyToItem.value(key);
+    if(item != NULL)
+    {
+        m_keyToItem.remove(key);
+        m_itemToKey.remove(item);
+        delete item;
+    }
+}
+
+void QAllLanguageView::updateItem(const QString &id, const QString &key)
+{
+    QLanguage *language = m_languageManager->getLanguage(id);
+
+    if(language != NULL)
+    {
+        QTreeWidgetItem * item = m_keyToItem.value(key);
+        if(item != NULL)
+        {
+            item->setText(m_languageManager->getLanguages().indexOf(language)+1,
+                      language->getValue(key));
+        }
+    }
+}

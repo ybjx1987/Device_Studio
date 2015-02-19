@@ -37,7 +37,9 @@ HEADERS += \
     qlanguagelist.h \
     qalllanguageview.h \
     qnewlanguagedialog.h \
-    qdellanguagedialog.h
+    qdellanguagedialog.h \
+    qnewitemdialog.h \
+    qnewallitemdialog.h
 
 SOURCES += \
     qlanguageplugin.cpp \
@@ -46,8 +48,12 @@ SOURCES += \
     qlanguagelist.cpp \
     qalllanguageview.cpp \
     qnewlanguagedialog.cpp \
-    qdellanguagedialog.cpp
+    qdellanguagedialog.cpp \
+    qnewitemdialog.cpp \
+    qnewallitemdialog.cpp
 
 FORMS += \
     qnewlanguagedialog.ui \
-    qdellanguagedialog.ui
+    qdellanguagedialog.ui \
+    qnewitemdialog.ui \
+    qnewallitemdialog.ui
