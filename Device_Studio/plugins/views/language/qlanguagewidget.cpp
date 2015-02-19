@@ -3,6 +3,7 @@
 #include "qlanguagelist.h"
 #include "qonelanguageview.h"
 #include "qalllanguageview.h"
+#include "qnewlanguagedialog.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/kernel/qproject.h"
@@ -96,6 +97,9 @@ QLanguageWidget::QLanguageWidget(QWidget* parent):
     connect(m_languageList,SIGNAL(select(QString)),this,SLOT(languageSelect(QString)));
 
     updateAction();
+
+    connect(QSoftActionMap::getAction("language.add"),
+            SIGNAL(triggered()),this,SLOT(addLanguage()));
 }
 
 void QLanguageWidget::projectClosed()
@@ -213,4 +217,18 @@ void QLanguageWidget::updateAction()
         ac->setEnabled(true);
     }
 
+}
+
+void QLanguageWidget::addLanguage()
+{
+    QNewLanguageDialog dialog;
+
+    dialog.exec();
+
+    LanguageInfo info = dialog.getLanguageInfo();
+
+    if(info.m_id != "")
+    {
+
+    }
 }

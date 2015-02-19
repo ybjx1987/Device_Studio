@@ -35,11 +35,16 @@ HEADERS += \
     qlanguagewidget.h \
     qonelanguageview.h \
     qlanguagelist.h \
-    qalllanguageview.h
+    qalllanguageview.h \
+    qnewlanguagedialog.h
 
 SOURCES += \
     qlanguageplugin.cpp \
     qlanguagewidget.cpp \
     qonelanguageview.cpp \
     qlanguagelist.cpp \
-    qalllanguageview.cpp
+    qalllanguageview.cpp \
+    qnewlanguagedialog.cpp
+
+FORMS += \
+    qnewlanguagedialog.ui

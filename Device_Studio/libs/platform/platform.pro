@@ -92,4 +92,5 @@ DISTFILES += \
     files/project/pages/page.list \
     files/project/languages/language.xml \
     files/project/languages/zh-CN.xml \
-    files/project/languages/EN.xml
+    files/project/languages/EN.xml \
+    images/languages/translation.xml

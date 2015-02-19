@@ -1,0 +1,9 @@
+<Languages>
+  <Language name="Chinese" id="zh-CN" icon="cn.png"/>
+  <Language name="English" id="EN" icon="en.png"/>
+  <Language name="US English" id="us-EN" icon="us.png"/>
+  <Language name="French" id="fr" icon="fr.png"/>
+  <Language name="Russion" id="ru" icon="ru.png"/>
+  <Language name="Japanese" is="jp" icon="jp.png"/>
+  <Language name="Korean" is="kr" icon="kr.png"/>
+</Languages>
