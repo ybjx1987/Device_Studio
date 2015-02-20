@@ -7,6 +7,7 @@
 #include "qdellanguagedialog.h"
 #include "qnewitemdialog.h"
 #include "qnewallitemdialog.h"
+#include "qdeleteitemdialog.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/kernel/qproject.h"
@@ -286,7 +287,6 @@ void QLanguageWidget::delLanguage()
 void QLanguageWidget::addItem()
 {
     QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
-    QLanguage* language = manager->getLanguage(m_selectUuid);
     QStringList list;
     if(m_selectUuid == "rootItem")
     {
@@ -301,6 +301,7 @@ void QLanguageWidget::addItem()
     }
     else
     {
+        QLanguage* language = manager->getLanguage(m_selectUuid);
         list = language->getKeys();
         QNewItemDialog dlg(list,this);
 
@@ -317,5 +318,35 @@ void QLanguageWidget::addItem()
 
 void QLanguageWidget::delItem()
 {
+    QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
+    QStringList list;
+    if(m_selectUuid == "rootItem")
+    {
+        list = manager->getAllKeyword();
+    }
+    else
+    {
+        QLanguage *language = manager->getLanguage(m_selectUuid);
+        list = language->getKeys();
+    }
+    QDeleteItemDialog dlg(list,this);
+    dlg.exec();
 
+    list = dlg.getSelection();
+
+    if(m_selectUuid == "rootItem")
+    {
+        foreach(QString  str,list)
+        {
+            manager->delItem(str);
+        }
+    }
+    else
+    {
+        QLanguage *language = manager->getLanguage(m_selectUuid);
+        foreach(QString str,list)
+        {
+            language->delItem(str);
+        }
+    }
 }

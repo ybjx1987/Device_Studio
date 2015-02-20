@@ -40,7 +40,8 @@ HEADERS += \
     qdellanguagedialog.h \
     qnewitemdialog.h \
     qnewallitemdialog.h \
-    qlanguageitemdeletegate.h
+    qlanguageitemdeletegate.h \
+    qdeleteitemdialog.h
 
 SOURCES += \
     qlanguageplugin.cpp \
@@ -52,10 +53,12 @@ SOURCES += \
     qdellanguagedialog.cpp \
     qnewitemdialog.cpp \
     qnewallitemdialog.cpp \
-    qlanguageitemdeletegate.cpp
+    qlanguageitemdeletegate.cpp \
+    qdeleteitemdialog.cpp
 
 FORMS += \
     qnewlanguagedialog.ui \
     qdellanguagedialog.ui \
     qnewitemdialog.ui \
-    qnewallitemdialog.ui
+    qnewallitemdialog.ui \
+    qdeleteitemdialog.ui
