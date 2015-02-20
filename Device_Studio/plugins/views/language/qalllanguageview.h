@@ -11,9 +11,17 @@ class QAllLanguageView : public QBaseListView
 public:
     QAllLanguageView(QLanguageManager* manager,QWidget * parent = NULL);
     ~QAllLanguageView();
-
+protected:
+    void    clickEditItem(QTreeWidgetItem *item, int index);
+public slots:
+    void    updateItem(const QString &id,const QString &key);
+    void    itemAdded(const QString &key);
+    void    itemDeled(const QString &key);
 protected:
     QLanguageManager    *m_languageManager;
+
+    QMap<QString,QTreeWidgetItem*>  m_keyToItem;
+    QMap<QTreeWidgetItem*,QString>  m_itemToKey;
 };
 
 #endif // QALLLANGUAGEVIEW_H

@@ -80,10 +80,6 @@ void QWidgetBoxList::clickEditItem(QTreeWidgetItem * item,int index)
 
     if(m_itemToInfo.keys().contains(item))
     {
-        //if(event->button()!=Qt::LeftButton)
-        //{
-        //    return;
-        //}
         QWidgetHostInfo *info=m_itemToInfo.value(item);
         if(info!=NULL)
         {

@@ -31,6 +31,10 @@ protected slots:
 
     void    delLanguage();
     void    languageDeled(QLanguage * language);
+
+    void    addItem();
+
+    void    delItem();
 protected:
     StyledBar       *m_languageListBar;
     QLanguageList   *m_languageList;
