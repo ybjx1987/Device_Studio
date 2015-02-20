@@ -77,4 +77,8 @@ void QLanguageList::removeLanguage(QLanguage *language)
     m_itemToLanguage.remove(item);
     m_languageToItem.remove(language);
     delete item;
+    if(m_languages.size() == 0)
+    {
+        emit select("");
+    }
 }

@@ -39,4 +39,5 @@ void QPropertyEditorFactory::registerInnerEditor()
     registerEditor("QByteArrayProperty",QByteArrayEditor::staticMetaObject);
     registerEditor("QIntProperty",QIntPropertyEditor::staticMetaObject);
     registerEditor("QEnumProperty",QEnumPropertyEditor::staticMetaObject);
+    registerEditor("QCursorProperty",QEnumPropertyEditor::staticMetaObject);
 }

@@ -206,22 +206,24 @@ void QLanguageWidget::updateAction()
     if(m_selectUuid == "")
     {
         ac = QSoftActionMap::getAction("language.add");
-        ac->setEnabled(false);
-        ac = QSoftActionMap::getAction("language.del");
-        ac->setEnabled(false);
-    }
-    else if(m_selectUuid == "rootItem")
-    {
-        ac = QSoftActionMap::getAction("language.add");
         ac->setEnabled(true);
         ac = QSoftActionMap::getAction("language.del");
-        ac->setEnabled(true);
+        ac->setEnabled(false);
+        ac = QSoftActionMap::getAction("language.item.del");
+        ac->setEnabled(false);
+        ac = QSoftActionMap::getAction("language.item.add");
+        ac->setEnabled(false);
+
     }
     else
     {
         ac = QSoftActionMap::getAction("language.add");
         ac->setEnabled(true);
         ac = QSoftActionMap::getAction("language.del");
+        ac->setEnabled(true);
+        ac = QSoftActionMap::getAction("language.item.del");
+        ac->setEnabled(true);
+        ac = QSoftActionMap::getAction("language.item.add");
         ac->setEnabled(true);
     }
 
