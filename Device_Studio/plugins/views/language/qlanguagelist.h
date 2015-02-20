@@ -26,7 +26,6 @@ protected:
     QMap<QTreeWidgetItem*,QLanguage*>   m_itemToLanguage;
 
     QList<QLanguage*>                   m_languages;
-    QTreeWidgetItem*                    m_rootItem;
 };
 
 #endif // QLANGUAGELIST_H

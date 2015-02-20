@@ -2,11 +2,9 @@
 
 #include "qlanguagelist.h"
 #include "qonelanguageview.h"
-#include "qalllanguageview.h"
 #include "qnewlanguagedialog.h"
 #include "qdellanguagedialog.h"
 #include "qnewitemdialog.h"
-#include "qnewallitemdialog.h"
 #include "qdeleteitemdialog.h"
 
 #include "../../../libs/platform/styledbar.h"
@@ -164,14 +162,7 @@ void QLanguageWidget::insertLanguage(QLanguage *language,int index)
     {
         index = m_languageView->count();
     }
-    if(m_languageView->count()==0)
-    {
-        QAllLanguageView *wid = new QAllLanguageView(
-                    QSoftCore::getInstance()->getProject()->getLanguageManager());
-        m_languageView->addWidget(wid);
-        m_uuidToQWidget.insert("rootItem",wid);
-        index ++;
-    }
+
     m_languageList->insertLanguage(language);
 
     QOneLanguageView *view = new QOneLanguageView(language);
@@ -270,11 +261,6 @@ void QLanguageWidget::languageDeled(QLanguage * language)
     QWidget* wid = m_uuidToQWidget.value(language->getID());
     delete wid;
     m_uuidToQWidget.remove(language->getID());
-
-    if(m_uuidToQWidget.count() == 1)
-    {
-        delete m_uuidToQWidget.take("rootItem");
-    }
 }
 
 void QLanguageWidget::delLanguage()
@@ -288,31 +274,17 @@ void QLanguageWidget::addItem()
 {
     QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
     QStringList list;
-    if(m_selectUuid == "rootItem")
+    QLanguage* language = manager->getLanguage(m_selectUuid);
+    list = language->getKeys();
+    QNewItemDialog dlg(list,this);
+
+    dlg.exec();
+
+    QString key = dlg.getKey();
+
+    if(key != "")
     {
-        QNewAllItemDialog dlg(manager->getAllKeyword(),this);
-
-        dlg.exec();
-
-        if(dlg.getKey() != "")
-        {
-            manager->addItem(dlg.getKey(),"");
-        }
-    }
-    else
-    {
-        QLanguage* language = manager->getLanguage(m_selectUuid);
-        list = language->getKeys();
-        QNewItemDialog dlg(list,this);
-
-        dlg.exec();
-
-        QString key = dlg.getKey();
-
-        if(key != "")
-        {
-            language->addItem(key,dlg.getValue());
-        }
+        language->addItem(key,dlg.getValue());
     }
 }
 
@@ -320,33 +292,15 @@ void QLanguageWidget::delItem()
 {
     QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
     QStringList list;
-    if(m_selectUuid == "rootItem")
-    {
-        list = manager->getAllKeyword();
-    }
-    else
-    {
-        QLanguage *language = manager->getLanguage(m_selectUuid);
-        list = language->getKeys();
-    }
+    QLanguage *language = manager->getLanguage(m_selectUuid);
+    list = language->getKeys();
     QDeleteItemDialog dlg(list,this);
     dlg.exec();
 
     list = dlg.getSelection();
 
-    if(m_selectUuid == "rootItem")
+    foreach(QString str,list)
     {
-        foreach(QString  str,list)
-        {
-            manager->delItem(str);
-        }
-    }
-    else
-    {
-        QLanguage *language = manager->getLanguage(m_selectUuid);
-        foreach(QString str,list)
-        {
-            language->delItem(str);
-        }
+        language->delItem(str);
     }
 }
