@@ -8,6 +8,17 @@
 #include "qpushbuttonhost.h"
 #include "qcheckboxhost.h"
 #include "qradiobuttonhost.h"
+#include "qcomboboxhost.h"
+#include "qdialhost.h"
+#include "qsliderhost.h"
+#include "qscrollbarhost.h"
+#include "qlcdnumberhost.h"
+#include "qlabelhost.h"
+#include "qspinboxhost.h"
+#include "qdoublespinboxhost.h"
+#include "qtimeedithost.h"
+#include "qdatehost.h"
+#include "qdatetimeedithost.h"
 
 #include "qformhost.h"
 
@@ -64,6 +75,17 @@ void QHostFactory::registerInnerHost()
     registerHost(QPushButtonHost::getHostInfo());
     registerHost(QCheckBoxHost::getHostInfo());
     registerHost(QRadioButtonHost::getHostInfo());
+    registerHost(QComboBoxHost::getHostInfo());
+    registerHost(QDialHost::getHostInfo());
+    registerHost(QSliderHost::getHostInfo());
+    registerHost(QScrollBarHost::getHostInfo());
+    registerHost(QLCDNumberHost::getHostInfo());
+    registerHost(QLabelHost::getHostInfo());
+    registerHost(QSpinBoxHost::getHostInfo());
+    registerHost(QDoubleSpinBoxHost::getHostInfo());
+    registerHost(QTimeEditHost::getHostInfo());
+    registerHost(QDateHost::getHostInfo());
+    registerHost(QDateTimeEditHost::getHostInfo());
 
     registerHost(QFormHost::getHostInfo());
 }

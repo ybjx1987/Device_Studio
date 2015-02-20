@@ -2,6 +2,7 @@
 
 #include "qwidgetboxlist.h"
 #include "formeditor/qformeditor.h"
+#include "qhostlistview.h"
 
 #include "../../../libs/platform/qactiontoolbar.h"
 #include "../../../libs/platform/propertylist/qpropertylistview.h"
@@ -30,11 +31,13 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     m_propertyViewBar(new StyledBar(this)),
     m_widgetBoxList(new QWidgetBoxList(this)),
     m_widgetBoxListBar(new StyledBar(this)),
-    m_formEditor(new QFormEditor(this)),
     m_formEditorBar(new StyledBar(this)),
+    m_hostListView(new QHostListView(this)),
+    m_hostListViewBar(new StyledBar(this)),
     m_currentHost(NULL)
 {
     initDesignerViewAction();
+    m_formEditor = new QFormEditor(this);
     MiniSplitter  *splitter = new MiniSplitter(this);
 
     QVBoxLayout *layout = new QVBoxLayout();
@@ -93,7 +96,7 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
 
     toolBar->addButtonActions(list);
 
-
+    MiniSplitter *sp = new MiniSplitter(Qt::Vertical);
     wid = new QWidget;
     layout = new QVBoxLayout();
     layout->setMargin(0);
@@ -101,7 +104,16 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     layout->addWidget(m_propertyViewBar);
     layout->addWidget(m_propertyView);
     wid->setLayout(layout);
-    splitter->addWidget(wid);
+    sp->addWidget(wid);
+    wid = new QWidget;
+    layout = new QVBoxLayout();
+    layout->setMargin(0);
+    layout->setSpacing(0);
+    layout->addWidget(m_hostListViewBar);
+    layout->addWidget(m_hostListView);
+    wid->setLayout(layout);
+    sp->addWidget(wid);
+    splitter->addWidget(sp);
 
     splitter->setStretchFactor(0,0);
     splitter->setStretchFactor(1,1);
@@ -118,9 +130,16 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
 
     connect(m_formEditor,SIGNAL(select(QAbstractWidgetHost*)),
             this,SLOT(hostSelect(QAbstractWidgetHost*)));
+    m_hostListView->setHost(NULL);
+
+
+    connect(m_formEditor,SIGNAL(formSelect(QAbstractWidgetHost*)),
+            this,SLOT(formSelect(QAbstractWidgetHost*)));
+    connect(m_hostListView,SIGNAL(hostSelectChanged(QAbstractWidgetHost*)),
+            this,SLOT(hostSelect(QAbstractWidgetHost*)));
 }
 
-void QDesignerWidget::formAdded(QAbstractWidgetHost *host, int index)
+void QDesignerWidget::formAdded(QAbstractWidgetHost *host, int)
 {
     m_formEditor->setHostList(QList<QAbstractWidgetHost*>()<<host);
     m_formlist->addItem(host->getName());
@@ -181,12 +200,28 @@ void QDesignerWidget::hostSelect(QAbstractWidgetHost *host)
         {
             m_propertyView->setPropertys(m_currentHost->getPropertys(),
                                          m_formEditor->getUndoStack(m_currentHost));
-            m_formlist->setCurrentText(m_currentHost->getPropertyValue("objectName").toString());
+            //m_formlist->setCurrentText(m_currentHost->getPropertyValue("objectName").toString());
         }
         else
         {
-            m_formlist->setCurrentIndex(-1);
+            //m_formlist->setCurrentIndex(-1);
             m_propertyView->setPropertys(QList<QAbstractProperty*>());
         }
+        m_formEditor->selectHost(host);
+        m_hostListView->selectHost(m_currentHost);
+    }
+}
+
+void QDesignerWidget::formSelect(QAbstractWidgetHost *host)
+{
+    m_hostListView->setHost(host);
+    if(host == NULL)
+    {
+        m_formlist->setCurrentIndex(-1);
+    }
+    else
+    {
+        m_formlist->setCurrentIndex(m_formlist->findText(
+                                        host->getPropertyValue("objectName").toString()));
     }
 }

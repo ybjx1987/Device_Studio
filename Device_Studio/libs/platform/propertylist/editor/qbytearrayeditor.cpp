@@ -24,4 +24,7 @@ void QByteArrayEditor::edit()
     emit valueChanged(m_lineEdit->text());
 }
 
-
+void QByteArrayEditor::propertyValueChanged()
+{
+    m_lineEdit->setText(m_property->getValue().toString());
+}

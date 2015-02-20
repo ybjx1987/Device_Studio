@@ -45,7 +45,15 @@ HEADERS += \
     propertylist/editor/qboolpropertyeditor.h \
     undocommand/qpropertyeditundocommand.h \
     undocommand/qundocommandid.h \
-    propertylist/editor/qbytearrayeditor.h
+    propertylist/editor/qbytearrayeditor.h \
+    propertylist/editor/qintpropertyeditor.h \
+    undocommand/qpropertyeditundocommandmore.h \
+    qfancytabview.h \
+    qfancytabviewwidget.h \
+    propertylist/editor/qenumpropertyeditor.h \
+    qlanguageid.h \
+    qbuttonlineedit.h \
+    qlineeditdialog.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -72,11 +80,26 @@ SOURCES += \
     propertylist/editor/qabstractpropertyeditor.cpp \
     propertylist/editor/qboolpropertyeditor.cpp \
     undocommand/qpropertyeditundocommand.cpp \
-    propertylist/editor/qbytearrayeditor.cpp
+    propertylist/editor/qbytearrayeditor.cpp \
+    propertylist/editor/qintpropertyeditor.cpp \
+    undocommand/qpropertyeditundocommandmore.cpp \
+    qfancytabview.cpp \
+    qfancytabviewwidget.cpp \
+    propertylist/editor/qenumpropertyeditor.cpp \
+    qlanguageid.cpp \
+    qbuttonlineedit.cpp \
+    qlineeditdialog.cpp
 
 RESOURCES += \
     platform.qrc
 
 DISTFILES += \
     files/project/pages/form.pg \
-    files/project/pages/page.list
+    files/project/pages/page.list \
+    files/project/languages/language.xml \
+    files/project/languages/zh-CN.xml \
+    files/project/languages/EN.xml \
+    images/languages/translation.xml
+
+FORMS += \
+    qlineeditdialog.ui

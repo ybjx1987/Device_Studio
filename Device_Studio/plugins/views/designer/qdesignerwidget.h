@@ -9,6 +9,7 @@ class QWidgetBoxList;
 class QFormEditor;
 class QAbstractWidgetHost;
 class QComboBox;
+class QHostListView;
 
 class QDesignerWidget : public QAbstractPageWidget
 {
@@ -21,6 +22,7 @@ protected slots:
     void    projectClosed();
 
     void    hostSelect(QAbstractWidgetHost* host);
+    void    formSelect(QAbstractWidgetHost* host);
 protected:
     void    initDesignerViewAction();
 protected:
@@ -32,6 +34,9 @@ protected:
 
     QFormEditor             *m_formEditor;
     StyledBar               *m_formEditorBar;
+
+    QHostListView           *m_hostListView;
+    StyledBar               *m_hostListViewBar;
 
     QComboBox               *m_formlist;
 

@@ -16,16 +16,11 @@ protected:
     void updateCuroser();
     void tryResize(const QSize &delta);
 signals:
-    void mouseButtonReleased(const QRect &,const QRect &);
-
+    void sizeChanged(const QSize &size);
 protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *);
     void mouseMoveEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-
-
-public slots:
 protected:
     const Direction m_dir;
     QPoint m_startPos;

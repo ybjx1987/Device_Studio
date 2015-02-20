@@ -12,6 +12,7 @@ class QPropertyEditorPane : public QWidget
     Q_OBJECT
 public:
     explicit QPropertyEditorPane(QAbstractProperty * property,QWidget *parent = 0);
+    ~QPropertyEditorPane();
 protected:
     void        paintEvent(QPaintEvent *);
     bool        eventFilter(QObject *, QEvent *);

@@ -4,12 +4,19 @@
 #include <QScrollArea>
 #include <QMap>
 #include <QUndoStack>
+#include <QFrame>
+#include <QRubberBand>
 
+#define FRAME_SIZE 10
+
+class QAbstractHost;
 class QAbstractWidgetHost;
 class QFormContainer;
 class FormResizer;
+class SizeHandleRect;
+class Selection;
 
-class QFormPanel : public QScrollArea
+class QFormPanel : public QWidget
 {
     Q_OBJECT
 public:
@@ -19,6 +26,24 @@ public:
     void    select(QAbstractWidgetHost* host);
 
     QUndoStack *getUndoStack();
+
+    void    setOwner(QWidget* owner);
+    QWidget* getOwner();
+
+    bool    enableAction();
+public:
+    void    sameLeft();
+    void    sameTop();
+    void    sameRight();
+    void    sameBottom();
+    void    sameVCenter();
+    void    sameHCenter();
+    void    sameWidth();
+    void    sameHeight();
+    void    sameGeometry();
+
+protected:
+    void    setHandelVisible(bool visible);
 
 protected:
     void    installHostEventFilter(QAbstractWidgetHost * host);
@@ -33,19 +58,35 @@ protected:
 
     bool    hostDragEnterEvent(QAbstractWidgetHost* host,QDragEnterEvent *e);
     bool    hostDropEvent(QAbstractWidgetHost* host,QDropEvent * e);
+    bool    hostResizeEvent(QAbstractWidgetHost * host,QEvent * e);
 signals:
     void    hostSelected(QAbstractWidgetHost * host);
+    void    updateAction();
 protected:
     void    paintEvent(QPaintEvent *);
+    void    updateGeometry();
+    void    resizeEvent(QResizeEvent *);
 protected:
     bool    eventFilter(QObject *, QEvent *);
-
     QAbstractWidgetHost * getHost(QObject * obj);
+protected slots:
+    void    formResize(const QSize &size);
+    void    hostAdded(QAbstractHost* host,int index);
+    void    hostRemoved(QAbstractHost * host);
 protected:
     QAbstractWidgetHost * m_host;
-    FormResizer         * m_formResizer;
     QMap<QObject*,QAbstractWidgetHost*>     m_objectToHost;
     QUndoStack          * m_undoStack;
+    QWidget*            m_owner;
+    QFrame              *m_frame;
+    SizeHandleRect  *m_handles[8];
+
+    QRubberBand         *m_rubberBand;
+    QPoint          m_clickPoint;
+    QPoint          m_move_point;
+    bool            m_click;
+
+    Selection       *m_selection;
 };
 
 #endif // QFORMPANEL_H

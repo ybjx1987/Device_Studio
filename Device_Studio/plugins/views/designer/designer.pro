@@ -28,7 +28,9 @@ SOURCES += qdesignerplugin.cpp \
     formeditor/qformpanel.cpp \
     formeditor/formresizer.cpp \
     formeditor/sizehandlerect.cpp \
-    qdesignerdnditem.cpp
+    qdesignerdnditem.cpp \
+    formeditor/qselectwidget.cpp \
+    qhostlistview.cpp
 
 HEADERS += qdesignerplugin.h \
     qdesignerwidget.h \
@@ -37,7 +39,9 @@ HEADERS += qdesignerplugin.h \
     formeditor/qformpanel.h \
     formeditor/formresizer.h \
     formeditor/sizehandlerect.h \
-    qdesignerdnditem.h
+    qdesignerdnditem.h \
+    formeditor/qselectwidget.h \
+    qhostlistview.h
 
 unix {
     target.path = /usr/lib

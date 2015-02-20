@@ -4,6 +4,8 @@
 
 #include "editor/qboolpropertyeditor.h"
 #include "editor/qbytearrayeditor.h"
+#include "editor/qintpropertyeditor.h"
+#include "editor/qenumpropertyeditor.h"
 
 QMap<QString,QMetaObject> QPropertyEditorFactory::m_metaObjects;
 
@@ -35,4 +37,6 @@ void QPropertyEditorFactory::registerInnerEditor()
 {
     registerEditor("QBoolProperty",QBoolPropertyEditor::staticMetaObject);
     registerEditor("QByteArrayProperty",QByteArrayEditor::staticMetaObject);
+    registerEditor("QIntProperty",QIntPropertyEditor::staticMetaObject);
+    registerEditor("QEnumProperty",QEnumPropertyEditor::staticMetaObject);
 }
