@@ -53,7 +53,9 @@ HEADERS += \
     propertylist/editor/qenumpropertyeditor.h \
     qlanguageid.h \
     qbuttonlineedit.h \
-    qlineeditdialog.h
+    qlineeditdialog.h \
+    propertylist/editor/qbuttonpropertyeditor.h \
+    propertylist/editor/qfontpropertyeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -88,7 +90,9 @@ SOURCES += \
     propertylist/editor/qenumpropertyeditor.cpp \
     qlanguageid.cpp \
     qbuttonlineedit.cpp \
-    qlineeditdialog.cpp
+    qlineeditdialog.cpp \
+    propertylist/editor/qbuttonpropertyeditor.cpp \
+    propertylist/editor/qfontpropertyeditor.cpp
 
 RESOURCES += \
     platform.qrc
