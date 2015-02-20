@@ -11,6 +11,8 @@ class QOneLanguageView : public QBaseListView
 public:
     QOneLanguageView(QLanguage * language,QWidget* parent =NULL);
     ~QOneLanguageView();
+protected:
+    void  clickEditItem(QTreeWidgetItem *item, int index);
 protected slots:
     void    itemAdded(const QString &key);
     void    itemDeled(const QString &key);

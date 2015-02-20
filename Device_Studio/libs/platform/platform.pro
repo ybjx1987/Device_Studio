@@ -51,7 +51,9 @@ HEADERS += \
     qfancytabview.h \
     qfancytabviewwidget.h \
     propertylist/editor/qenumpropertyeditor.h \
-    qlanguageid.h
+    qlanguageid.h \
+    qbuttonlineedit.h \
+    qlineeditdialog.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -84,7 +86,9 @@ SOURCES += \
     qfancytabview.cpp \
     qfancytabviewwidget.cpp \
     propertylist/editor/qenumpropertyeditor.cpp \
-    qlanguageid.cpp
+    qlanguageid.cpp \
+    qbuttonlineedit.cpp \
+    qlineeditdialog.cpp
 
 RESOURCES += \
     platform.qrc
@@ -96,3 +100,6 @@ DISTFILES += \
     files/project/languages/zh-CN.xml \
     files/project/languages/EN.xml \
     images/languages/translation.xml
+
+FORMS += \
+    qlineeditdialog.ui

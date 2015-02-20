@@ -1,7 +1,12 @@
 #include "qonelanguageview.h"
 
+#include "qlanguageitemdeletegate.h"
+
 #include "../../../libs/kernel/language/qlanguage.h"
 #include "../../../libs/platform/qlanguageid.h"
+#include "../../../libs/platform/qbaseitemdelegate.h"
+#include "../../../libs/platform/qbuttonlineedit.h"
+
 
 QOneLanguageView::QOneLanguageView(QLanguage * language,QWidget* parent):
     QBaseListView(parent),
@@ -21,9 +26,11 @@ QOneLanguageView::QOneLanguageView(QLanguage * language,QWidget* parent):
         QTreeWidgetItem *item = new QTreeWidgetItem(this);
         item->setText(0,str);
         item->setText(1,m_language->getValue(str));
+        item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
         m_keyToItem.insert(str,item);
         m_itemToKey.insert(item,str);
     }
+    setItemDelegate(new QLanguageItemDeletegate);
 }
 
 QOneLanguageView::~QOneLanguageView()
@@ -41,6 +48,7 @@ void QOneLanguageView::itemAdded(const QString &key)
     QTreeWidgetItem *item = new QTreeWidgetItem(this);
     item->setText(0,key);
     item->setText(1,m_language->getValue(key));
+    item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
     m_keyToItem.insert(key,item);
     m_itemToKey.insert(item,key);
 }
@@ -52,4 +60,12 @@ void QOneLanguageView::itemDeled(const QString &key)
     m_keyToItem.remove(key);
     m_itemToKey.remove(item);
     delete item;
+}
+
+void QOneLanguageView::clickEditItem(QTreeWidgetItem * item,int index)
+{
+    if(index != 0)
+    {
+        editItem(item,index);
+    }
 }

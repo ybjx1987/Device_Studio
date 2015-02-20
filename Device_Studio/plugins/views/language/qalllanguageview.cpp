@@ -1,5 +1,7 @@
 #include "qalllanguageview.h"
 
+#include "qlanguageitemdeletegate.h"
+
 #include "../../../libs/kernel/language/qlanguagemanager.h"
 #include "../../../libs/kernel/language/qlanguage.h"
 #include "../../../libs/platform/qlanguageid.h"
@@ -29,6 +31,7 @@ QAllLanguageView::QAllLanguageView(QLanguageManager* manager,QWidget* parent):
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(this);
         item->setText(0,str);
+        item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
         for(int i = 0;i<list.size();i++)
         {
             item->setText(i+1,m_languageManager->getLanguages().at(i)->getValue(str));
@@ -43,6 +46,8 @@ QAllLanguageView::QAllLanguageView(QLanguageManager* manager,QWidget* parent):
             this,SLOT(itemAdded(QString)));
     connect(m_languageManager,SIGNAL(updateItem(QString,QString)),
             this,SLOT(updateItem(QString,QString)));
+
+    setItemDelegate(new QLanguageItemDeletegate);
 }
 
 QAllLanguageView::~QAllLanguageView()
@@ -60,6 +65,7 @@ void QAllLanguageView::itemAdded(const QString &key)
 
     item = new QTreeWidgetItem(this);
     item->setText(0,key);
+    item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     m_keyToItem.insert(key,item);
     m_itemToKey.insert(item,key);
 }
@@ -87,5 +93,13 @@ void QAllLanguageView::updateItem(const QString &id, const QString &key)
             item->setText(m_languageManager->getLanguages().indexOf(language)+1,
                       language->getValue(key));
         }
+    }
+}
+
+void QAllLanguageView::clickEditItem(QTreeWidgetItem *item,int index)
+{
+    if(index != 0)
+    {
+        editItem(item,index);
     }
 }
