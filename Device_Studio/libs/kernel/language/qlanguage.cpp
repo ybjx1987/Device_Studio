@@ -87,3 +87,16 @@ QString QLanguage::getValue(const QString &key)
 {
     return m_keyToValue.value(key);
 }
+
+void QLanguage::setValue(const QString &key, const QString &value)
+{
+    if(!m_keys.contains(key))
+    {
+        addItem(key,value);
+    }
+    else
+    {
+        m_keyToValue.insert(key,value);
+        emit itemUpdated(key);
+    }
+}

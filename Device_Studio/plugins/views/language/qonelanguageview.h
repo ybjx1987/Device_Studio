@@ -3,6 +3,7 @@
 
 #include "../../../libs/platform/qbaselistview.h"
 
+class QLanguageItemDeletegate;
 class QLanguage;
 
 class QOneLanguageView : public QBaseListView
@@ -16,11 +17,15 @@ protected:
 protected slots:
     void    itemAdded(const QString &key);
     void    itemDeled(const QString &key);
+    void    itemEdited(const QString &value,const QModelIndex &index);
+    void    itemUpdate(const QString &key);
 protected:
     QLanguage   *m_language;
 
     QMap<QString,QTreeWidgetItem*>  m_keyToItem;
     QMap<QTreeWidgetItem*,QString>  m_itemToKey;
+
+    QLanguageItemDeletegate *m_itemDeletegate;
 };
 
 #endif // QONELANGUAGEVIEW_H

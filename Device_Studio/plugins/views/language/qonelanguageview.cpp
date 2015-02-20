@@ -30,7 +30,15 @@ QOneLanguageView::QOneLanguageView(QLanguage * language,QWidget* parent):
         m_keyToItem.insert(str,item);
         m_itemToKey.insert(item,str);
     }
-    setItemDelegate(new QLanguageItemDeletegate);
+
+    m_itemDeletegate = new QLanguageItemDeletegate;
+
+    setItemDelegate(m_itemDeletegate);
+
+    connect(m_itemDeletegate,SIGNAL(editValue(QString,QModelIndex)),
+            this,SLOT(itemEdited(QString,QModelIndex)));
+    connect(m_language,SIGNAL(itemUpdated(QString)),
+            this,SLOT(itemUpdate(QString)));
 }
 
 QOneLanguageView::~QOneLanguageView()
@@ -68,4 +76,16 @@ void QOneLanguageView::clickEditItem(QTreeWidgetItem * item,int index)
     {
         editItem(item,index);
     }
+}
+
+void QOneLanguageView::itemEdited(const QString &value, const QModelIndex &index)
+{
+    QTreeWidgetItem *item = itemFromIndex(index);
+    m_language->setValue(m_itemToKey.value(item),value);
+}
+
+void QOneLanguageView::itemUpdate(const QString &key)
+{
+    QTreeWidgetItem *item = m_keyToItem.value(key);
+    item->setText(1,m_language->getValue(key));
 }

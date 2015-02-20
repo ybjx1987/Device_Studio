@@ -4,6 +4,7 @@
 #include "../../../libs/platform/qbaselistview.h"
 
 class QLanguageManager;
+class QLanguageItemDeletegate;
 
 class QAllLanguageView : public QBaseListView
 {
@@ -15,11 +16,13 @@ protected:
     void    clickEditItem(QTreeWidgetItem *item, int index);
 public slots:
     void    updateItem(const QString &id,const QString &key);
+    void    updateItem(const QString &value,const QModelIndex& index);
+    void    updateItem(const QString &key);
     void    itemAdded(const QString &key);
     void    itemDeled(const QString &key);
 protected:
     QLanguageManager    *m_languageManager;
-
+    QLanguageItemDeletegate *m_itemDeletegate;
     QMap<QString,QTreeWidgetItem*>  m_keyToItem;
     QMap<QTreeWidgetItem*,QString>  m_itemToKey;
 };

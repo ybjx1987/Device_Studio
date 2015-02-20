@@ -47,7 +47,17 @@ QAllLanguageView::QAllLanguageView(QLanguageManager* manager,QWidget* parent):
     connect(m_languageManager,SIGNAL(updateItem(QString,QString)),
             this,SLOT(updateItem(QString,QString)));
 
-    setItemDelegate(new QLanguageItemDeletegate);
+    m_itemDeletegate = new QLanguageItemDeletegate;
+    setItemDelegate(m_itemDeletegate);
+
+    connect(m_itemDeletegate,SIGNAL(editValue(QString,QModelIndex)),
+            this,SLOT(updateItem(QString,QModelIndex)));
+
+    foreach(QLanguage *language,m_languageManager->getLanguages())
+    {
+        connect(language,SIGNAL(itemUpdated(QString)),
+                this,SLOT(updateItem(QString)));
+    }
 }
 
 QAllLanguageView::~QAllLanguageView()
@@ -101,5 +111,29 @@ void QAllLanguageView::clickEditItem(QTreeWidgetItem *item,int index)
     if(index != 0)
     {
         editItem(item,index);
+    }
+}
+
+void QAllLanguageView::updateItem(const QString &value, const QModelIndex &index)
+{
+    QTreeWidgetItem * item = itemFromIndex(index);
+
+    QLanguage * language = m_languageManager->getLanguages().at(index.column()-1);
+    if(language != NULL)
+    {
+        language->setValue(m_itemToKey.value(item),value);
+    }
+    item->setText(index.column(),value);
+}
+
+void QAllLanguageView::updateItem(const QString &key)
+{
+    QLanguage * language = (QLanguage*)sender();
+    QTreeWidgetItem * item = m_keyToItem.value(key);
+
+    if(item != NULL && language != NULL)
+    {
+        item->setText(m_languageManager->getLanguages().indexOf(language)+1,
+                      language->getValue(key));
     }
 }

@@ -19,11 +19,13 @@ public:
     void    addItem(const QString &key,const QString &value);
     void    delItem(const QString &key);
 
-    QStringList  getKeys();
-    QString      getValue(const QString &key);
+    QStringList getKeys();
+    QString     getValue(const QString &key);
+    void        setValue(const QString &key,const QString &value);
 signals:
     void  itemAdded(const QString &key);
     void  itemDeled(const QString &key);
+    void  itemUpdated(const QString &key);
 protected:
     QString m_id;
 
