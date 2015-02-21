@@ -46,7 +46,6 @@ QPropertyEditorPane::QPropertyEditorPane(QAbstractProperty* property,QWidget* pa
     {
         pro = pro->getParent();
     }
-    pro->setProperty("notSync",true);
     setProperty("propertyValue",pro->getValue());
 }
 
@@ -57,7 +56,6 @@ QPropertyEditorPane::~QPropertyEditorPane()
     {
         pro = pro->getParent();
     }
-    pro->setProperty("notSync",false);
 }
 
 void QPropertyEditorPane::paintEvent(QPaintEvent *)

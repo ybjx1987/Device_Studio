@@ -56,6 +56,31 @@ void QLanguageManager::load(const QString &path)
     }
 }
 
+void QLanguageManager::save(const QString &path)
+{
+    XmlNode xml;
+
+    xml.setTitle("Languages");
+
+    foreach(QLanguage * language, m_languages)
+    {
+        XmlNode *obj = new XmlNode(&xml);
+        obj->setTitle("Language");
+        obj->setText(language->getID()+".xml");
+        language->save(path+"/"+language->getID()+".xml");
+    }
+
+    QString str;
+    xml.save(str);
+    QFile f(path+"/language.xml");
+
+    if(f.open(QFile::ReadWrite))
+    {
+        f.write(str.toLocal8Bit());
+        f.close();
+    }
+}
+
 void QLanguageManager::loadLanguage(const QString &fileName)
 {
 

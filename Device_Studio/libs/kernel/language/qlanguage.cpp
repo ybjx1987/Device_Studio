@@ -59,6 +59,34 @@ bool QLanguage::load(const QString &fileName)
     return true;
 }
 
+void QLanguage::save(const QString &fileName)
+{
+    XmlNode xml;
+
+    xml.setTitle("Language");
+    xml.setProperty("id",m_id);
+
+    foreach(QString str,m_keys)
+    {
+        XmlNode *obj = new XmlNode(&xml);
+        obj->setTitle("Item");
+        obj->setProperty("key",str);
+        obj->setProperty("value",m_keyToValue.value(str));
+    }
+
+    QFile f(fileName);
+
+    if(f.open(QFile::ReadWrite))
+    {
+        QString buffer;
+        if(xml.save(buffer))
+        {
+            f.write(buffer.toLocal8Bit());
+        }
+        f.close();
+    }
+}
+
 QString QLanguage::getID()
 {
     return m_id;

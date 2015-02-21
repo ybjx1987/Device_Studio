@@ -36,6 +36,7 @@ void QAbstractProperty::setValue(const QVariant &value)
     QVariant old = m_value;
     if(!equal(value))
     {
+        setProperty("syncStatus",1);
         m_value = value;
         emit valueChanged(m_value,old);
     }

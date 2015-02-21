@@ -78,3 +78,11 @@ void QAlignmentProperty::writeValue(XmlNode *xml)
 {
     xml->setProperty("name",getName());
 }
+
+void QAlignmentProperty::updateValue()
+{
+    int value = m_horizonta->getValue().toInt() |
+            m_vertical->getValue().toInt();
+
+    setValue(value);
+}

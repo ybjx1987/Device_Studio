@@ -223,3 +223,17 @@ QLanguageManager* QProject::getLanguageManager()
 {
     return m_languageManager;
 }
+
+bool QProject::save()
+{
+    if(m_projectStatus ==PS_OPENED)
+    {
+        QString path = m_projectHost->getPropertyValue("path").toString();
+        if(!m_projectHost->save(path+"/project.pfl"))
+        {
+            return false;
+        }
+        m_languageManager->save(path+"/languages");
+    }
+    return true;
+}

@@ -16,6 +16,8 @@ public:
 
     QString getID();
 
+    void    save(const QString &fileName);
+
     void    addItem(const QString &key,const QString &value);
     void    delItem(const QString &key);
 

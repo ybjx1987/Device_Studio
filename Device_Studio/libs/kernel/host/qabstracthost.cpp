@@ -355,11 +355,17 @@ void QAbstractHost::updateProperty()
 {
     foreach(QAbstractProperty *property,m_propertys)
     {
-        if(property->property("notSync").toBool())
+        int status = property->property("syncStatus").toInt();
+        if(status == 2)
         {
-            continue;
+            property->setValue(m_object->property(property->getName().toLocal8Bit()));
         }
-        property->setValue(m_object->property(property->getName().toLocal8Bit()));
+        else if(status == 1)
+        {
+            m_object->setProperty(property->getName().toLocal8Bit(),
+                                  property->getValue());
+        }
+        property->setProperty("syncStatus",0);
     }
 }
 

@@ -51,6 +51,8 @@ public:
     QList<QAbstractWidgetHost*> getForms();
 
     void        setModified(enProjectModified modified);
+
+    bool        save();
 protected:
     void        setProjectStatus(enProjectStatus newStatus);
     void        loadPages(const QString &path);

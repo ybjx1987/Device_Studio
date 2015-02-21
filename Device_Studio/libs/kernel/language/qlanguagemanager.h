@@ -14,6 +14,7 @@ public:
     ~QLanguageManager();
 
     void    load(const QString &path);
+    void    save(const QString &path);
 
     QList<QLanguage*>   getLanguages();
     QLanguage *         getLanguage(const QString &id);
