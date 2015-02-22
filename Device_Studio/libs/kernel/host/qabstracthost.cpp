@@ -201,6 +201,8 @@ void QAbstractHost::init()
     createObject();
     if(m_object != NULL)
     {
+        connect(this,SIGNAL(destroyed()),
+                m_object,SLOT(deleteLater()));
         initProperty();
         m_object->installEventFilter(this);
         foreach(QAbstractProperty *pro,m_propertys)
@@ -333,6 +335,11 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
 {
     if(index >=0 && index <= m_children.size())
     {
+        if(host->m_parent != NULL)
+        {
+            disconnect(host,SIGNAL(needUpdate(QAbstractProperty*)),
+                    this,SIGNAL(needUpdate(QAbstractProperty*)));
+        }
         host->m_parent= this;
         m_children.insert(index,host);
         if(m_object->isWidgetType())
@@ -345,8 +352,8 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
         {
             host->getObject()->setParent(m_object);
         }
-        connect(host,SIGNAL(needUpdate(QAbstractProperty*)),
-                this,SIGNAL(needUpdate(QAbstractProperty*)));
+        connect(host,SIGNAL(needUpdate(QStringProperty*)),
+                this,SIGNAL(needUpdate(QStringProperty*)));
         emit hostAdded(host,index);
     }
 }
