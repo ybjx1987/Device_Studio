@@ -112,6 +112,7 @@ void QRectProperty::writeValue(XmlNode *xml)
 void QRectProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
+    updateValue();
 }
 
 void QRectProperty::setSizeType(bool sizeType)

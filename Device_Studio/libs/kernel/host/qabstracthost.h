@@ -56,6 +56,8 @@ public:
 
     void                    updateProperty();
     void                    updateStringProperty();
+
+    void                    setDefaultValue();
 protected:
     virtual void    createObject();
     virtual void    initProperty();

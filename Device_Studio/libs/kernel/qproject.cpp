@@ -53,6 +53,7 @@ bool QProject::open(const QString &proFileName)
     }
 
     m_projectHost = new QProjectHost;
+    m_projectHost->setProperty("hostType","Project");
     m_projectHost->init();
     m_projectHost->fromXml(&xml);
 
@@ -172,6 +173,7 @@ void QProject::loadPages(const QString &path)
                     if(host != NULL)
                     {
                         host->fromXml(&xml);
+                        host->setProperty("fileName",p->getText());
                         if(host->getUuid() == "")
                         {
                             host->setUuid(QUuid::createUuid().toString());
@@ -242,6 +244,33 @@ bool QProject::save()
             return false;
         }
         m_languageManager->save(path+"/languages");
+
+        foreach(QAbstractHost *host,m_forms)
+        {
+            XmlNode xml;
+            if(!host->toXml(&xml))
+            {
+                return false;
+            }
+            QString buffer;
+            if(!xml.save(buffer))
+            {
+                return false;
+            }
+            QString fileName = host->property("fileName").toString();
+            if(fileName == "")
+            {
+                fileName = host->getPropertyValue("objectName").toString()
+                        +".pg";
+            }
+            QFile f(path+"/pages/"+fileName);
+            if(!f.open(QFile::ReadWrite))
+            {
+                return false;
+            }
+            f.write(buffer.toLocal8Bit());
+            f.close();
+        }
     }
     return true;
 }

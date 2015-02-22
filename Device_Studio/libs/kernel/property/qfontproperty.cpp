@@ -93,6 +93,7 @@ void QFontProperty::setValue(const QVariant &value)
 void QFontProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
+    updateValue();
 }
 
 void QFontProperty::writeValue(XmlNode *xml)
