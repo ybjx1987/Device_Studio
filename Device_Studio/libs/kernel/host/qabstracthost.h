@@ -62,6 +62,7 @@ protected:
 protected slots:
     void    propertyChanged();
     void    strPropertyNeedUpdate();
+    void    objectDeleted();
 public:
     bool                    toXml(XmlNode * xml);
     bool                    fromXml(XmlNode * xml);

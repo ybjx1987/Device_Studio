@@ -74,9 +74,18 @@ bool QProject::open(const QString &proFileName)
 
 void QProject::close()
 {
-    if(m_projectHost != NULL)
+    if(m_projectStatus == PS_OPENED)
     {
         emit projectClosed();
+    }
+    setProjectStatus(PS_CLOSED);
+    setModified(PM_NOT_MODIFIED);
+
+    qDeleteAll(m_forms);
+    m_forms.clear();
+
+    if(m_projectHost != NULL)
+    {
         delete m_projectHost;
         m_projectHost = NULL;
     }
@@ -85,12 +94,6 @@ void QProject::close()
         delete m_languageManager;
         m_languageManager = NULL;
     }
-
-    qDeleteAll(m_forms);
-    m_forms.clear();
-
-    setProjectStatus(PS_CLOSED);
-    setModified(PM_NOT_MODIFIED);
 }
 
 QProjectHost* QProject::getProjectHost()

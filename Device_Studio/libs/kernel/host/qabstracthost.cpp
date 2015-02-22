@@ -203,6 +203,8 @@ void QAbstractHost::init()
     {
         connect(this,SIGNAL(destroyed()),
                 m_object,SLOT(deleteLater()));
+        connect(m_object,SIGNAL(destroyed()),
+                this,SLOT(objectDeleted()));
         initProperty();
         m_object->installEventFilter(this);
         foreach(QAbstractProperty *pro,m_propertys)
@@ -368,6 +370,10 @@ void QAbstractHost::removeHost(QAbstractHost *host)
 
 void QAbstractHost::updateProperty()
 {
+    if(m_object == NULL)
+    {
+        return;
+    }
     foreach(QAbstractProperty *property,m_propertys)
     {
         int status = property->property("syncStatus").toInt();
@@ -406,6 +412,10 @@ void QAbstractHost::updateStringProperty()
 
 void QAbstractHost::propertyChanged()
 {
+    if(m_object == NULL)
+    {
+        return;
+    }
     QAbstractProperty * pro = (QAbstractProperty*) sender();
     m_object->setProperty(pro->getName().toLocal8Bit(),
                           pro->getValue());
@@ -416,4 +426,9 @@ void QAbstractHost::strPropertyNeedUpdate()
     QStringProperty * pro = (QStringProperty*)sender();
 
     emit needUpdate(pro);
+}
+
+void QAbstractHost::objectDeleted()
+{
+    m_object = NULL;
 }
