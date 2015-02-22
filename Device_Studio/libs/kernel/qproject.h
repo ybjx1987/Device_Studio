@@ -59,6 +59,7 @@ protected:
     void        loadPages(const QString &path);
 protected slots:
     void        updateStringProperty(QStringProperty *pro);
+    void        languageChanged();
 signals:
     void        projectOpened();
     void        projectClosed();

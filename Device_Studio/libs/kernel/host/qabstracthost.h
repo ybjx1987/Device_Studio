@@ -55,6 +55,7 @@ public:
     void                    removeHost(QAbstractHost * host);
 
     void                    updateProperty();
+    void                    updateStringProperty();
 protected:
     virtual void    createObject();
     virtual void    initProperty();

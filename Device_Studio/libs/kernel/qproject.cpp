@@ -64,7 +64,8 @@ bool QProject::open(const QString &proFileName)
 
     m_languageManager = new QLanguageManager(this);
     m_languageManager->load(path+"/languages");
-
+    connect(m_languageManager,SIGNAL(currentLanguageChanged(QString)),
+            this,SLOT(languageChanged()));
     emit projectOpened();
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
@@ -261,5 +262,15 @@ void QProject::updateStringProperty(QStringProperty *pro)
         {
             pro->setValue("");
         }
+    }
+}
+
+void QProject::languageChanged()
+{
+    m_projectHost->updateStringProperty();
+
+    foreach(QAbstractWidgetHost * host,m_forms)
+    {
+        host->updateStringProperty();
     }
 }

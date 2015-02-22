@@ -368,12 +368,32 @@ void QAbstractHost::updateProperty()
         {
             property->setValue(m_object->property(property->getName().toLocal8Bit()));
         }
-        else if(status == 1)
+        else
         {
             m_object->setProperty(property->getName().toLocal8Bit(),
                                   property->getValue());
         }
         property->setProperty("syncStatus",0);
+    }
+}
+
+void QAbstractHost::updateStringProperty()
+{
+    QList<QAbstractProperty*> list = m_propertys;
+
+    while(list.size()>0)
+    {
+        QAbstractProperty * pro = list.takeFirst();
+        if(pro->metaObject()->className() == QString("QStringProperty"))
+        {
+            emit needUpdate((QStringProperty*)pro);
+        }
+        list += pro->getChildren();
+    }
+
+    foreach(QAbstractHost * host,m_children)
+    {
+        host->updateStringProperty();
     }
 }
 
