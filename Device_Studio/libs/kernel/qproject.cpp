@@ -7,6 +7,8 @@
 #include "host/qabstracthost.h"
 #include "host/qabstractwidgethost.h"
 #include "language/qlanguagemanager.h"
+#include "property/qstringproperty.h"
+#include "language/qlanguage.h"
 
 #include <QFile>
 #include <QVariant>
@@ -20,7 +22,6 @@ QProject::QProject():
     m_projectModified(PM_NOT_MODIFIED),
     m_languageManager(NULL)
 {
-
 }
 
 QProject::~QProject()
@@ -63,7 +64,8 @@ bool QProject::open(const QString &proFileName)
 
     m_languageManager = new QLanguageManager(this);
     m_languageManager->load(path+"/languages");
-
+    connect(m_languageManager,SIGNAL(currentLanguageChanged(QString)),
+            this,SLOT(languageChanged()));
     emit projectOpened();
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
@@ -72,9 +74,18 @@ bool QProject::open(const QString &proFileName)
 
 void QProject::close()
 {
-    if(m_projectHost != NULL)
+    if(m_projectStatus == PS_OPENED)
     {
         emit projectClosed();
+    }
+    setProjectStatus(PS_CLOSED);
+    setModified(PM_NOT_MODIFIED);
+
+    qDeleteAll(m_forms);
+    m_forms.clear();
+
+    if(m_projectHost != NULL)
+    {
         delete m_projectHost;
         m_projectHost = NULL;
     }
@@ -83,12 +94,6 @@ void QProject::close()
         delete m_languageManager;
         m_languageManager = NULL;
     }
-
-    qDeleteAll(m_forms);
-    m_forms.clear();
-
-    setProjectStatus(PS_CLOSED);
-    setModified(PM_NOT_MODIFIED);
 }
 
 QProjectHost* QProject::getProjectHost()
@@ -121,7 +126,8 @@ void QProject::addForm(QAbstractWidgetHost *host, int index)
         index = m_forms.size();
     }
     m_forms.insert(index,host);
-
+    connect(host,SIGNAL(needUpdate(QStringProperty*)),
+            this,SLOT(updateStringProperty(QStringProperty*)));
     emit hostAdded(host,index);
 }
 
@@ -170,6 +176,8 @@ void QProject::loadPages(const QString &path)
                         {
                             host->setUuid(QUuid::createUuid().toString());
                         }
+                        connect(host,SIGNAL(needUpdate(QStringProperty*)),
+                                this,SLOT(updateStringProperty(QStringProperty*)));
                         m_forms.append((QAbstractWidgetHost*)host);
                     }
                 }
@@ -222,4 +230,54 @@ QAbstractHost * QProject::getHostByUuid(const QString &uuid)
 QLanguageManager* QProject::getLanguageManager()
 {
     return m_languageManager;
+}
+
+bool QProject::save()
+{
+    if(m_projectStatus ==PS_OPENED)
+    {
+        QString path = m_projectHost->getPropertyValue("path").toString();
+        if(!m_projectHost->save(path+"/project.pfl"))
+        {
+            return false;
+        }
+        m_languageManager->save(path+"/languages");
+    }
+    return true;
+}
+
+void QProject::updateStringProperty(QStringProperty *pro)
+{
+    if(!pro->getTranslation())
+    {
+        return;
+    }
+    QLanguage * language = m_languageManager->getCurrentLanguage();
+
+    if(language != NULL)
+    {
+        pro->setValue(language->getValue(pro->getUuid()));
+    }
+    else
+    {
+        QLanguageItem * item = m_languageManager->getItem(pro->getUuid());
+        if(item != NULL)
+        {
+            pro->setValue(item->m_name);
+        }
+        else
+        {
+            pro->setValue("");
+        }
+    }
+}
+
+void QProject::languageChanged()
+{
+    m_projectHost->updateStringProperty();
+
+    foreach(QAbstractWidgetHost * host,m_forms)
+    {
+        host->updateStringProperty();
+    }
 }

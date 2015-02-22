@@ -12,3 +12,10 @@ QWidget* QLanguageItemDeletegate::createEditor(QWidget *parent, const QStyleOpti
     }
     return wid;
 }
+
+void QLanguageItemDeletegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+{
+    QButtonLineEdit *lineEdit = (QButtonLineEdit*)editor;
+    QString text = lineEdit->text();
+    emit editValue(text,index);
+}

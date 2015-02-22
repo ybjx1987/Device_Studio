@@ -95,5 +95,8 @@
         <file>images/languages/us.png</file>
         <file>images/languages/translation.xml</file>
         <file>images/languages/en.png</file>
+        <file>images/add_item.png</file>
+        <file>images/add_language.png</file>
+        <file>images/delete_item.png</file>
     </qresource>
 </RCC>

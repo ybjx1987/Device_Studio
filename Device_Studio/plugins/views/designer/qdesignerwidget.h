@@ -23,6 +23,8 @@ protected slots:
 
     void    hostSelect(QAbstractWidgetHost* host);
     void    formSelect(QAbstractWidgetHost* host);
+
+    void    selectLanguage();
 protected:
     void    initDesignerViewAction();
 protected:
@@ -41,6 +43,7 @@ protected:
     QComboBox               *m_formlist;
 
     QAbstractWidgetHost     *m_currentHost;
+    QComboBox               *m_languageList;
 };
 
 #endif // QDESIGNERWIDGET_H

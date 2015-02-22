@@ -355,7 +355,7 @@ bool QFormPanel::hostDropEvent(QAbstractWidgetHost *host, QDropEvent *e)
                 QRect re=h->getPropertyValue("geometry").toRect();
                 re.moveTo(e->pos()-item->hotSpot());
                 h->setPropertyValue("geometry",re);
-
+                h->setPropertyValue("visible",true);
                 QString name=h->getPropertyValue("objectName").toString();
 
                 QStringList l;

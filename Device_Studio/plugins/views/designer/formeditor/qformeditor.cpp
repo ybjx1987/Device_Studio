@@ -16,19 +16,6 @@ QFormEditor::QFormEditor(QWidget* parent):
 
     QAction *action;
 
-//    QStringList list;
-//    list<<"designer.left"<<"designer.top"<<"designer.right"
-//       <<"designer.bottom"<<"designer.v-center"<<"designer.h-center"
-//      <<"designer.same-width"<<"designer.same-height"<<"designer.same-rect";
-//    foreach(QString str,list)
-//    {
-//        action = QSoftActionMap::getAction(str);
-//        if(action != NULL)
-//        {
-//            connect(action,SIGNAL(triggered()),this,SLOT(sameLeft()));
-//        }
-//    }
-
     action = QSoftActionMap::getAction("designer.left");
     if(action != NULL)
     {

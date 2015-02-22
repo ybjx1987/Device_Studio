@@ -10,7 +10,7 @@ QNewItemDialog::QNewItemDialog(const QStringList &list,QWidget *parent) :
 {
     ui->setupUi(this);
     m_keyEdit->setIntermediateList(list);
-    ui->gridLayout->addWidget(m_keyEdit,0,1);
+    ui->horizontalLayout->insertWidget(1,m_keyEdit,1);
     m_keyEdit->setFocus();
 }
 
@@ -28,7 +28,6 @@ void QNewItemDialog::on_okBtn_clicked()
                              tr("Keywrod cann't been empty!"));
         return;
     }
-    m_value = ui->lineEdit->text();
     close();
 }
 
@@ -40,9 +39,4 @@ void QNewItemDialog::on_cancelBtn_clicked()
 QString QNewItemDialog::getKey()
 {
     return m_key;
-}
-
-QString QNewItemDialog::getValue()
-{
-    return m_value;
 }

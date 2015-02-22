@@ -9,6 +9,7 @@
 #include <QTimer>
 #include <QMetaObject>
 
+class QStringProperty;
 class QAbstractProperty;
 class XmlNode;
 
@@ -54,11 +55,14 @@ public:
     void                    removeHost(QAbstractHost * host);
 
     void                    updateProperty();
+    void                    updateStringProperty();
 protected:
     virtual void    createObject();
     virtual void    initProperty();
 protected slots:
     void    propertyChanged();
+    void    strPropertyNeedUpdate();
+    void    objectDeleted();
 public:
     bool                    toXml(XmlNode * xml);
     bool                    fromXml(XmlNode * xml);
@@ -72,7 +76,7 @@ protected:
 signals:
     void    hostAdded(QAbstractHost * host,int index);
     void    hostRemoved(QAbstractHost * host);
-
+    void    needUpdate(QStringProperty * pro);
 protected:
     QAbstractHost               *m_parent;
     QList<QAbstractHost*>       m_children;

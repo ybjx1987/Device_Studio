@@ -6,6 +6,13 @@
 
 class QLanguage;
 
+class QLanguageItem
+{
+public:
+    QString     m_uuid;
+    QString     m_name;
+};
+
 class QLanguageManager : public QObject
 {
     Q_OBJECT
@@ -14,6 +21,7 @@ public:
     ~QLanguageManager();
 
     void    load(const QString &path);
+    void    save(const QString &path);
 
     QList<QLanguage*>   getLanguages();
     QLanguage *         getLanguage(const QString &id);
@@ -21,28 +29,35 @@ public:
     QString addLanguage(const QString &id);
     void    removeLanguage(QLanguage * language);
 
-    void    addItem(const QString &key,const QString &value);
-    void    delItem(const QString &key);
+    void    addItem(const QString &name);
+    void    delItem(const QString &uuid);
 
-    QStringList getAllKeyword();
+    QStringList getAllUuids();
+    QStringList getAllNames();
+
+    QLanguageItem*  getItem(const QString &uuid);
+    QLanguageItem*  getItemByName(const QString &name);
+
+    void    setCurrentLanguage(const QString &id);
+    QLanguage * getCurrentLanguage();
 protected:
     void    clear();
     void    loadLanguage(const QString &fileName);
 signals:
     void    languageAdd(const QString &id);
     void    languageDel(QLanguage * language);
+    void    itemAdded(QLanguageItem * item);
+    void    itemDeled(QLanguageItem * item);
 
-    void    updateItem(const QString &id,const QString &item);
-    void    itemAdded(const QString &item);
-    void    itemDeled(const QString &item);
-protected slots:
-    void    languageItemAdded(const QString &key);
-    void    languageItemRemove(const QString &key);
+    void    currentLanguageChanged(const QString &id);
 protected:
     QList<QLanguage*>           m_languages;
     QMap<QString,QLanguage*>    m_idToLanguage;
 
-    QMap<QString,int>           m_allKeys;
+    QList<QLanguageItem*>       m_languageItems;
+    QMap<QString,QLanguageItem*>    m_uuidToItems;
+    QMap<QString,QLanguageItem*>    m_nameToItems;
+    QString                     m_currentLanguageID;
 };
 
 #endif // QLANGUAGEMANAGER_H

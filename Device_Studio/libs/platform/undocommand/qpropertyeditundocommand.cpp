@@ -12,8 +12,8 @@ QPropertyEditUndoCommand::QPropertyEditUndoCommand(const QString &hostUuid,
                                                    const QVariant &oldValue,
                                                    QUndoCommand *parent):
     QBaseUndoCommand(parent),
-    m_hostUuid(hostUuid),
     m_propertyName(propertyName),
+    m_hostUuid(hostUuid),
     m_newValue(newValue),
     m_oldValue(oldValue)
 {

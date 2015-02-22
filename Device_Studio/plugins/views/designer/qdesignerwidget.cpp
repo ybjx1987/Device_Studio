@@ -8,8 +8,10 @@
 #include "../../../libs/platform/propertylist/qpropertylistview.h"
 #include "../../../libs/platform/styledbar.h"
 
+#include "../../../libs/platform/qlanguageid.h"
 #include "../../../libs/platform/minisplitter.h"
-
+#include "../../../libs/kernel/language/qlanguagemanager.h"
+#include "../../../libs/kernel/language/qlanguage.h"
 #include "../../../libs/kernel/host/qhostfactory.h"
 #include "../../../libs/kernel/host/qabstracthost.h"
 #include "../../../libs/platform/qsoftcore.h"
@@ -34,7 +36,8 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     m_formEditorBar(new StyledBar(this)),
     m_hostListView(new QHostListView(this)),
     m_hostListViewBar(new StyledBar(this)),
-    m_currentHost(NULL)
+    m_currentHost(NULL),
+    m_languageList(new QComboBox(this))
 {
     initDesignerViewAction();
     m_formEditor = new QFormEditor(this);
@@ -71,8 +74,10 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     m_formlist = new QComboBox;
     m_formlist->setFixedWidth(200);
     hl->addWidget(m_formlist);
+    hl->addWidget(m_languageList);
+    m_languageList->setFixedWidth(100);
     QActionToolBar *toolBar = new QActionToolBar;
-    hl->addWidget(toolBar);
+    hl->addWidget(toolBar,1);
     m_formEditorBar->setLayout(hl);
 
     QList<QAction*>     list;
@@ -137,6 +142,9 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
             this,SLOT(formSelect(QAbstractWidgetHost*)));
     connect(m_hostListView,SIGNAL(hostSelectChanged(QAbstractWidgetHost*)),
             this,SLOT(hostSelect(QAbstractWidgetHost*)));
+
+    connect(m_languageList,SIGNAL(currentIndexChanged(int)),
+            this,SLOT(selectLanguage()));
 }
 
 void QDesignerWidget::formAdded(QAbstractWidgetHost *host, int)
@@ -183,12 +191,29 @@ void QDesignerWidget::projectOpened()
     {
         m_formlist->addItem(host->getPropertyValue("objectName").toString());
     }
+    m_languageList->clear();
+    foreach(QLanguage * language,project->getLanguageManager()->getLanguages())
+    {
+        QLanguageInfo info = QLanguageID::getLanguageInfo(language->getID());
+        m_languageList->addItem(QIcon(info.m_icon),info.m_name,info.m_id);
+    }
+    QLanguage * language = project->getLanguageManager()->getCurrentLanguage();
+
+    if(language != NULL)
+    {
+        m_languageList->setCurrentText(QLanguageID::getLanguageInfo(language->getID()).m_name);
+    }
+    else
+    {
+        m_languageList->setCurrentIndex(-1);
+    }
 }
 
 void QDesignerWidget::projectClosed()
 {
     m_formEditor->clear();
     m_formlist->clear();
+    m_languageList->clear();
 }
 
 void QDesignerWidget::hostSelect(QAbstractWidgetHost *host)
@@ -224,4 +249,12 @@ void QDesignerWidget::formSelect(QAbstractWidgetHost *host)
         m_formlist->setCurrentIndex(m_formlist->findText(
                                         host->getPropertyValue("objectName").toString()));
     }
+}
+
+void QDesignerWidget::selectLanguage()
+{
+    QString id = m_languageList->currentData().toString();
+
+    QProject * project = QSoftCore::getInstance()->getProject();
+    project->getLanguageManager()->setCurrentLanguage(id);
 }

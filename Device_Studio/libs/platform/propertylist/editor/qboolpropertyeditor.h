@@ -10,7 +10,7 @@ public:
     Q_INVOKABLE QBoolPropertyEditor(QAbstractProperty* property);
 
 protected:
-    void    mouseDoubleClickEvent(QMouseEvent * e);
+    void    mouseReleaseEvent(QMouseEvent * e);
 };
 
 #endif // QBOOLPROPERTYEDITOR_H

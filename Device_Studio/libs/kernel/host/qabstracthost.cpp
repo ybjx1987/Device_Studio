@@ -6,6 +6,7 @@
 #include "../property/qbytearrayproperty.h"
 #include "../qhostsyncmanager.h"
 #include "../xmlnode.h"
+#include "../property/qstringproperty.h"
 
 #include <QVariant>
 #include <QUuid>
@@ -200,6 +201,10 @@ void QAbstractHost::init()
     createObject();
     if(m_object != NULL)
     {
+        connect(this,SIGNAL(destroyed()),
+                m_object,SLOT(deleteLater()));
+        connect(m_object,SIGNAL(destroyed()),
+                this,SLOT(objectDeleted()));
         initProperty();
         m_object->installEventFilter(this);
         foreach(QAbstractProperty *pro,m_propertys)
@@ -239,6 +244,11 @@ void QAbstractHost::insertProperty(QAbstractProperty *property, int index)
     m_nameToProperty.insert(property->getName(),property);
     connect(property,SIGNAL(valueChanged(QVariant,QVariant)),
             this,SLOT(propertyChanged()));
+    if(property->metaObject()->className() == QString("QStringProperty"))
+    {
+        QStringProperty *pro = (QStringProperty*)property;
+        connect(pro,SIGNAL(needUpdate()),this,SLOT(strPropertyNeedUpdate()));
+    }
 }
 
 void QAbstractHost::removeProperty(const QString &name)
@@ -327,6 +337,11 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
 {
     if(index >=0 && index <= m_children.size())
     {
+        if(host->m_parent != NULL)
+        {
+            disconnect(host,SIGNAL(needUpdate(QAbstractProperty*)),
+                    this,SIGNAL(needUpdate(QAbstractProperty*)));
+        }
         host->m_parent= this;
         m_children.insert(index,host);
         if(m_object->isWidgetType())
@@ -339,6 +354,8 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
         {
             host->getObject()->setParent(m_object);
         }
+        connect(host,SIGNAL(needUpdate(QStringProperty*)),
+                this,SIGNAL(needUpdate(QStringProperty*)));
         emit hostAdded(host,index);
     }
 }
@@ -353,19 +370,65 @@ void QAbstractHost::removeHost(QAbstractHost *host)
 
 void QAbstractHost::updateProperty()
 {
+    if(m_object == NULL)
+    {
+        return;
+    }
     foreach(QAbstractProperty *property,m_propertys)
     {
-        if(property->property("notSync").toBool())
+        int status = property->property("syncStatus").toInt();
+        if(status == 2)
         {
-            continue;
+            property->setValue(m_object->property(property->getName().toLocal8Bit()));
         }
-        property->setValue(m_object->property(property->getName().toLocal8Bit()));
+        else
+        {
+            m_object->setProperty(property->getName().toLocal8Bit(),
+                                  property->getValue());
+        }
+        property->setProperty("syncStatus",0);
+    }
+}
+
+void QAbstractHost::updateStringProperty()
+{
+    QList<QAbstractProperty*> list = m_propertys;
+
+    while(list.size()>0)
+    {
+        QAbstractProperty * pro = list.takeFirst();
+        if(pro->metaObject()->className() == QString("QStringProperty"))
+        {
+            emit needUpdate((QStringProperty*)pro);
+        }
+        list += pro->getChildren();
+    }
+
+    foreach(QAbstractHost * host,m_children)
+    {
+        host->updateStringProperty();
     }
 }
 
 void QAbstractHost::propertyChanged()
 {
+    if(m_object == NULL)
+    {
+        return;
+    }
     QAbstractProperty * pro = (QAbstractProperty*) sender();
     m_object->setProperty(pro->getName().toLocal8Bit(),
                           pro->getValue());
+}
+
+void QAbstractHost::strPropertyNeedUpdate()
+{
+    QStringProperty * pro = (QStringProperty*)sender();
+
+    emit needUpdate(pro);
+}
+
+void QAbstractHost::objectDeleted()
+{
+    m_object = NULL;
 }

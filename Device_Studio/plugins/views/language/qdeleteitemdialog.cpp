@@ -2,6 +2,9 @@
 #include "ui_qdeleteitemdialog.h"
 
 #include "../../../libs/platform/qbaselistview.h"
+#include "../../../libs/platform/qsoftcore.h"
+#include "../../../libs/kernel/language/qlanguagemanager.h"
+#include "../../../libs/kernel/qproject.h"
 
 QDeleteItemDialog::QDeleteItemDialog(const QStringList &list,QWidget *parent) :
     QDialog(parent),
@@ -16,14 +19,17 @@ QDeleteItemDialog::QDeleteItemDialog(const QStringList &list,QWidget *parent) :
 
     m_listView->setHeaderLabels(QStringList()<<tr("Keyword"));
 
+    QLanguageManager * manager = QSoftCore::getInstance()->getProject()
+            ->getLanguageManager();
     foreach(QString str,list)
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(m_listView);
-        item->setText(0,str);
-        item->setToolTip(0,str);
+        QLanguageItem * li = manager->getItem(str);
+        item->setText(0,li->m_name);
+        item->setToolTip(0,li->m_name);
         item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
-        m_keyToItem.insert(str,item);
-        m_itemToKey.insert(item,str);
+        m_keyToItem.insert(li->m_uuid,item);
+        m_itemToKey.insert(item,li->m_uuid);
         item->setCheckState(0,Qt::Unchecked);
     }
 

@@ -5,6 +5,7 @@
 #include "../xmlnode.h"
 
 #include <QFile>
+#include <QUuid>
 
 QLanguageManager::QLanguageManager(QObject *parent) :
     QObject(parent)
@@ -53,17 +54,62 @@ void QLanguageManager::load(const QString &path)
         {
             loadLanguage(path+"/"+obj->getText());
         }
+        else if(obj->getTitle() == "Item")
+        {
+            QLanguageItem *item = new QLanguageItem;
+            item->m_name = obj->getProperty("name");
+            item->m_uuid = obj->getProperty("uuid");
+            if(item->m_name != "" && item->m_uuid != "")
+            {
+                m_languageItems.append(item);
+                m_uuidToItems.insert(item->m_uuid,item);
+                m_nameToItems.insert(item->m_name,item);
+            }
+            else
+            {
+                delete item;
+            }
+        }
+    }
+}
+
+void QLanguageManager::save(const QString &path)
+{
+    XmlNode xml;
+
+    xml.setTitle("Languages");
+
+    foreach(QLanguage * language, m_languages)
+    {
+        XmlNode *obj = new XmlNode(&xml);
+        obj->setTitle("Language");
+        obj->setText(language->getID()+".xml");
+        language->save(path+"/"+language->getID()+".xml");
+    }
+
+    foreach(QLanguageItem * item,m_languageItems)
+    {
+        XmlNode * obj = new XmlNode(&xml);
+        obj->setTitle("Item");
+        obj->setProperty("name",item->m_name);
+        obj->setProperty("uuid",item->m_uuid);
+    }
+
+    QString str;
+    xml.save(str);
+    QFile f(path+"/language.xml");
+
+    if(f.open(QFile::ReadWrite))
+    {
+        f.write(str.toLocal8Bit());
+        f.close();
     }
 }
 
 void QLanguageManager::loadLanguage(const QString &fileName)
 {
 
-   QLanguage *language = new QLanguage();
-    connect(language,SIGNAL(itemAdded(QString)),
-            this,SLOT(languageItemAdded(QString)));
-    connect(language,SIGNAL(itemDeled(QString)),
-            this,SLOT(languageItemRemove(QString)));
+   QLanguage *language = new QLanguage(this);
    if(!language->load(fileName))
    {
        delete language;
@@ -89,25 +135,22 @@ QString QLanguageManager::addLanguage(const QString &id)
         return tr("This language has been added!");
     }
 
-    language = new QLanguage(id);
-    connect(language,SIGNAL(itemAdded(QString)),
-            this,SLOT(languageItemAdded(QString)));
-    connect(language,SIGNAL(itemDeled(QString)),
-            this,SLOT(languageItemRemove(QString)));
-    if(m_languages.size() !=0)
+    language = new QLanguage(this,id);
+
+    foreach(QLanguageItem * item,m_languageItems)
     {
-        QLanguage *temp = m_languages.first();
-        QStringList list = temp->getKeys();
-        foreach(QString str,list)
-        {
-            language->addItem(str,"");
-        }
+        language->addItem(item->m_uuid,item->m_name);
+        language->setValue(item->m_uuid,item->m_name);
     }
 
     m_languages.append(language);
     m_idToLanguage.insert(id,language);
 
     emit languageAdd(id);
+    if(m_currentLanguageID == "")
+    {
+        setCurrentLanguage(id);
+    }
     return "";
 }
 
@@ -118,17 +161,17 @@ void QLanguageManager::removeLanguage(QLanguage *language)
         return;
     }
 
-    foreach(QString str,language->getKeys())
+    if(m_currentLanguageID == language->getID())
     {
-        int count = m_allKeys.value(str,0);
-        count --;
-        if(count <= 0)
+        QList<QLanguage*> list = m_languages;
+        list.removeAll(language);
+        if(list.size() > 0)
         {
-            m_allKeys.remove(str);
+            setCurrentLanguage(list.first()->getID());
         }
         else
         {
-            m_allKeys.insert(str,count);
+            setCurrentLanguage("");
         }
     }
 
@@ -144,53 +187,76 @@ QLanguage* QLanguageManager::getLanguage(const QString &id)
     return m_idToLanguage.value(id);
 }
 
-void QLanguageManager::addItem(const QString &key, const QString &value)
+void QLanguageManager::addItem(const QString &name)
 {
+    if(m_nameToItems.keys().contains(name))
+    {
+        return;
+    }
+    QLanguageItem *item = new QLanguageItem;
+    item->m_name = name;
+    item->m_uuid = QUuid::createUuid().toString();
+    m_languageItems.append(item);
+    m_nameToItems.insert(item->m_name,item);
+    m_uuidToItems.insert(item->m_uuid,item);
+    foreach(QLanguage* language,m_languages)
+    {
+        language->addItem(item->m_uuid,item->m_name);
+    }
+
+    emit itemAdded(item);
+}
+
+void QLanguageManager::delItem(const QString &uuid)
+{
+    QLanguageItem * item = m_uuidToItems.value(uuid);
+    if(item == NULL)
+    {
+        return;
+    }
+
+    emit itemDeled(item);
+    m_languageItems.removeAll(item);
+    m_nameToItems.remove(item->m_name);
+    m_uuidToItems.remove(item->m_uuid);
     foreach(QLanguage * language,m_languages)
     {
-        language->addItem(key,value);
+        language->delItem(item->m_uuid);
+    }
+
+    delete item;
+}
+
+QStringList QLanguageManager::getAllUuids()
+{
+    return m_uuidToItems.keys();
+}
+
+QStringList QLanguageManager::getAllNames()
+{
+    return m_nameToItems.keys();
+}
+
+QLanguageItem * QLanguageManager::getItem(const QString &uuid)
+{
+    return m_uuidToItems.value(uuid);
+}
+
+QLanguageItem * QLanguageManager::getItemByName(const QString &name)
+{
+    return m_nameToItems.value(name);
+}
+
+void QLanguageManager::setCurrentLanguage(const QString &id)
+{
+    if(m_currentLanguageID != id)
+    {
+        m_currentLanguageID = id;
+        emit currentLanguageChanged(m_currentLanguageID);
     }
 }
 
-void QLanguageManager::delItem(const QString &key)
+QLanguage * QLanguageManager::getCurrentLanguage()
 {
-    foreach(QLanguage * language,m_languages)
-    {
-        language->delItem(key);
-    }
-}
-
-void QLanguageManager::languageItemAdded(const QString &key)
-{
-    int count = m_allKeys.value(key,0);
-    count ++;
-    m_allKeys.insert(key,count);
-    QLanguage * language = (QLanguage*)sender();
-    if(count == 1)
-    {
-        emit itemAdded(key);
-    }
-    emit updateItem(language->getID(),key);
-}
-
-void QLanguageManager::languageItemRemove(const QString &key)
-{
-    QLanguage * language = (QLanguage*)sender();
-    int count = m_allKeys.value(key,0);
-    count --;
-    if(count == 0)
-    {
-        m_allKeys.remove(key);
-        emit itemDeled(key);
-    }
-    else
-    {
-        m_allKeys.insert(key,count);
-        emit updateItem(language->getID(),key);
-    }
-}
-
-QStringList QLanguageManager::getAllKeyword()
-{
-    return m_allKeys.keys();
+    return m_idToLanguage.value(m_currentLanguageID);
 }

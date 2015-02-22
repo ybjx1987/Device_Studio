@@ -99,3 +99,15 @@ void QFontProperty::writeValue(XmlNode *xml)
 {
     xml->setProperty("name",getName());
 }
+
+void QFontProperty::updateValue()
+{
+    QFont f= getValue().value<QFont>();
+    f.setFamily(m_family->getValue().toString());
+    f.setBold(m_bold->getValue().toBool());
+    f.setUnderline(m_underline->getValue().toBool());
+    f.setPointSize(m_pointSize->getValue().toInt());
+    f.setItalic(m_italic->getValue().toInt());
+    f.setStrikeOut(m_strikeout->getValue().toBool());
+    setValue(QVariant::fromValue<QFont>(f));
+}

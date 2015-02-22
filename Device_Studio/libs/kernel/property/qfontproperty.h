@@ -17,6 +17,7 @@ public:
     QIcon           getValueIcon();
 
     void            setValue(const QVariant &value);
+    void            updateValue();
 protected:
     void            makeValue(XmlNode *xml);
     void            writeValue(XmlNode *xml);

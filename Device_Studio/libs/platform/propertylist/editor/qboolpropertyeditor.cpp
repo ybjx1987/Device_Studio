@@ -10,7 +10,7 @@ QBoolPropertyEditor::QBoolPropertyEditor(QAbstractProperty* property):
 
 }
 
-void QBoolPropertyEditor::mouseDoubleClickEvent(QMouseEvent *e)
+void QBoolPropertyEditor::mouseReleaseEvent(QMouseEvent *)
 {
     if(m_property->getValue().toBool())
     {

@@ -117,14 +117,7 @@ void QSoftCore::copyFile(const QString &src, const QString des)
 
 bool QSoftCore::saveProject()
 {
-    QString name = m_project->getProjectHost()->getPropertyValue("path").toString()
-            +"/project.pfl";
-    if(!m_project->getProjectHost()->save(name))
-    {
-        return false;
-    }
-
-    return true;
+    return m_project->save();
 }
 
 void QSoftCore::clearPath(const QString &path)
