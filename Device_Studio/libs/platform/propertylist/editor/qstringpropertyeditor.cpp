@@ -15,11 +15,6 @@ void QStringPropertyEditor::buttonClicked()
 
     QStringProperty * pro = (QStringProperty*)m_property;
 
-    QStringEditorDialog dlg(pro->getUuid(),this);
+    QStringEditorDialog dlg(pro,this);
     dlg.exec();
-
-    if(dlg.getRet() == 1)
-    {
-        pro->setUuid(dlg.getUuid());
-    }
 }

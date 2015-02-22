@@ -7,22 +7,23 @@
 #include "../../../kernel/language/qlanguage.h"
 #include "../../qbaselistview.h"
 #include "../../qlanguageid.h"
+#include "../../../kernel/property/qstringproperty.h"
 
 #include <QCompleter>
 #include <QMessageBox>
 
-QStringEditorDialog::QStringEditorDialog(const QString &uuid,QWidget *parent) :
+QStringEditorDialog::QStringEditorDialog(QStringProperty * property,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QStringEditorDialog),
     m_listView(new QBaseListView),
-    m_ret(0)
+    m_property(property)
 {
     ui->setupUi(this);
     connect(ui->lineEdit,SIGNAL(textChanged(QString)),
             this,SLOT(keyChanged()));
     m_languageManager = QSoftCore::getInstance()->getProject()->getLanguageManager();
-    QCompleter * p = new QCompleter(m_languageManager->getAllNames());
-    ui->lineEdit->setCompleter(p);
+    m_completer = new QCompleter(m_languageManager->getAllNames(),this);
+    ui->lineEdit->setCompleter(m_completer);
     m_listView->setFrameStyle(QFrame::Box);
     m_listView->setHeaderLabels(QStringList()<<tr("Language")<<tr("Text"));
     m_listView->setColumnWidth(0,100);
@@ -39,13 +40,21 @@ QStringEditorDialog::QStringEditorDialog(const QString &uuid,QWidget *parent) :
         m_itemToLanguage.insert(item,language);
     }
 
-    QLanguageItem *item = m_languageManager->getItem(uuid);
-
-    if(item != NULL)
+    if(m_property->getTranslation())
     {
-        m_uuid = uuid;
-        ui->lineEdit->setText(item->m_name);
+        QLanguageItem *item = m_languageManager->getItem(m_property->getUuid());
+
+        if(item != NULL)
+        {
+            ui->lineEdit->setText(item->m_name);
+        }
     }
+    else
+    {
+        ui->lineEdit->setText(m_property->getValue().toString());
+    }
+    m_lastSize = QSize(400,420);
+    ui->checkBox->setChecked(m_property->getTranslation());
 }
 
 QStringEditorDialog::~QStringEditorDialog()
@@ -64,6 +73,14 @@ void QStringEditorDialog::on_okBtn_clicked()
         return;
     }
 
+    if(ui->checkBox->checkState() == Qt::Unchecked)
+    {
+        m_property->setValue(ui->lineEdit->text());
+        m_property->setTranslation(false);
+        close();
+        return;
+    }
+
     QLanguageItem * item = m_languageManager->getItemByName(name);
 
     if(item == NULL)
@@ -79,26 +96,14 @@ void QStringEditorDialog::on_okBtn_clicked()
         return;
     }
 
-    m_uuid = item->m_uuid;
-
+    m_property->setUuid(item->m_uuid);
+    m_property->setTranslation(true);
     close();
-    m_ret = 1;
 }
 
 void QStringEditorDialog::on_cancelBtn_clicked()
 {
     close();
-    m_ret = 0;
-}
-
-QString QStringEditorDialog::getUuid()
-{
-    return m_uuid;
-}
-
-int QStringEditorDialog::getRet()
-{
-    return m_ret;
 }
 
 void QStringEditorDialog::keyChanged()
@@ -124,5 +129,25 @@ void QStringEditorDialog::keyChanged()
             it->setText(1,key);
             it->setToolTip(1,key);
         }
+    }
+}
+
+void QStringEditorDialog::on_checkBox_stateChanged(int)
+{
+    if(ui->checkBox->checkState()==Qt::Checked)
+    {
+        m_listView->setVisible(true);
+        setMaximumHeight(9999);
+        resize(m_lastSize);
+        ui->lineEdit->setCompleter(m_completer);
+    }
+    else
+    {
+        m_listView->setVisible(false);
+        m_lastSize = size();
+        this->updateGeometry();
+        setMaximumHeight(120);
+        resize(QSize(400,90));
+        ui->lineEdit->setCompleter(NULL);
     }
 }

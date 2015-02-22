@@ -248,6 +248,10 @@ bool QProject::save()
 
 void QProject::updateStringProperty(QStringProperty *pro)
 {
+    if(!pro->getTranslation())
+    {
+        return;
+    }
     QLanguage * language = m_languageManager->getCurrentLanguage();
 
     if(language != NULL)
