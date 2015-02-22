@@ -6,6 +6,13 @@
 
 class QLanguage;
 
+class QLanguageItem
+{
+public:
+    QString     m_uuid;
+    QString     m_name;
+};
+
 class QLanguageManager : public QObject
 {
     Q_OBJECT
@@ -21,15 +28,29 @@ public:
 
     QString addLanguage(const QString &id);
     void    removeLanguage(QLanguage * language);
+
+    void    addItem(const QString &name);
+    void    delItem(const QString &uuid);
+
+    QStringList getAllUuids();
+    QStringList getAllNames();
+
+    QLanguageItem*  getItem(const QString &uuid);
 protected:
     void    clear();
     void    loadLanguage(const QString &fileName);
 signals:
     void    languageAdd(const QString &id);
     void    languageDel(QLanguage * language);
+    void    itemAdded(QLanguageItem * item);
+    void    itemDeled(QLanguageItem * item);
 protected:
     QList<QLanguage*>           m_languages;
     QMap<QString,QLanguage*>    m_idToLanguage;
+
+    QList<QLanguageItem*>       m_languageItems;
+    QMap<QString,QLanguageItem*>    m_uuidToItems;
+    QMap<QString,QLanguageItem*>    m_nameToItems;
 };
 
 #endif // QLANGUAGEMANAGER_H

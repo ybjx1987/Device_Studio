@@ -55,7 +55,9 @@ HEADERS += \
     qbuttonlineedit.h \
     qlineeditdialog.h \
     propertylist/editor/qbuttonpropertyeditor.h \
-    propertylist/editor/qfontpropertyeditor.h
+    propertylist/editor/qfontpropertyeditor.h \
+    propertylist/editor/qstringpropertyeditor.h \
+    propertylist/editor/qstringeditordialog.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -92,7 +94,9 @@ SOURCES += \
     qbuttonlineedit.cpp \
     qlineeditdialog.cpp \
     propertylist/editor/qbuttonpropertyeditor.cpp \
-    propertylist/editor/qfontpropertyeditor.cpp
+    propertylist/editor/qfontpropertyeditor.cpp \
+    propertylist/editor/qstringpropertyeditor.cpp \
+    propertylist/editor/qstringeditordialog.cpp
 
 RESOURCES += \
     platform.qrc
@@ -106,4 +110,5 @@ DISTFILES += \
     images/languages/translation.xml
 
 FORMS += \
-    qlineeditdialog.ui
+    qlineeditdialog.ui \
+    propertylist/editor/qstringeditordialog.ui

@@ -18,14 +18,12 @@ public:
     ~QNewItemDialog();
 
     QString getKey();
-    QString getValue();
 
 private:
     Ui::QNewItemDialog *ui;
 protected:
     QValidatorEdit   *m_keyEdit;
     QString          m_key;
-    QString          m_value;
 private slots:
     void on_okBtn_clicked();
     void on_cancelBtn_clicked();

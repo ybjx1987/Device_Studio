@@ -56,5 +56,4 @@ FORMS += \
     qnewlanguagedialog.ui \
     qdellanguagedialog.ui \
     qnewitemdialog.ui \
-    qnewallitemdialog.ui \
     qdeleteitemdialog.ui

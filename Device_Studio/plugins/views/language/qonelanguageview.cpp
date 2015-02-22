@@ -2,6 +2,7 @@
 
 #include "qlanguageitemdeletegate.h"
 
+#include "../../../libs/kernel/language/qlanguagemanager.h"
 #include "../../../libs/kernel/language/qlanguage.h"
 #include "../../../libs/platform/qlanguageid.h"
 #include "../../../libs/platform/qbaseitemdelegate.h"
@@ -19,16 +20,18 @@ QOneLanguageView::QOneLanguageView(QLanguage * language,QWidget* parent):
     connect(language,SIGNAL(itemAdded(QString)),this,SLOT(itemAdded(QString)));
     connect(language,SIGNAL(itemDeled(QString)),this,SLOT(itemDeled(QString)));
 
-    QStringList list = m_language->getKeys();
+    QStringList list = m_language->getUuids();
 
+    QLanguageManager *manager = m_language->getManager();
     foreach(QString str,list)
     {
         QTreeWidgetItem *item = new QTreeWidgetItem(this);
-        item->setText(0,str);
-        item->setText(1,m_language->getValue(str));
+        QLanguageItem *li = manager->getItem(str);
+        item->setText(0,li->m_name);
+        item->setText(1,m_language->getValue(li->m_uuid));
         item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
-        m_keyToItem.insert(str,item);
-        m_itemToKey.insert(item,str);
+        m_keyToItem.insert(li->m_uuid,item);
+        m_itemToKey.insert(item,li->m_uuid);
     }
 
     m_itemDeletegate = new QLanguageItemDeletegate;
@@ -54,11 +57,13 @@ void QOneLanguageView::itemAdded(const QString &key)
     }
 
     QTreeWidgetItem *item = new QTreeWidgetItem(this);
-    item->setText(0,key);
-    item->setText(1,m_language->getValue(key));
+    QLanguageItem *li = m_language->getManager()->getItem(key);
+    item->setData(0,Qt::UserRole,li->m_uuid);
+    item->setText(0,li->m_name);
+    item->setText(1,m_language->getValue(li->m_uuid));
     item->setFlags(Qt::ItemIsEnabled | Qt::ItemIsEditable | Qt::ItemIsSelectable);
-    m_keyToItem.insert(key,item);
-    m_itemToKey.insert(item,key);
+    m_keyToItem.insert(li->m_uuid,item);
+    m_itemToKey.insert(item,li->m_uuid);
 }
 
 void QOneLanguageView::itemDeled(const QString &key)

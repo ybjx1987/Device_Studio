@@ -81,15 +81,6 @@ QLanguageWidget::QLanguageWidget(QWidget* parent):
     QAction *ac = new QAction(this);
     ac->setSeparator(true);
     list.append(ac);
-    toolBar->addButtonActions(list);
-
-    list.clear();
-    toolBar = new QActionToolBar;
-    v = new QVBoxLayout;
-    v->setMargin(0);
-    v->setSpacing(0);
-    v->addWidget(toolBar);
-    m_languageViewBar->setLayout(v);
     list.append(QSoftActionMap::getAction("language.item.add"));
     list.append(QSoftActionMap::getAction("language.item.del"));
     ac = new QAction(this);
@@ -175,16 +166,16 @@ void QLanguageWidget::initAction()
 {
     QAction *ac;
 
-    ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add"),this);
+    ac = new QAction(QIcon(":/inner/images/add_item.png"),tr("Add"),this);
     QSoftActionMap::insertAction("language.item.add",ac);
 
-    ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add"),this);
+    ac = new QAction(QIcon(":/inner/images/add_language.png"),tr("Add"),this);
     QSoftActionMap::insertAction("language.add",ac);
 
     ac = new QAction(QIcon(":/inner/images/del.png"),tr("Del"),this);
     QSoftActionMap::insertAction("language.item.del",ac);
 
-    ac = new QAction(QIcon(":/inner/images/del.png"),tr("Del"),this);
+    ac = new QAction(QIcon(":/inner/images/delete_item.png"),tr("Del"),this);
     QSoftActionMap::insertAction("language.del",ac);
 }
 
@@ -206,7 +197,15 @@ void QLanguageWidget::updateAction()
     if(m_selectUuid == "")
     {
         ac = QSoftActionMap::getAction("language.add");
-        ac->setEnabled(true);
+        if(QSoftCore::getInstance()->getProject()->getProjectStatus()
+                ==PS_OPENED)
+        {
+            ac->setEnabled(true);
+        }
+        else
+        {
+            ac->setEnabled(false);
+        }
         ac = QSoftActionMap::getAction("language.del");
         ac->setEnabled(false);
         ac = QSoftActionMap::getAction("language.item.del");
@@ -276,8 +275,7 @@ void QLanguageWidget::addItem()
 {
     QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
     QStringList list;
-    QLanguage* language = manager->getLanguage(m_selectUuid);
-    list = language->getKeys();
+    list = manager->getAllNames();
     QNewItemDialog dlg(list,this);
 
     dlg.exec();
@@ -286,7 +284,7 @@ void QLanguageWidget::addItem()
 
     if(key != "")
     {
-        language->addItem(key,dlg.getValue());
+        manager->addItem(key);
     }
 }
 
@@ -294,8 +292,7 @@ void QLanguageWidget::delItem()
 {
     QLanguageManager *manager = QSoftCore::getInstance()->getProject()->getLanguageManager();
     QStringList list;
-    QLanguage *language = manager->getLanguage(m_selectUuid);
-    list = language->getKeys();
+    list = manager->getAllUuids();
     QDeleteItemDialog dlg(list,this);
     dlg.exec();
 
@@ -303,6 +300,6 @@ void QLanguageWidget::delItem()
 
     foreach(QString str,list)
     {
-        language->delItem(str);
+        manager->delItem(str);
     }
 }

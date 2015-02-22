@@ -5,25 +5,28 @@
 #include <QStringList>
 #include <QMap>
 
+class QLanguageManager;
+
 class QLanguage : public QObject
 {
     Q_OBJECT
 public:
-    explicit QLanguage(const QString &id="",QObject *parent = 0);
+    explicit QLanguage(QLanguageManager * manager,const QString &id="",QObject *parent = 0);
     ~QLanguage();
 
-    bool    load(const QString &fileName);
 
     QString getID();
+    void    addItem(const QString &uuid,const QString &value);
+    void    delItem(const QString &uuid);
 
-    void    save(const QString &fileName);
+    QStringList getUuids();
+    QString     getValue(const QString &uuid);
+    void        setValue(const QString &uuid,const QString &value);
 
-    void    addItem(const QString &key,const QString &value);
-    void    delItem(const QString &key);
+    bool        load(const QString &fileName);
+    bool        save(const QString &fileName);
 
-    QStringList getKeys();
-    QString     getValue(const QString &key);
-    void        setValue(const QString &key,const QString &value);
+    QLanguageManager    *getManager();
 signals:
     void  itemAdded(const QString &key);
     void  itemDeled(const QString &key);
@@ -31,8 +34,9 @@ signals:
 protected:
     QString m_id;
 
-    QStringList     m_keys;
-    QMap<QString,QString>   m_keyToValue;
+    QStringList     m_uuids;
+    QMap<QString,QString>   m_uuidToValue;
+    QLanguageManager *m_languageManager;
 };
 
 #endif // QLANGUAGE_H
