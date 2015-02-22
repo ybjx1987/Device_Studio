@@ -15,10 +15,12 @@ public:
     QIcon   getValueIcon();
 
     void    setUuid(const QString & uuid);
+    QString getUuid();
 protected:
     void    makeValue(XmlNode *xml);
     void    writeValue(XmlNode *xml);
-
+signals:
+    void    needUpdate();
 protected:
     QString     m_uuid;
 };

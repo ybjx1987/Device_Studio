@@ -21,7 +21,16 @@ QIcon QStringProperty::getValueIcon()
 
 void QStringProperty::setUuid(const QString &uuid)
 {
-    m_uuid = uuid;
+    if(m_uuid != uuid)
+    {
+        m_uuid = uuid;
+        emit needUpdate();
+    }
+}
+
+QString QStringProperty::getUuid()
+{
+    return m_uuid;
 }
 
 void QStringProperty::makeValue(XmlNode *xml)

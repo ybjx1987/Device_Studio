@@ -36,6 +36,10 @@ public:
     QStringList getAllNames();
 
     QLanguageItem*  getItem(const QString &uuid);
+    QLanguageItem*  getItemByName(const QString &name);
+
+    void    setCurrentLanguage(const QString &id);
+    QLanguage * getCurrentLanguage();
 protected:
     void    clear();
     void    loadLanguage(const QString &fileName);
@@ -44,6 +48,8 @@ signals:
     void    languageDel(QLanguage * language);
     void    itemAdded(QLanguageItem * item);
     void    itemDeled(QLanguageItem * item);
+
+    void    currentLanguageChanged(const QString &id);
 protected:
     QList<QLanguage*>           m_languages;
     QMap<QString,QLanguage*>    m_idToLanguage;
@@ -51,6 +57,7 @@ protected:
     QList<QLanguageItem*>       m_languageItems;
     QMap<QString,QLanguageItem*>    m_uuidToItems;
     QMap<QString,QLanguageItem*>    m_nameToItems;
+    QString                     m_currentLanguageID;
 };
 
 #endif // QLANGUAGEMANAGER_H

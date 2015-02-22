@@ -7,6 +7,7 @@
 #include "editor/qintpropertyeditor.h"
 #include "editor/qenumpropertyeditor.h"
 #include "editor/qfontpropertyeditor.h"
+#include "editor/qstringpropertyeditor.h"
 
 QMap<QString,QMetaObject> QPropertyEditorFactory::m_metaObjects;
 
@@ -42,4 +43,5 @@ void QPropertyEditorFactory::registerInnerEditor()
     registerEditor("QEnumProperty",QEnumPropertyEditor::staticMetaObject);
     registerEditor("QCursorProperty",QEnumPropertyEditor::staticMetaObject);
     registerEditor("QFontProperty",QFontPropertyEditor::staticMetaObject);
+    registerEditor("QStringProperty",QStringPropertyEditor::staticMetaObject);
 }

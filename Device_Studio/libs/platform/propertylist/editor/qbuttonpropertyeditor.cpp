@@ -20,3 +20,8 @@ void QButtonPropertyEditor::buttonClicked()
 {
 
 }
+
+void QButtonPropertyEditor::mouseDoubleClickEvent(QMouseEvent *)
+{
+    buttonClicked();
+}

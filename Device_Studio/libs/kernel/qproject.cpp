@@ -7,6 +7,8 @@
 #include "host/qabstracthost.h"
 #include "host/qabstractwidgethost.h"
 #include "language/qlanguagemanager.h"
+#include "property/qstringproperty.h"
+#include "language/qlanguage.h"
 
 #include <QFile>
 #include <QVariant>
@@ -20,7 +22,6 @@ QProject::QProject():
     m_projectModified(PM_NOT_MODIFIED),
     m_languageManager(NULL)
 {
-
 }
 
 QProject::~QProject()
@@ -121,7 +122,8 @@ void QProject::addForm(QAbstractWidgetHost *host, int index)
         index = m_forms.size();
     }
     m_forms.insert(index,host);
-
+    connect(host,SIGNAL(needUpdate(QStringProperty*)),
+            this,SLOT(updateStringProperty(QStringProperty*)));
     emit hostAdded(host,index);
 }
 
@@ -170,6 +172,8 @@ void QProject::loadPages(const QString &path)
                         {
                             host->setUuid(QUuid::createUuid().toString());
                         }
+                        connect(host,SIGNAL(needUpdate(QStringProperty*)),
+                                this,SLOT(updateStringProperty(QStringProperty*)));
                         m_forms.append((QAbstractWidgetHost*)host);
                     }
                 }
@@ -236,4 +240,26 @@ bool QProject::save()
         m_languageManager->save(path+"/languages");
     }
     return true;
+}
+
+void QProject::updateStringProperty(QStringProperty *pro)
+{
+    QLanguage * language = m_languageManager->getCurrentLanguage();
+
+    if(language != NULL)
+    {
+        pro->setValue(language->getValue(pro->getUuid()));
+    }
+    else
+    {
+        QLanguageItem * item = m_languageManager->getItem(pro->getUuid());
+        if(item != NULL)
+        {
+            pro->setValue(item->m_name);
+        }
+        else
+        {
+            pro->setValue("");
+        }
+    }
 }

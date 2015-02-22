@@ -147,6 +147,10 @@ QString QLanguageManager::addLanguage(const QString &id)
     m_idToLanguage.insert(id,language);
 
     emit languageAdd(id);
+    if(m_currentLanguageID == "")
+    {
+        setCurrentLanguage(id);
+    }
     return "";
 }
 
@@ -155,6 +159,20 @@ void QLanguageManager::removeLanguage(QLanguage *language)
     if(!m_languages.contains(language))
     {
         return;
+    }
+
+    if(m_currentLanguageID == language->getID())
+    {
+        QList<QLanguage*> list = m_languages;
+        list.removeAll(language);
+        if(list.size() > 0)
+        {
+            setCurrentLanguage(list.first()->getID());
+        }
+        else
+        {
+            setCurrentLanguage("");
+        }
     }
 
     emit languageDel(language);
@@ -222,4 +240,23 @@ QStringList QLanguageManager::getAllNames()
 QLanguageItem * QLanguageManager::getItem(const QString &uuid)
 {
     return m_uuidToItems.value(uuid);
+}
+
+QLanguageItem * QLanguageManager::getItemByName(const QString &name)
+{
+    return m_nameToItems.value(name);
+}
+
+void QLanguageManager::setCurrentLanguage(const QString &id)
+{
+    if(m_currentLanguageID != id)
+    {
+        m_currentLanguageID = id;
+        emit currentLanguageChanged(m_currentLanguageID);
+    }
+}
+
+QLanguage * QLanguageManager::getCurrentLanguage()
+{
+    return m_idToLanguage.value(m_currentLanguageID);
 }

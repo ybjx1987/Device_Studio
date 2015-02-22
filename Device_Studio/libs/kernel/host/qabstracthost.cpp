@@ -6,6 +6,7 @@
 #include "../property/qbytearrayproperty.h"
 #include "../qhostsyncmanager.h"
 #include "../xmlnode.h"
+#include "../property/qstringproperty.h"
 
 #include <QVariant>
 #include <QUuid>
@@ -239,6 +240,11 @@ void QAbstractHost::insertProperty(QAbstractProperty *property, int index)
     m_nameToProperty.insert(property->getName(),property);
     connect(property,SIGNAL(valueChanged(QVariant,QVariant)),
             this,SLOT(propertyChanged()));
+    if(property->metaObject()->className() == QString("QStringProperty"))
+    {
+        QStringProperty *pro = (QStringProperty*)property;
+        connect(pro,SIGNAL(needUpdate()),this,SLOT(strPropertyNeedUpdate()));
+    }
 }
 
 void QAbstractHost::removeProperty(const QString &name)
@@ -339,6 +345,8 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
         {
             host->getObject()->setParent(m_object);
         }
+        connect(host,SIGNAL(needUpdate(QAbstractProperty*)),
+                this,SIGNAL(needUpdate(QAbstractProperty*)));
         emit hostAdded(host,index);
     }
 }
@@ -374,4 +382,11 @@ void QAbstractHost::propertyChanged()
     QAbstractProperty * pro = (QAbstractProperty*) sender();
     m_object->setProperty(pro->getName().toLocal8Bit(),
                           pro->getValue());
+}
+
+void QAbstractHost::strPropertyNeedUpdate()
+{
+    QStringProperty * pro = (QStringProperty*)sender();
+
+    emit needUpdate(pro);
 }

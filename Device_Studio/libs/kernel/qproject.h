@@ -8,6 +8,7 @@
 
 class QLanguageManager;
 class QProjectHost;
+class QStringProperty;
 
 enum enProjectStatus
 {
@@ -56,6 +57,8 @@ public:
 protected:
     void        setProjectStatus(enProjectStatus newStatus);
     void        loadPages(const QString &path);
+protected slots:
+    void        updateStringProperty(QStringProperty *pro);
 signals:
     void        projectOpened();
     void        projectClosed();
