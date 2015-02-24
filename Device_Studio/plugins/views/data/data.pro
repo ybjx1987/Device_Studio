@@ -32,8 +32,10 @@ DISTFILES += \
 
 HEADERS += \
     qdataplugin.h \
-    qdatawidget.h
+    qdatawidget.h \
+    qdatalistview.h
 
 SOURCES += \
     qdataplugin.cpp \
-    qdatawidget.cpp
+    qdatawidget.cpp \
+    qdatalistview.cpp

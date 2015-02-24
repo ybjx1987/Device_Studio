@@ -63,6 +63,15 @@ void QAbstractDataHost::createObject()
     m_object = new QObject;
 }
 
+void QAbstractDataHost::setExplanation(const QString &explanation)
+{
+    if(m_explanation != explanation)
+    {
+        m_explanation = explanation;
+        emit propertyChanged("explanation");
+    }
+}
+
 void QAbstractDataHost::initProperty()
 {
     QAbstractHost::initProperty();
@@ -70,4 +79,9 @@ void QAbstractDataHost::initProperty()
     QAbstractProperty * pro;
 
     removeProperty("objectName");
+}
+
+QString QAbstractDataHost::getUuid()
+{
+    return m_uuid;
 }

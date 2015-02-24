@@ -21,6 +21,11 @@ public:
 
     QString             getName();
     void                setName(const QString & name);
+
+    QString             getExplanation();
+    void                setExplanation(const QString & explanation);
+
+    QString             getUuid();
 protected:
     void    createObject();
     void    initProperty();
@@ -31,6 +36,8 @@ protected:
     QVariant        m_value;
     QString         m_name;
     bool            m_needSave;
+    QString         m_explanation;
+    QString         m_uuid;
 };
 
 #endif // QABSTRACTDATAHOST_H
