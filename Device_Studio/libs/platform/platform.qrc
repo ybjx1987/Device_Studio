@@ -100,5 +100,8 @@
         <file>images/delete_item.png</file>
         <file>images/data.png</file>
         <file>images/add_data_group.png</file>
+        <file>images/del_data_group.png</file>
+        <file>images/del_data.png</file>
+        <file>images/add_data.png</file>
     </qresource>
 </RCC>
