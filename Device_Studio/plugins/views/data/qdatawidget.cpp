@@ -1,12 +1,19 @@
 #include "qdatawidget.h"
 
 #include "qdatalistview.h"
+#include "qnewdatagroupdialog.h"
+#include "qdeletedatagroupdialog.h"
 
+#include "../../../libs/kernel/data/qdatagroup.h"
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/platform/propertylist/qpropertylistview.h"
 #include "../../../libs/platform/minisplitter.h"
 #include "../../../libs/platform/qsoftactionmap.h"
 #include "../../../libs/platform/qactiontoolbar.h"
+
+#include "../../../libs/platform/qsoftcore.h"
+#include "../../../libs/kernel/qproject.h"
+#include "../../../libs/kernel/data/qdatamanager.h"
 
 #include <QVBoxLayout>
 
@@ -75,6 +82,24 @@ QDataWidget::QDataWidget(QWidget * parent):
     v->addWidget(toolBar);
 
     m_dataListviewBar->setLayout(v);
+
+    ac = QSoftActionMap::getAction("Data.Group.Add");
+    connect(ac,SIGNAL(triggered()),this,SLOT(newGroup()));
+
+    ac = QSoftActionMap::getAction("Data.Group.Del");
+    connect(ac,SIGNAL(triggered()),this,SLOT(delGroup()));
+
+    m_project = QSoftCore::getInstance()->getProject();
+
+    connect(m_project,SIGNAL(projectOpened()),
+            this,SLOT(projectOpened()));
+    connect(m_project,SIGNAL(projectClosed()),
+            this,SLOT(projectClosed()));
+
+    updateAction();
+
+    connect(m_dataListview,SIGNAL(updateAction()),
+            this,SLOT(updateAction()));
 }
 
 void QDataWidget::initAction()
@@ -92,4 +117,88 @@ void QDataWidget::initAction()
 
     ac = new QAction(QIcon(":/inner/images/add_data.png"),tr("Add Data"),this);
     QSoftActionMap::insertAction("Data.Add",ac);
+}
+
+void QDataWidget::newGroup()
+{
+    QStringList list;
+
+    foreach(QDataGroup * group,m_project->getDataManager()->getGroups())
+    {
+        list.append(group->getGroupName());
+    }
+
+    QNewDataGroupDialog dlg(list,this);
+
+    dlg.exec();
+
+    QString name = dlg.getName();
+
+    if(name != "")
+    {
+        m_project->getDataManager()->addGroup(name);
+    }
+}
+
+void QDataWidget::projectClosed()
+{
+    m_dataListview->clear();
+    updateAction();
+}
+
+void QDataWidget::projectOpened()
+{
+    m_dataListview->setDataManager(m_project->getDataManager());
+    updateAction();
+}
+
+void QDataWidget::updateAction()
+{
+    QAction *ac;
+
+    if(m_project->getProjectStatus() != PS_OPENED)
+    {
+        ac = QSoftActionMap::getAction("Data.Group.Add");
+        ac->setEnabled(false);
+        ac = QSoftActionMap::getAction("Data.Group.Del");
+        ac->setEnabled(false);
+        ac = QSoftActionMap::getAction("Data.Add");
+        ac->setEnabled(false);
+        ac = QSoftActionMap::getAction("Data.Del");
+        ac->setEnabled(false);
+    }
+    else
+    {
+        ac = QSoftActionMap::getAction("Data.Group.Add");
+        ac->setEnabled(true);
+        if(m_project->getDataManager()->getGroups().size() > 0)
+        {
+            ac = QSoftActionMap::getAction("Data.Group.Del");
+            ac->setEnabled(true);
+            ac = QSoftActionMap::getAction("Data.Add");
+            ac->setEnabled(true);
+        }
+        else
+        {
+            ac = QSoftActionMap::getAction("Data.Group.Del");
+            ac->setEnabled(false);
+            ac = QSoftActionMap::getAction("Data.Add");
+            ac->setEnabled(false);
+        }
+        int count = 0;
+        foreach(QDataGroup * group,m_project->getDataManager()->getGroups())
+        {
+            count += group->getDatas().size();
+        }
+
+        ac = QSoftActionMap::getAction("Data.Del");
+        ac->setEnabled(count != 0);
+    }
+}
+
+void QDataWidget::delGroup()
+{
+    QDeleteDataGroupDialog dlg(m_project->getDataManager(),this);
+
+    dlg.exec();
 }

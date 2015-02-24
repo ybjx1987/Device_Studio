@@ -19,12 +19,16 @@ public:
 
     QAbstractDataHost * getData(const QString & name);
     QAbstractDataHost * getDataByUuid(const QString & uuid);
+
+    QList<QDataGroup*>  getGroups();
+    QDataGroup*         getGroup(const QString & name);
+    QDataGroup*         getGropuByUuid(const QString & uuid);
 signals:
     void    groupAdded(QDataGroup * group,int index);
     void    groupDeled(QDataGroup * group);
 protected:
     QList<QDataGroup*>   m_groups;
-    QMap<QString,QDataGroup*>   m_nameToGroup;
+    QMap<QString,QDataGroup*>   m_uuidToGroup;
 };
 
 #endif // QDATAMANAGER_H

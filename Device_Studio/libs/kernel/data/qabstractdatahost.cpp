@@ -72,6 +72,11 @@ void QAbstractDataHost::setExplanation(const QString &explanation)
     }
 }
 
+QString QAbstractDataHost::getExplanation()
+{
+    return m_explanation;
+}
+
 void QAbstractDataHost::initProperty()
 {
     QAbstractHost::initProperty();

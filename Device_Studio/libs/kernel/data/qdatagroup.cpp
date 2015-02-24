@@ -55,9 +55,10 @@ void QDataGroup::delData(QAbstractDataHost *data)
         return;
     }
 
+    m_datas.removeAll(data);
+
     emit dataDeled(data);
 
-    m_datas.removeAll(data);
     delete data;
 }
 
