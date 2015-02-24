@@ -5,11 +5,19 @@
 
 #include <QVariant>
 
+class KERNEL_EXPORT QDataHostInfo : public QAbstractHostInfo
+{
+public:
+    QDataHostInfo(){m_type="data";}
+
+    QString     m_showName;
+};
+
 class KERNEL_EXPORT QAbstractDataHost : public QAbstractHost
 {
     Q_OBJECT
 public:
-    QAbstractDataHost();
+    QAbstractDataHost(QAbstractHost * parent = NULL);
 
     virtual QString     getValueText();
     virtual QVariant    getValue();

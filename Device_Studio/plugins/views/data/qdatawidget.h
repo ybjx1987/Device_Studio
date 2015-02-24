@@ -20,6 +20,7 @@ protected slots:
     void    updateAction();
     void    newGroup();
     void    delGroup();
+    void    newData();
     void    projectOpened();
     void    projectClosed();
 protected:

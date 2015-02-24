@@ -1,7 +1,7 @@
 #include "qabstractdatahost.h"
 
-QAbstractDataHost::QAbstractDataHost():
-    QAbstractHost(NULL)
+QAbstractDataHost::QAbstractDataHost(QAbstractHost * parent):
+    QAbstractHost(parent)
 {
 
 }

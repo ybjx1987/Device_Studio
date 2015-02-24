@@ -69,7 +69,8 @@ SOURCES += \
     host/qdatetimeedithost.cpp \
     data/qabstractdatahost.cpp \
     data/qdatamanager.cpp \
-    data/qdatagroup.cpp
+    data/qdatagroup.cpp \
+    data/qintdatahost.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -124,7 +125,8 @@ HEADERS +=\
     host/qdatetimeedithost.h \
     data/qabstractdatahost.h \
     data/qdatamanager.h \
-    data/qdatagroup.h
+    data/qdatagroup.h \
+    data/qintdatahost.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

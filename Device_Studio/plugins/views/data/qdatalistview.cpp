@@ -56,6 +56,7 @@ void QDataListView::addGroup(QDataGroup *group,int index)
     }
     item->setFlags(Qt::ItemIsEditable | Qt::ItemIsEnabled | Qt::ItemIsSelectable);
     this->insertTopLevelItem(index,item);
+    item->setExpanded(true);
     m_itemToGroup.insert(item,group);
     m_groupToItem.insert(group,item);
 

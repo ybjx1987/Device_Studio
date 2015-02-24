@@ -3,6 +3,7 @@
 #include "qdatalistview.h"
 #include "qnewdatagroupdialog.h"
 #include "qdeletedatagroupdialog.h"
+#include "qnewdatadialog.h"
 
 #include "../../../libs/kernel/data/qdatagroup.h"
 #include "../../../libs/platform/styledbar.h"
@@ -88,6 +89,9 @@ QDataWidget::QDataWidget(QWidget * parent):
 
     ac = QSoftActionMap::getAction("Data.Group.Del");
     connect(ac,SIGNAL(triggered()),this,SLOT(delGroup()));
+
+    ac = QSoftActionMap::getAction("Data.Add");
+    connect(ac,SIGNAL(triggered()),this,SLOT(newData()));
 
     m_project = QSoftCore::getInstance()->getProject();
 
@@ -199,6 +203,13 @@ void QDataWidget::updateAction()
 void QDataWidget::delGroup()
 {
     QDeleteDataGroupDialog dlg(m_project->getDataManager(),this);
+
+    dlg.exec();
+}
+
+void QDataWidget::newData()
+{
+    QNewDataDialog dlg(m_project->getDataManager(),this);
 
     dlg.exec();
 }
