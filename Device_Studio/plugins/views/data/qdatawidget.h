@@ -13,6 +13,8 @@ class QDataWidget : public QAbstractPageWidget
 public:
     QDataWidget(QWidget * parent = NULL);
 protected:
+    void    initAction();
+protected:
     QDataListView       *m_dataListview;
     StyledBar           *m_dataListviewBar;
 
