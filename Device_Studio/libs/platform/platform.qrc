@@ -98,5 +98,6 @@
         <file>images/add_item.png</file>
         <file>images/add_language.png</file>
         <file>images/delete_item.png</file>
+        <file>images/data.png</file>
     </qresource>
 </RCC>

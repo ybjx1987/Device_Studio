@@ -150,7 +150,7 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
 void QDesignerWidget::formAdded(QAbstractWidgetHost *host, int)
 {
     m_formEditor->setHostList(QList<QAbstractWidgetHost*>()<<host);
-    m_formlist->addItem(host->getName());
+    m_formlist->addItem(host->getPropertyValue("objectName").toString());
 }
 
 void QDesignerWidget::initDesignerViewAction()

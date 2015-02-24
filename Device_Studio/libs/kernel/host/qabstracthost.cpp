@@ -158,16 +158,6 @@ void QAbstractHost::readAttribute(XmlNode *xml)
     setUuid(xml->getProperty("uuid"));
 }
 
-void QAbstractHost::setName(const QString &name)
-{
-    m_name = name;
-}
-
-QString QAbstractHost::getName()
-{
-    return m_name;
-}
-
 void QAbstractHost::setUuid(const QString &uuid)
 {
     m_uuid = uuid;
