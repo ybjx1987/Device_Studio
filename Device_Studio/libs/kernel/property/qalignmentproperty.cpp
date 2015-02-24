@@ -72,6 +72,7 @@ void QAlignmentProperty::setValue(const QVariant &value)
 void QAlignmentProperty::makeValue(XmlNode *xml)
 {
     setName(xml->getProperty("name"));
+    updateValue();
 }
 
 void QAlignmentProperty::writeValue(XmlNode *xml)

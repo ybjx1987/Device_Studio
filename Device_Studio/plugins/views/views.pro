@@ -3,4 +3,5 @@ TEMPLATE = subdirs
 SUBDIRS += \
     designer \
     project \
-    language
+    language\
+    data

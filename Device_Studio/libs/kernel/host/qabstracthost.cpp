@@ -43,7 +43,7 @@ bool QAbstractHost::toXml(XmlNode *xml)
         return false;
     }
 
-    xml->setTitle(getHostInfo()->m_type);
+    xml->setTitle(property("hostType").toString());
 
     writeAttribute(xml);
 
@@ -80,7 +80,7 @@ bool QAbstractHost::fromXml(XmlNode *xml)
         return false;
     }
 
-    if(xml->getTitle() != getHostInfo()->m_type)
+    if(xml->getTitle() != property("hostType").toString())
     {
         return false;
     }
@@ -149,24 +149,13 @@ void QAbstractHost::clear()
 
 void QAbstractHost::writeAttribute(XmlNode *xml)
 {
-    xml->setProperty("name",getName());
+    xml->setProperty("type",property("hostName").toString());
     xml->setProperty("uuid",getUuid());
 }
 
 void QAbstractHost::readAttribute(XmlNode *xml)
 {
-    setName(xml->getProperty("name"));
     setUuid(xml->getProperty("uuid"));
-}
-
-void QAbstractHost::setName(const QString &name)
-{
-    m_name = name;
-}
-
-QString QAbstractHost::getName()
-{
-    return m_name;
 }
 
 void QAbstractHost::setUuid(const QString &uuid)
@@ -211,6 +200,7 @@ void QAbstractHost::init()
         {
             pro->setValue(m_object->property(pro->getName().toLocal8Bit()));
         }
+        setDefaultValue();
     }
 }
 
@@ -431,4 +421,17 @@ void QAbstractHost::strPropertyNeedUpdate()
 void QAbstractHost::objectDeleted()
 {
     m_object = NULL;
+}
+
+void QAbstractHost::setDefaultValue()
+{
+    foreach(QAbstractProperty * pro,m_propertys)
+    {
+        pro->setDefaultValue(pro->getValue());
+    }
+
+    foreach(QAbstractHost * host,m_children)
+    {
+        host->setDefaultValue();
+    }
 }

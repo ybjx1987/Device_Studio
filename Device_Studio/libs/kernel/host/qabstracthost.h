@@ -30,9 +30,6 @@ public:
 
     void                    clear();
 
-    void                    setName(const QString &name);
-    QString                 getName();
-
     void                    setUuid(const QString &uuid);
     QString                 getUuid();
 
@@ -56,6 +53,8 @@ public:
 
     void                    updateProperty();
     void                    updateStringProperty();
+
+    void                    setDefaultValue();
 protected:
     virtual void    createObject();
     virtual void    initProperty();
