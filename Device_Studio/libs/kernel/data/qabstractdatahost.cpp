@@ -3,6 +3,7 @@
 #include "../property/qabstractproperty.h"
 #include "../property/qbytearrayproperty.h"
 #include "../property/qboolproperty.h"
+#include "../property/qintproperty.h"
 
 QAbstractDataHost::QAbstractDataHost(QAbstractHost * parent):
     QAbstractHost(parent)
@@ -58,10 +59,23 @@ void QAbstractDataHost::initProperty()
     pro->setGroup("Attributes");
     insertProperty(pro);
 
+    pro = new QIntProperty;
+    pro->setName("savePeriod");
+    pro->setShowName(tr("Save Period(ms)"));
+    pro->setGroup("Attributes");
+    insertProperty(pro);
+
+    pro = new QBoolProperty;
+    pro->setName("hold");
+    pro->setShowName(tr("Hold"));
+    pro->setGroup("Attributes");
+    insertProperty(pro);
 
 }
 
 void QAbstractDataHost::initDefaultValue()
 {
     m_object->setProperty("needSave",false);
+    m_object->setProperty("hold",false);
+    m_object->setProperty("savePeriod",1000);
 }

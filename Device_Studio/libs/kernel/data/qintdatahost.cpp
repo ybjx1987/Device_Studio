@@ -33,18 +33,19 @@ void QIntDataHost::initProperty()
     pro = new QIntProperty;
     pro->setName("minValue");
     pro->setShowName("Minium Value");
-    pro->setGroup("Attribute");
+    pro->setGroup("Attributes");
     insertProperty(pro);
 
     pro = new QIntProperty;
     pro->setName("maxValue");
     pro->setShowName("Maxium Value");
-    pro->setGroup("Attribute");
+    pro->setGroup("Attributes");
     insertProperty(pro);
 }
 
 void QIntDataHost::initDefaultValue()
 {
+    QAbstractDataHost::initDefaultValue();
     m_object->setProperty("value",0);
     m_object->setProperty("minValue",0);
     m_object->setProperty("maxValue",65535);

@@ -111,8 +111,8 @@ void QNewDataDialog::on_okBtn_clicked()
         return;
     }
 
-    group->addData(data);
     data->setPropertyValue("objectName",name);
+    group->addData(data);
     close();
 }
 

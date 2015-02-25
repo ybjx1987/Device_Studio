@@ -13,6 +13,8 @@ QDataListView::QDataListView(QWidget* parent):
 {
     setHeaderLabels(QStringList()<<tr("Name")<<tr("Value")<<tr("NeedSave")
                     <<tr("Type")<<tr("Explanation"));
+    connect(this,SIGNAL(itemSelectionChanged()),this,
+            SLOT(dataSelect()));
 }
 
 void QDataListView::clear()
@@ -174,4 +176,24 @@ void QDataListView::dataDeled(QAbstractDataHost *data)
 
     delete item;
     emit updateAction();
+}
+
+void QDataListView::dataSelect()
+{
+    QList<QTreeWidgetItem*> list = selectedItems();
+    if(list.size() == 0)
+    {
+        emit dataSelected(NULL);
+        return;
+    }
+    QTreeWidgetItem * item = list.first();
+
+    if(m_itemToData.keys().contains(item))
+    {
+        emit dataSelected(m_itemToData.value(item));
+    }
+    else
+    {
+        emit dataSelected(NULL);
+    }
 }

@@ -37,6 +37,7 @@ void QFloatDataHost::initProperty()
 
 void QFloatDataHost::initDefaultValue()
 {
+    QAbstractDataHost::initDefaultValue();
     m_object->setProperty("value",0.0);
     m_object->setProperty("minValue",0.0);
     m_object->setProperty("maxValue",65535.0);

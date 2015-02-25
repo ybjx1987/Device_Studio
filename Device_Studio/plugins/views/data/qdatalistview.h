@@ -26,8 +26,11 @@ protected slots:
 
     void    dataAdded(QAbstractDataHost * data,int index);
     void    dataDeled(QAbstractDataHost * data);
+
+    void    dataSelect();
 signals:
     void    updateAction();
+    void    dataSelected(QAbstractDataHost* data);
 protected:
     QMap<QAbstractDataHost*,QTreeWidgetItem*>   m_dataToItem;
     QMap<QTreeWidgetItem*,QAbstractDataHost*>   m_itemToData;

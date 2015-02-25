@@ -36,7 +36,8 @@ HEADERS += \
     qdatalistview.h \
     qnewdatagroupdialog.h \
     qdeletedatagroupdialog.h \
-    qnewdatadialog.h
+    qnewdatadialog.h \
+    qdeletedatadialog.h
 
 SOURCES += \
     qdataplugin.cpp \
@@ -44,9 +45,11 @@ SOURCES += \
     qdatalistview.cpp \
     qnewdatagroupdialog.cpp \
     qdeletedatagroupdialog.cpp \
-    qnewdatadialog.cpp
+    qnewdatadialog.cpp \
+    qdeletedatadialog.cpp
 
 FORMS += \
     qnewdatagroupdialog.ui \
     qdeletedatagroupdialog.ui \
-    qnewdatadialog.ui
+    qnewdatadialog.ui \
+    qdeletedatadialog.ui

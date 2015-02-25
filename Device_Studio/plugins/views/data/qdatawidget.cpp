@@ -4,6 +4,7 @@
 #include "qnewdatagroupdialog.h"
 #include "qdeletedatagroupdialog.h"
 #include "qnewdatadialog.h"
+#include "qdeletedatadialog.h"
 
 #include "../../../libs/kernel/data/qdatagroup.h"
 #include "../../../libs/platform/styledbar.h"
@@ -11,8 +12,9 @@
 #include "../../../libs/platform/minisplitter.h"
 #include "../../../libs/platform/qsoftactionmap.h"
 #include "../../../libs/platform/qactiontoolbar.h"
-
 #include "../../../libs/platform/qsoftcore.h"
+
+#include "../../../libs/kernel/data/qabstractdatahost.h"
 #include "../../../libs/kernel/qproject.h"
 #include "../../../libs/kernel/data/qdatamanager.h"
 
@@ -93,6 +95,9 @@ QDataWidget::QDataWidget(QWidget * parent):
     ac = QSoftActionMap::getAction("Data.Add");
     connect(ac,SIGNAL(triggered()),this,SLOT(newData()));
 
+    ac = QSoftActionMap::getAction("Data.Del");
+    connect(ac,SIGNAL(triggered()),this,SLOT(delData()));
+
     m_project = QSoftCore::getInstance()->getProject();
 
     connect(m_project,SIGNAL(projectOpened()),
@@ -104,6 +109,12 @@ QDataWidget::QDataWidget(QWidget * parent):
 
     connect(m_dataListview,SIGNAL(updateAction()),
             this,SLOT(updateAction()));
+
+    connect(m_dataListview,SIGNAL(dataSelected(QAbstractDataHost*)),
+            this,SLOT(dataSeleted(QAbstractDataHost*)));
+
+    sp->setSizes(QList<int>()<<100<<400);
+    m_dataPropertyView->setColumnWidth(0,200);
 }
 
 void QDataWidget::initAction()
@@ -210,6 +221,28 @@ void QDataWidget::delGroup()
 void QDataWidget::newData()
 {
     QNewDataDialog dlg(m_project->getDataManager(),this);
+
+    dlg.exec();
+}
+
+void QDataWidget::dataSeleted(QAbstractDataHost *data)
+{
+    QList<QAbstractProperty*> list;
+    if(data != NULL)
+    {
+        list = data->getPropertys();
+        list.removeAll(data->getProperty("objectName"));
+        list.removeAll(data->getProperty("type"));
+        list.removeAll(data->getProperty("value"));
+        list.removeAll(data->getProperty("needSave"));
+        list.removeAll(data->getProperty("explanation"));
+    }
+    m_dataPropertyView->setPropertys(list);
+}
+
+void QDataWidget::delData()
+{
+    QDeleteDataDialog dlg(m_project->getDataManager(),this);
 
     dlg.exec();
 }

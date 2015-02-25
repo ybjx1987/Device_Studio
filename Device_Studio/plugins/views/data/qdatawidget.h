@@ -7,6 +7,7 @@ class QPropertyListView;
 class StyledBar;
 class QDataListView;
 class QDataManager;
+class QAbstractDataHost;
 class QProject;
 
 class QDataWidget : public QAbstractPageWidget
@@ -21,8 +22,11 @@ protected slots:
     void    newGroup();
     void    delGroup();
     void    newData();
+    void    delData();
     void    projectOpened();
     void    projectClosed();
+
+    void    dataSeleted(QAbstractDataHost * data);
 protected:
     QDataListView       *m_dataListview;
     StyledBar           *m_dataListviewBar;
