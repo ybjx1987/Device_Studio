@@ -70,7 +70,7 @@ void QNewDataDialog::groupChanged()
 
     foreach(QAbstractDataHost * data,datas)
     {
-        list.append(data->getName());
+        list.append(data->getPropertyValue("objectName").toString());
     }
 
     m_nameEdit->setIntermediateList(list);
@@ -112,7 +112,7 @@ void QNewDataDialog::on_okBtn_clicked()
     }
 
     group->addData(data);
-    data->setName(name);
+    data->setPropertyValue("objectName",name);
     close();
 }
 

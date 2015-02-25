@@ -66,7 +66,7 @@ QAbstractDataHost * QDataGroup::getData(const QString &name)
 {
     foreach(QAbstractDataHost * data,m_datas)
     {
-        if(data->getName() == name)
+        if(data->getPropertyValue("objectName").toString() == name)
         {
             return data;
         }

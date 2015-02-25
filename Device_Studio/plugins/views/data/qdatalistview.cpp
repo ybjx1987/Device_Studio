@@ -4,12 +4,15 @@
 #include "../../../libs/kernel/data/qdatagroup.h"
 #include "../../../libs/kernel/data/qabstractdatahost.h"
 #include "../../../libs/platform/qbaseitemdelegate.h"
+#include "../../../libs/kernel/property/qabstractproperty.h"
+
+#include <QStringList>
 
 QDataListView::QDataListView(QWidget* parent):
     QBaseListView(parent)
 {
     setHeaderLabels(QStringList()<<tr("Name")<<tr("Value")<<tr("NeedSave")
-                    <<tr("Explanation"));
+                    <<tr("Type")<<tr("Explanation"));
 }
 
 void QDataListView::clear()
@@ -50,7 +53,7 @@ void QDataListView::addGroup(QDataGroup *group,int index)
     QTreeWidgetItem * item = new QTreeWidgetItem;
     item->setText(0,group->getGroupName());
     item->setToolTip(0,group->getGroupName());
-    for(int i= 0;i<4;i++)
+    for(int i= 0;i<5;i++)
     {
         item->setData(i,DarkRole,true);
     }
@@ -90,14 +93,19 @@ void QDataListView::addData(QDataGroup* group,QAbstractDataHost *data,int index)
 
     QTreeWidgetItem * item = new QTreeWidgetItem;
     parentItem->insertChild(index,item);
-    item->setText(0,data->getName());
-    item->setToolTip(0,data->getName());
-    item->setText(1,data->getValueText());
-    item->setToolTip(1,data->getValueText());
-    item->setText(2,data->getNeedSave()?"true":"false");
-    item->setToolTip(2,data->getNeedSave()?"true":"false");
-    item->setText(3,data->getExplanation());
-    item->setToolTip(3,data->getExplanation());
+
+    QAbstractProperty * pro;
+
+    QStringList list;
+    list<<"objectName"<<"value"<<"needSave"<<"type"<<"explanation";
+
+    for(int i = 0;i<list.size();i++)
+    {
+        pro = data->getProperty(list.at(i));
+        item->setText(i,pro->getValueText());
+        item->setToolTip(i,pro->getValueText());
+    }
+
     item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
     m_dataToItem.insert(data,item);
     m_itemToData.insert(item,data);

@@ -10,6 +10,9 @@ public:
     Q_INVOKABLE QIntDataHost(QAbstractHost * parent = NULL);
 
     static QAbstractHostInfo * getHostInfo();
+protected:
+    void    initProperty();
+    void    initDefaultValue();
 };
 
 #endif // QINTDATAHOST_H

@@ -70,7 +70,8 @@ SOURCES += \
     data/qabstractdatahost.cpp \
     data/qdatamanager.cpp \
     data/qdatagroup.cpp \
-    data/qintdatahost.cpp
+    data/qintdatahost.cpp \
+    data/qfloatdatahost.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -126,7 +127,8 @@ HEADERS +=\
     data/qabstractdatahost.h \
     data/qdatamanager.h \
     data/qdatagroup.h \
-    data/qintdatahost.h
+    data/qintdatahost.h \
+    data/qfloatdatahost.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

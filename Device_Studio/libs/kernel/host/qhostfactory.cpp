@@ -20,6 +20,7 @@
 #include "qdatehost.h"
 #include "qdatetimeedithost.h"
 
+#include "../data/qfloatdatahost.h"
 #include "../data/qintdatahost.h"
 
 #include "qformhost.h"
@@ -92,4 +93,5 @@ void QHostFactory::registerInnerHost()
     registerHost(QFormHost::getHostInfo());
 
     registerHost(QIntDataHost::getHostInfo());
+    registerHost(QFloatDataHost::getHostInfo());
 }

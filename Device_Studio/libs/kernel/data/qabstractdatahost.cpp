@@ -1,5 +1,9 @@
 #include "qabstractdatahost.h"
 
+#include "../property/qabstractproperty.h"
+#include "../property/qbytearrayproperty.h"
+#include "../property/qboolproperty.h"
+
 QAbstractDataHost::QAbstractDataHost(QAbstractHost * parent):
     QAbstractHost(parent)
 {
@@ -8,73 +12,25 @@ QAbstractDataHost::QAbstractDataHost(QAbstractHost * parent):
 
 QVariant QAbstractDataHost::getValue()
 {
-    return m_value;
+    return getPropertyValue("value");
 }
 
 void QAbstractDataHost::setValue(const QVariant &value)
 {
-    if(!equal(value))
-    {
-        m_value = value;
-        emit valueChanged();
-    }
-}
-
-QString QAbstractDataHost::getValueText()
-{
-    return m_value.toString();
+    setPropertyValue("value",value);
 }
 
 bool QAbstractDataHost::equal(const QVariant &value)
 {
-    return m_value == value;
+    QAbstractProperty* pro = getProperty("value");
+    return pro->equal(value);
 }
 
-void QAbstractDataHost::setName(const QString &name)
-{
-    if(m_name != name)
-    {
-        m_name = name;
-        emit propertyChanged("name");
-    }
-}
-
-QString QAbstractDataHost::getName()
-{
-    return m_name;
-}
-
-void QAbstractDataHost::setNeedSave(bool needSave)
-{
-    if(m_needSave != needSave)
-    {
-        m_needSave = needSave;
-        emit propertyChanged("needSave");
-    }
-}
-
-bool QAbstractDataHost::getNeedSave()
-{
-    return m_needSave;
-}
 
 void QAbstractDataHost::createObject()
 {
     m_object = new QObject;
-}
-
-void QAbstractDataHost::setExplanation(const QString &explanation)
-{
-    if(m_explanation != explanation)
-    {
-        m_explanation = explanation;
-        emit propertyChanged("explanation");
-    }
-}
-
-QString QAbstractDataHost::getExplanation()
-{
-    return m_explanation;
+    initDefaultValue();
 }
 
 void QAbstractDataHost::initProperty()
@@ -83,10 +39,29 @@ void QAbstractDataHost::initProperty()
 
     QAbstractProperty * pro;
 
-    removeProperty("objectName");
+    pro = new QBoolProperty;
+    pro->setName("needSave");
+    pro->setShowName(tr("Need Save"));
+    pro->setGroup("Attribute");
+    insertProperty(pro);
+
+    pro = new QByteArrayProperty;
+    pro->setName("type");
+    pro->setShowName("Type");
+    pro->setGroup("Attributes");
+    pro->setEditable(false);
+    insertProperty(pro);
+
+    pro = new QByteArrayProperty;
+    pro->setName("explanation");
+    pro->setShowName(tr("Explanation"));
+    pro->setGroup("Attributes");
+    insertProperty(pro);
+
+
 }
 
-QString QAbstractDataHost::getUuid()
+void QAbstractDataHost::initDefaultValue()
 {
-    return m_uuid;
+    m_object->setProperty("needSave",false);
 }
