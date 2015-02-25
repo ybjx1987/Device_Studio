@@ -71,6 +71,7 @@ bool QProject::open(const QString &proFileName)
             this,SLOT(languageChanged()));
 
     m_dataManager = new QDataManager(this);
+    m_dataManager->load(path);
 
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
@@ -260,6 +261,7 @@ bool QProject::save()
             return false;
         }
         m_languageManager->save(path+"/languages");
+        m_dataManager->save(path);
 
         foreach(QAbstractHost *host,m_forms)
         {

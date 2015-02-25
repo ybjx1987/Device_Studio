@@ -39,7 +39,7 @@ QNewDataDialog::QNewDataDialog(QDataManager * manager,QWidget *parent) :
 
     foreach(QAbstractHostInfo * info,list)
     {
-        if(info->m_type == "data")
+        if(info->m_type == "Data")
         {
             QDataHostInfo *dinfo = (QDataHostInfo*)info;
             m_typeList.append(info);
@@ -51,6 +51,8 @@ QNewDataDialog::QNewDataDialog(QDataManager * manager,QWidget *parent) :
     {
         ui->comboBox_2->setCurrentIndex(0);
     }
+
+    groupChanged();
 }
 
 QNewDataDialog::~QNewDataDialog()

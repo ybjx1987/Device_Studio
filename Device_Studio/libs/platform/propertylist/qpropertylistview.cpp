@@ -192,13 +192,20 @@ void QPropertyListView::propertyValueEdit(QAbstractProperty *property, const QVa
         pro = pro->getParent();
         str = pro->getName()+"."+str;
     }
-    if(m_undoStack != NULL && m_propertys.contains(pro))
+    if(m_undoStack != NULL)
     {
-        QPropertyEditUndoCommand *cmd = new QPropertyEditUndoCommand(
-                    property->getHostUuid(),
-                    str,
-                    value,
-                    property->getValue());
-        m_undoStack->push(cmd);
+        if(m_propertys.contains(pro))
+        {
+            QPropertyEditUndoCommand *cmd = new QPropertyEditUndoCommand(
+                        property->getHostUuid(),
+                        str,
+                        value,
+                        property->getValue());
+            m_undoStack->push(cmd);
+        }
+    }
+    else
+    {
+        property->setValue(value);
     }
 }

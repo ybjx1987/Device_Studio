@@ -4,6 +4,7 @@
 #include <QObject>
 
 class QAbstractDataHost;
+class XmlNode;
 
 class QDataGroup : public QObject
 {
@@ -23,6 +24,9 @@ public:
     QAbstractDataHost* getData(const QString & name);
     QList<QAbstractDataHost*> getDatas();
     QAbstractDataHost* getDataByUuid(const QString & uuid);
+
+    bool    save(XmlNode * xml);
+    bool    load(XmlNode * xml);
 
 signals:
     void    groupNameChanged();

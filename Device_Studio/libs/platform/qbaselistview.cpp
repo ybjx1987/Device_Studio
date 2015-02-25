@@ -65,6 +65,13 @@ void QBaseListView::mousePressEvent(QMouseEvent *event)
                     item->setExpanded(!item->isExpanded());
                 }
             }
+            else
+            {
+                if(event->button() == Qt::LeftButton)
+                {
+                    clickEditItem(item,header()->logicalIndexAt(event->pos()));
+                }
+            }
         }
         else
         {

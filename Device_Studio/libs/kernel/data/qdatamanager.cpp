@@ -1,6 +1,9 @@
 #include "qdatamanager.h"
 
 #include "qdatagroup.h"
+#include "../xmlnode.h"
+
+#include <QFile>
 
 QDataManager::QDataManager(QObject *parent) :
     QObject(parent)
@@ -114,4 +117,77 @@ QDataGroup* QDataManager::getGroup(const QString &name)
 QDataGroup * QDataManager::getGropuByUuid(const QString &uuid)
 {
     return m_uuidToGroup.value(uuid);
+}
+
+bool QDataManager::save(const QString &path)
+{
+    QFile f(path+"/datas.xml");
+
+    XmlNode xml;
+
+    xml.setTitle("Datas");
+
+    foreach(QDataGroup * g,m_groups)
+    {
+        XmlNode * group = new XmlNode(&xml);
+
+        g->save(group);
+    }
+
+    QString buffer;
+
+    if(!xml.save(buffer))
+    {
+        return false;
+    }
+
+    if(!f.open(QFile::ReadWrite))
+    {
+        return false;
+    }
+
+    f.write(buffer.toLocal8Bit());
+    f.close();
+    return true;
+}
+
+bool QDataManager::load(const QString &path)
+{
+
+    qDeleteAll(m_groups);
+    m_groups.clear();
+    m_uuidToGroup.clear();
+
+    QFile f(path+"/datas.xml");
+
+    if(!f.open(QFile::ReadOnly))
+    {
+        return false;
+    }
+
+    QString buffer = f.readAll();
+    f.close();
+
+    XmlNode xml;
+
+    if(!xml.load(buffer))
+    {
+        return false;
+    }
+
+    QList<XmlNode*> list = xml.getChildren();
+
+    foreach(XmlNode * node,list)
+    {
+        if(node->getTitle() == "Group")
+        {
+            QDataGroup * group = new QDataGroup;
+            if(group->load(node))
+            {
+                m_groups.append(group);
+                m_uuidToGroup.insert(group->getUuid(),group);
+            }
+        }
+    }
+    return true;
 }

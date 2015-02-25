@@ -8,7 +8,7 @@
 class KERNEL_EXPORT QDataHostInfo : public QAbstractHostInfo
 {
 public:
-    QDataHostInfo(){m_type="data";}
+    QDataHostInfo(){m_type="Data";}
 
     QString     m_showName;
 };
