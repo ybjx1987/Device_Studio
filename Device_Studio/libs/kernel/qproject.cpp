@@ -9,6 +9,7 @@
 #include "language/qlanguagemanager.h"
 #include "property/qstringproperty.h"
 #include "language/qlanguage.h"
+#include "data/qdatamanager.h"
 
 #include <QFile>
 #include <QVariant>
@@ -20,7 +21,8 @@ QProject::QProject():
     m_projectHost(NULL),
     m_projectStatus(PS_CLOSED),
     m_projectModified(PM_NOT_MODIFIED),
-    m_languageManager(NULL)
+    m_languageManager(NULL),
+    m_dataManager(NULL)
 {
 }
 
@@ -67,9 +69,13 @@ bool QProject::open(const QString &proFileName)
     m_languageManager->load(path+"/languages");
     connect(m_languageManager,SIGNAL(currentLanguageChanged(QString)),
             this,SLOT(languageChanged()));
-    emit projectOpened();
+
+    m_dataManager = new QDataManager(this);
+    m_dataManager->load(path);
+
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
+    emit projectOpened();
     return true;
 }
 
@@ -94,6 +100,12 @@ void QProject::close()
     {
         delete m_languageManager;
         m_languageManager = NULL;
+    }
+
+    if(m_dataManager != NULL)
+    {
+        delete m_dataManager;
+        m_dataManager = NULL;
     }
 }
 
@@ -234,6 +246,11 @@ QLanguageManager* QProject::getLanguageManager()
     return m_languageManager;
 }
 
+QDataManager* QProject::getDataManager()
+{
+    return m_dataManager;
+}
+
 bool QProject::save()
 {
     if(m_projectStatus ==PS_OPENED)
@@ -244,6 +261,7 @@ bool QProject::save()
             return false;
         }
         m_languageManager->save(path+"/languages");
+        m_dataManager->save(path);
 
         foreach(QAbstractHost *host,m_forms)
         {

@@ -33,9 +33,23 @@ DISTFILES += \
 HEADERS += \
     qdataplugin.h \
     qdatawidget.h \
-    qdatalistview.h
+    qdatalistview.h \
+    qnewdatagroupdialog.h \
+    qdeletedatagroupdialog.h \
+    qnewdatadialog.h \
+    qdeletedatadialog.h
 
 SOURCES += \
     qdataplugin.cpp \
     qdatawidget.cpp \
-    qdatalistview.cpp
+    qdatalistview.cpp \
+    qnewdatagroupdialog.cpp \
+    qdeletedatagroupdialog.cpp \
+    qnewdatadialog.cpp \
+    qdeletedatadialog.cpp
+
+FORMS += \
+    qnewdatagroupdialog.ui \
+    qdeletedatagroupdialog.ui \
+    qnewdatadialog.ui \
+    qdeletedatadialog.ui

@@ -1,6 +1,8 @@
 #include "qdatagroup.h"
 
 #include "qabstractdatahost.h"
+#include "../xmlnode.h"
+#include "../host/qhostfactory.h"
 
 #include <QUuid>
 
@@ -55,9 +57,10 @@ void QDataGroup::delData(QAbstractDataHost *data)
         return;
     }
 
+    m_datas.removeAll(data);
+
     emit dataDeled(data);
 
-    m_datas.removeAll(data);
     delete data;
 }
 
@@ -65,7 +68,7 @@ QAbstractDataHost * QDataGroup::getData(const QString &name)
 {
     foreach(QAbstractDataHost * data,m_datas)
     {
-        if(data->getName() == name)
+        if(data->getPropertyValue("objectName").toString() == name)
         {
             return data;
         }
@@ -89,4 +92,50 @@ QAbstractDataHost* QDataGroup::getDataByUuid(const QString &uuid)
     }
 
     return NULL;
+}
+
+bool QDataGroup::save(XmlNode *xml)
+{
+    xml->setTitle("Group");
+    xml->setProperty("name",m_groupName);
+    xml->setProperty("uuid",m_uuid);
+
+    foreach(QAbstractDataHost * data,m_datas)
+    {
+        XmlNode * d = new XmlNode(xml);
+        if(!data->toXml(d))
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+bool QDataGroup::load(XmlNode *xml)
+{
+    m_uuid = xml->getProperty("uuid");
+    m_groupName = xml->getProperty("name");
+
+    if(m_uuid == "" || m_groupName == "")
+    {
+        return false;
+    }
+
+    foreach(XmlNode * node,xml->getChildren())
+    {
+        if(node->getTitle() == "Data")
+        {
+            QString type = xml->getProperty("type");
+            QAbstractDataHost * host = (QAbstractDataHost*)QHostFactory::createHost(type);
+            if(host != NULL)
+            {
+                if(host->fromXml(node))
+                {
+                    m_datas.append(host);
+                }
+            }
+        }
+    }
+    return true;
 }
