@@ -7,10 +7,11 @@
 #include "../../../libs/kernel/property/qabstractproperty.h"
 #include "../../../libs/platform/qvalidatoredit.h"
 #include "../../../libs/platform/propertylist/qpropertyeditorpane.h"
+#include "../../../libs/platform/qbuttonlineedit.h"
 
 #include <QStringList>
 
-QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
     QWidget * wid = NULL;
 
@@ -49,6 +50,11 @@ QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionVie
             wid = panel;
         }
             break;
+        case 4:
+        {
+            wid = new QButtonLineEdit(parent);
+        }
+            break;
         default:
             break;
         }
@@ -73,7 +79,7 @@ QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionVie
     return wid;
 }
 
-void QDataItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void QDataItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *, const QModelIndex &index) const
 {
     QTreeWidgetItem * item = m_listView->itemFromIndex(index);
 
@@ -94,6 +100,11 @@ void QDataItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
             }
         }
             break;
+        case 4:
+        {
+            QButtonLineEdit *e=(QButtonLineEdit*)editor;
+            data->setPropertyValue("explanation",e->text());
+        }
         default:
             break;
         }
@@ -120,7 +131,9 @@ QDataListView::QDataListView(QWidget* parent):
     connect(this,SIGNAL(itemSelectionChanged()),this,
             SLOT(dataSelect()));
     setItemDelegate(new QDataItemDelegate(this));
-    setRootIsDecorated(true);
+    //setRootIsDecorated(true);
+    connect(this,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+            this,SLOT(doubleItemClicked(QTreeWidgetItem*,int)));
 }
 
 void QDataListView::clear()
@@ -161,6 +174,7 @@ void QDataListView::addGroup(QDataGroup *group,int index)
     QTreeWidgetItem * item = new QTreeWidgetItem;
     item->setText(0,group->getGroupName());
     item->setToolTip(0,group->getGroupName());
+    item->setIcon(0,m_expandIcon);
     for(int i= 0;i<5;i++)
     {
         item->setData(i,DarkRole,true);
@@ -349,15 +363,14 @@ void QDataListView::dataPropertyChanged()
     {
         return;
     }
-    if(pro->getName() == "objectName")
+
+    QStringList list;
+    list<<"objectName"<<"value"<<"needSave"<<""<<"explanation";
+
+    if(list.contains(pro->getName()))
     {
-        item->setText(0,pro->getValueText());
-        item->setToolTip(0,pro->getValueText());
-    }
-    else if(pro->getName() == "value")
-    {
-        item->setText(1,pro->getValueText());
-        item->setToolTip(1,pro->getValueText());
+        item->setText(list.indexOf(pro->getName()),pro->getValueText());
+        item->setToolTip(list.indexOf(pro->getName()),pro->getValueText());
     }
 }
 
@@ -398,4 +411,14 @@ void QDataListView::propertyValueEdit(QAbstractProperty* property,
                                       const QVariant & value)
 {
     property->setValue(value);
+}
+
+void QDataListView::doubleItemClicked(QTreeWidgetItem *item, int index)
+{
+    if(m_dataToItem.values().contains(item) && index == 2)
+    {
+        QAbstractDataHost *data = m_itemToData.value(item);
+        bool needSave = data->getPropertyValue("needSave").toBool();
+        data->setPropertyValue("needSave",!needSave);
+    }
 }

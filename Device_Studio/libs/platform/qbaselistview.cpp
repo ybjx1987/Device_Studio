@@ -87,3 +87,8 @@ void QBaseListView::clickEditItem(QTreeWidgetItem *item, int index)
 {
 
 }
+
+QIcon QBaseListView::getExpandIcon()
+{
+    return m_expandIcon;
+}

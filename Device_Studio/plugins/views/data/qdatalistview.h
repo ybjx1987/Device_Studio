@@ -54,6 +54,8 @@ protected slots:
     void    dataPropertyChanged();
     void    groupNameChanged();
 
+    void    doubleItemClicked(QTreeWidgetItem * item,int index);
+
     void    propertyValueEdit(QAbstractProperty* property,const QVariant &value);
 
     friend class QDataItemDelegate;
