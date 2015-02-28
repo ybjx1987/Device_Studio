@@ -7,6 +7,7 @@
 #include "../../../libs/kernel/property/qabstractproperty.h"
 #include "../../../libs/platform/qvalidatoredit.h"
 #include "../../../libs/platform/propertylist/qpropertyeditorpane.h"
+#include "../../../libs/platform/qbuttonlineedit.h"
 
 #include <QStringList>
 
@@ -47,6 +48,13 @@ QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionVie
                     m_listView,SLOT(propertyValueEdit(QAbstractProperty*,QVariant)));
 
             wid = panel;
+        }
+            break;
+        case 2:
+            break;
+        case 4:
+        {
+            wid = new QButtonLineEdit(parent);
         }
             break;
         default:
@@ -94,6 +102,11 @@ void QDataItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model,
             }
         }
             break;
+        case 4:
+        {
+            QButtonLineEdit *e=(QButtonLineEdit*)editor;
+            data->setPropertyValue("explanation",e->text());
+        }
         default:
             break;
         }
@@ -121,6 +134,8 @@ QDataListView::QDataListView(QWidget* parent):
             SLOT(dataSelect()));
     setItemDelegate(new QDataItemDelegate(this));
     setRootIsDecorated(true);
+    connect(this,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
+            this,SLOT(doubleItemClicked(QTreeWidgetItem*,int)));
 }
 
 void QDataListView::clear()
@@ -349,15 +364,14 @@ void QDataListView::dataPropertyChanged()
     {
         return;
     }
-    if(pro->getName() == "objectName")
+
+    QStringList list;
+    list<<"objectName"<<"value"<<"needSave"<<""<<"explanation";
+
+    if(list.contains(pro->getName()))
     {
-        item->setText(0,pro->getValueText());
-        item->setToolTip(0,pro->getValueText());
-    }
-    else if(pro->getName() == "value")
-    {
-        item->setText(1,pro->getValueText());
-        item->setToolTip(1,pro->getValueText());
+        item->setText(list.indexOf(pro->getName()),pro->getValueText());
+        item->setToolTip(list.indexOf(pro->getName()),pro->getValueText());
     }
 }
 
@@ -398,4 +412,14 @@ void QDataListView::propertyValueEdit(QAbstractProperty* property,
                                       const QVariant & value)
 {
     property->setValue(value);
+}
+
+void QDataListView::doubleItemClicked(QTreeWidgetItem *item, int index)
+{
+    if(m_dataToItem.values().contains(item) && index == 2)
+    {
+        QAbstractDataHost *data = m_itemToData.value(item);
+        bool needSave = data->getPropertyValue("needSave").toBool();
+        data->setPropertyValue("needSave",!needSave);
+    }
 }
