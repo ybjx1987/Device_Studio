@@ -66,18 +66,18 @@ void QStringEditorDialog::on_okBtn_clicked()
 {
     QString name = ui->lineEdit->text();
 
-    if(name == "")
-    {
-        QMessageBox::warning(this,tr("Error"),
-                             tr("Keyword cann't been empty!"));
-        return;
-    }
-
     if(ui->checkBox->checkState() == Qt::Unchecked)
     {
         m_property->setValue(ui->lineEdit->text());
         m_property->setTranslation(false);
         close();
+        return;
+    }
+
+    if(name == "")
+    {
+        QMessageBox::warning(this,tr("Error"),
+                             tr("Keyword cann't been empty!"));
         return;
     }
 

@@ -5,7 +5,7 @@
 
 QStringProperty::QStringProperty(QAbstractProperty * parent):
     QAbstractProperty(parent),
-    m_translation(true)
+    m_translation(false)
 {
 
 }
