@@ -11,7 +11,7 @@
 
 #include <QStringList>
 
-QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
+QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
     QWidget * wid = NULL;
 
@@ -50,8 +50,6 @@ QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionVie
             wid = panel;
         }
             break;
-        case 2:
-            break;
         case 4:
         {
             wid = new QButtonLineEdit(parent);
@@ -81,7 +79,7 @@ QWidget * QDataItemDelegate::createEditor(QWidget *parent, const QStyleOptionVie
     return wid;
 }
 
-void QDataItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const
+void QDataItemDelegate::setModelData(QWidget *editor, QAbstractItemModel *, const QModelIndex &index) const
 {
     QTreeWidgetItem * item = m_listView->itemFromIndex(index);
 
@@ -133,7 +131,7 @@ QDataListView::QDataListView(QWidget* parent):
     connect(this,SIGNAL(itemSelectionChanged()),this,
             SLOT(dataSelect()));
     setItemDelegate(new QDataItemDelegate(this));
-    setRootIsDecorated(true);
+    //setRootIsDecorated(true);
     connect(this,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),
             this,SLOT(doubleItemClicked(QTreeWidgetItem*,int)));
 }
@@ -176,6 +174,7 @@ void QDataListView::addGroup(QDataGroup *group,int index)
     QTreeWidgetItem * item = new QTreeWidgetItem;
     item->setText(0,group->getGroupName());
     item->setToolTip(0,group->getGroupName());
+    item->setIcon(0,m_expandIcon);
     for(int i= 0;i<5;i++)
     {
         item->setData(i,DarkRole,true);
