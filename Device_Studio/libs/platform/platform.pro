@@ -57,7 +57,8 @@ HEADERS += \
     propertylist/editor/qbuttonpropertyeditor.h \
     propertylist/editor/qfontpropertyeditor.h \
     propertylist/editor/qstringpropertyeditor.h \
-    propertylist/editor/qstringeditordialog.h
+    propertylist/editor/qstringeditordialog.h \
+    propertylist/editor/qfloatpropertyeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -96,7 +97,8 @@ SOURCES += \
     propertylist/editor/qbuttonpropertyeditor.cpp \
     propertylist/editor/qfontpropertyeditor.cpp \
     propertylist/editor/qstringpropertyeditor.cpp \
-    propertylist/editor/qstringeditordialog.cpp
+    propertylist/editor/qstringeditordialog.cpp \
+    propertylist/editor/qfloatpropertyeditor.cpp
 
 RESOURCES += \
     platform.qrc
