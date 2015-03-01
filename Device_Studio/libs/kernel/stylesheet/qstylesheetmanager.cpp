@@ -9,7 +9,8 @@
 #include <QVariant>
 #include <QDir>
 
-QStyleSheetManager::QStyleSheetManager(QObject *parent) : QObject(parent)
+QStyleSheetManager::QStyleSheetManager(QObject *parent) :
+    QObject(parent)
 {
 
 }

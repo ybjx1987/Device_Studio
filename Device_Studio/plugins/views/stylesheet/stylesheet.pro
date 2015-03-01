@@ -35,14 +35,16 @@ HEADERS += \
     qstylesheetwidget.h \
     qstylesheetgrouplistview.h \
     qnewstylesheetgroupdialog.h \
-    qdeletestylesheetdialog.h
+    qdeletestylesheetdialog.h \
+    qsingletitlewidget.h
 
 SOURCES += \
     qstylesheetplugin.cpp \
     qstylesheetwidget.cpp \
     qstylesheetgrouplistview.cpp \
     qnewstylesheetgroupdialog.cpp \
-    qdeletestylesheetdialog.cpp
+    qdeletestylesheetdialog.cpp \
+    qsingletitlewidget.cpp
 
 FORMS += \
     qnewstylesheetgroupdialog.ui \
