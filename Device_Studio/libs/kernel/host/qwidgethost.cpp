@@ -10,7 +10,7 @@ QWidgetHost::QWidgetHost(QAbstractWidgetHost *parent):
     QAbstractWidgetHost(parent)
 {
     setProperty("needFrame",true);
-    setProperty("acceptDrop",true);
+    setProperty("acceptDrop",false);
     setProperty("editProperty","objectName");
 }
 
