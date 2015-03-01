@@ -71,7 +71,8 @@ SOURCES += \
     data/qdatamanager.cpp \
     data/qdatagroup.cpp \
     data/qintdatahost.cpp \
-    data/qfloatdatahost.cpp
+    data/qfloatdatahost.cpp \
+    stylesheet/qstylesheetmanager.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -128,7 +129,8 @@ HEADERS +=\
     data/qdatamanager.h \
     data/qdatagroup.h \
     data/qintdatahost.h \
-    data/qfloatdatahost.h
+    data/qfloatdatahost.h \
+    stylesheet/qstylesheetmanager.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
