@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QHash>
+#include <QUndoStack>
+
+class QAbstractWidgetHost;
 
 class WidgetHandle: public QWidget
 {
@@ -23,28 +26,25 @@ public:
     };
     WidgetHandle(QWidget* parent,Type t);
 
-    void    setWidget(QWidget *w);
+    void    setHost(QAbstractWidgetHost *host);
     void    setCurrent(bool b);
-protected:
+    void    setUndoStack(QUndoStack * undoStack);
 protected:
     void paintEvent(QPaintEvent *);
     void mousePressEvent(QMouseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mouseReleaseEvent(QMouseEvent *e);
-
 protected:
     void    updateCursor();
-    void    trySetGeometry(QWidget *w, int x, int y, int width, int height);
-    void    tryResize(QWidget *w, int width, int height);
-signals:
-    void sizeChanged(int x,int y,int width,int height);
-    void    mouse_button_release(const QRect& old,const QRect & now);
+    void    trySetGeometry(int x, int y, int width, int height);
+    void    tryResize(int width, int height);
 protected:
     Type        m_type;
-    QWidget *   m_widget;
+    QAbstractWidgetHost *   m_host;
     bool        m_current;
     QPoint      m_origPressPos;
     QRect       m_geom, m_origGeom;
+    QUndoStack  *m_undoStack;
 };
 
 class WidgetSelection: public QObject
@@ -53,8 +53,8 @@ class WidgetSelection: public QObject
 public:
     WidgetSelection(QWidget *parent);
 
-    void setWidget(QWidget *w);
-    QWidget *widget();
+    void setHost(QAbstractWidgetHost *host);
+    QAbstractWidgetHost *getHost();
     bool isUsed() const;
 
     void hide();
@@ -63,17 +63,10 @@ public:
     void updateGeometry();
 
     void setCurrent(bool b);
-protected:
-    bool eventFilter(QObject *object, QEvent *event);
-
-protected slots:
-    void    changedsize(int x,int y,int width,int height);
-    void    mouse_button_release(const QRect& old,const QRect & now);
-signals:
-    void sizeChanged(QWidget* wid,const QRect& old,const QRect & now);
+    void setUndoStack(QUndoStack * undoStack);
 protected:
     WidgetHandle *m_handles[WidgetHandle::TypeCount];
-    QWidget     *m_widget;
+    QAbstractWidgetHost     *m_host;
     QWidget     *m_formWindow;
 };
 
@@ -88,38 +81,35 @@ public:
 
     void  clearSelectionPool();
 
-    void repaintSelection(QWidget *w);
+    void repaintSelection(QAbstractWidgetHost *host);
     void repaintSelection();
 
-    bool isWidgetSelected(QWidget *w) const;
-    QWidgetList selectedWidgets() const;
+    bool isHostSelected(QAbstractWidgetHost *host) const;
+    QList<QAbstractWidgetHost*> selectedHosts() const;
 
-    WidgetSelection *addWidget(QWidget *w);
-    QWidget* removeWidget(QWidget *w);
-    QWidget* current();
+    WidgetSelection *addHost(QAbstractWidgetHost *host);
+    void removeHost(QAbstractWidgetHost *host);
+    QAbstractWidgetHost* current();
 
-    void raiseList(const QWidgetList& l);
-    void raiseWidget(QWidget *w);
-
-    void updateGeometry(QWidget *w);
-
-    void hide(QWidget *w);
-    void show(QWidget *w);
+    void hide(QAbstractWidgetHost *host);
+    void show(QAbstractWidgetHost *host);
 
 
-    void setCurrent(QWidget *w);
-signals:
-    void sizeChanged(QWidget* wid,const QRect& old,const QRect & now);
+    void setCurrent(QAbstractWidgetHost *host);
+    void setUndoStack(QUndoStack * undoStack);
 
+protected slots:
+    void    hostGeometryChanged();
 private:
 
     typedef QList<WidgetSelection *> SelectionPool;
     SelectionPool m_selectionPool;
 
-    typedef QHash<QWidget *, WidgetSelection *> SelectionHash;
+    typedef QHash<QAbstractWidgetHost *, WidgetSelection *> SelectionHash;
     SelectionHash m_usedSelections;
     WidgetSelection *       m_current;
     QWidget*                m_formwindow;
+    QUndoStack              *m_undoStack;
 };
 
 #endif // QSELECTWIDGET_H

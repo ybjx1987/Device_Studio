@@ -11,6 +11,7 @@ QLabelHost::QLabelHost(QAbstractWidgetHost * parent):
 {
     setProperty("needFrame",false);
     setProperty("acceptDrop",false);
+    setProperty("editProperty","text");
 }
 
 QAbstractHostInfo * QLabelHost::getHostInfo()

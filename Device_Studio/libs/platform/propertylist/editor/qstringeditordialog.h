@@ -1,6 +1,8 @@
 #ifndef QSTRINGEDITORDIALOG_H
 #define QSTRINGEDITORDIALOG_H
 
+#include "../../platformlibglobal.h"
+
 #include <QDialog>
 #include <QTreeWidget>
 
@@ -14,7 +16,7 @@ class QLanguageManager;
 class QStringProperty;
 class QCompleter;
 
-class QStringEditorDialog : public QDialog
+class PLATFORM_EXPORT QStringEditorDialog : public QDialog
 {
     Q_OBJECT
 
