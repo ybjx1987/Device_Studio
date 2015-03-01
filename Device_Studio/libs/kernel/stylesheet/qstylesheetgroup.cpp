@@ -4,14 +4,18 @@
 
 #include "../xmlnode.h"
 
+#include <QFile>
+#include <QVariant>
+#include <QUuid>
+
 QStyleSheetGroup::QStyleSheetGroup(QObject *parent) : QObject(parent)
 {
-
+    m_uuid = QUuid::createUuid().toString();
 }
 
 QStyleSheetGroup::~QStyleSheetGroup()
 {
-
+    clear();
 }
 
 QList<QStyleSheetItem*> QStyleSheetGroup::getItems()
@@ -74,7 +78,7 @@ bool QStyleSheetGroup::toXml(XmlNode *xml)
     foreach(QStyleSheetItem * item,m_items)
     {
         XmlNode * obj = new XmlNode(xml);
-        if(!item->toXml(xml))
+        if(!item->toXml(obj))
         {
             return false;
         }
@@ -84,6 +88,7 @@ bool QStyleSheetGroup::toXml(XmlNode *xml)
 
 bool QStyleSheetGroup::fromXml(XmlNode *xml)
 {
+    clear();
     if(xml->getTitle() == "Group")
     {
         return false;
@@ -109,4 +114,77 @@ bool QStyleSheetGroup::fromXml(XmlNode *xml)
     }
 
     return true;
+}
+
+bool QStyleSheetGroup::load(const QString &filePath)
+{
+    setProperty("fileName","");
+    QFile f(filePath);
+
+    if(!f.exists())
+    {
+        return false;
+    }
+
+    if(!f.open(QFile::ReadOnly))
+    {
+        return false;
+    }
+
+    QString buffer = f.readAll();
+    f.close();
+
+    XmlNode xml;
+    if(!xml.load(buffer))
+    {
+        return false;
+    }
+
+    if(!fromXml(&xml))
+    {
+        setProperty("fileName",filePath);
+        return false;
+    }
+    else
+    {
+        return true;
+    }
+}
+
+bool QStyleSheetGroup::save(const QString & fileName)
+{
+    QFile f(fileName);
+
+    if(!f.open(QFile::ReadWrite))
+    {
+        return false;
+    }
+    f.resize(0);
+
+    XmlNode xml;
+
+    if(!toXml(&xml))
+    {
+        return false;
+    }
+
+    QString buffer;
+
+    if(!xml.save(buffer))
+    {
+        return false;
+    }
+
+    f.write(buffer.toLocal8Bit());
+
+    f.close();
+
+    return true;
+}
+
+void QStyleSheetGroup::clear()
+{
+    qDeleteAll(m_items);
+    m_items.clear();
+    m_uuidToItem.clear();
 }

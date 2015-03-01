@@ -20,16 +20,21 @@ public:
     void    addItem(QStyleSheetItem * item);
     void    delItem(QStyleSheetItem * item);
 
-    bool    toXml(XmlNode * xml);
-    bool    fromXml(XmlNode * xml);
-
     void    setName(const QString & name);
     QString getName();
 
     QString getUuid();
+
+    bool    load(const QString & filePath);
+    bool    save(const QString & filePath);
+
+    void    clear();
 signals:
     void    itemAdded(QStyleSheetItem * item);
     void    itemDeled(QStyleSheetItem * item);
+protected:
+    bool    toXml(XmlNode * xml);
+    bool    fromXml(XmlNode * xml);
 public slots:
 protected:
     QList<QStyleSheetItem*> m_items;
