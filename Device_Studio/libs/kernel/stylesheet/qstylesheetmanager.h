@@ -20,6 +20,9 @@ public:
     void    delGroup(QStyleSheetGroup * group);
 
     void    clear();
+
+    QList<QStyleSheetGroup*> getGroups();
+    QStringList              getGroupNames();
 signals:
     void    groupAdded(QStyleSheetGroup * group);
     void    groupDeled(QStyleSheetGroup * group);

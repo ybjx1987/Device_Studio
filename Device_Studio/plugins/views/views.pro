@@ -4,4 +4,5 @@ SUBDIRS += \
     designer \
     project \
     language\
-    data
+    data\
+    stylesheet

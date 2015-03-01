@@ -103,5 +103,6 @@
         <file>images/del_data_group.png</file>
         <file>images/del_data.png</file>
         <file>images/add_data.png</file>
+        <file>images/stylesheet.png</file>
     </qresource>
 </RCC>

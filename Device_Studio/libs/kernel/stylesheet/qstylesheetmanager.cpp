@@ -7,6 +7,7 @@
 
 #include <QFile>
 #include <QVariant>
+#include <QDir>
 
 QStyleSheetManager::QStyleSheetManager(QObject *parent) : QObject(parent)
 {
@@ -20,6 +21,11 @@ QStyleSheetManager::~QStyleSheetManager()
 
 void QStyleSheetManager::save(const QString &path)
 {
+    QDir dir(path);
+    if(!dir.exists())
+    {
+        dir.mkpath(path);
+    }
     QFile f(path+"/stylesheet.xml");
 
     if(!f.exists())
@@ -121,10 +127,10 @@ void QStyleSheetManager::delGroup(QStyleSheetGroup *group)
         return;
     }
 
-    emit groupDeled(group);
 
     m_groups.removeAll(group);
     m_uuidToGroup.remove(group->getUuid());
+    emit groupDeled(group);
     delete group;
 }
 
@@ -133,4 +139,19 @@ void QStyleSheetManager::clear()
     qDeleteAll(m_groups);
     m_groups.clear();
     m_uuidToGroup.clear();
+}
+
+QList<QStyleSheetGroup*> QStyleSheetManager::getGroups()
+{
+    return m_groups;
+}
+
+QStringList QStyleSheetManager::getGroupNames()
+{
+    QStringList list;
+    foreach(QStyleSheetGroup * g,m_groups)
+    {
+        list.append(g->getName());
+    }
+    return list;
 }

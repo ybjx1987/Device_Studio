@@ -28,6 +28,7 @@ enum enProjectModified
 class QAbstractWidgetHost;
 class QAbstractHost;
 class QDataManager;
+class QStyleSheetManager;
 
 class KERNEL_EXPORT QProject :public QObject
 {
@@ -43,6 +44,7 @@ public:
     QProjectHost * getProjectHost();
     QLanguageManager* getLanguageManager();
     QDataManager    * getDataManager();
+    QStyleSheetManager  * getStyleSheetManager();
 
     enProjectStatus getProjectStatus();
     enProjectModified getProjectModified();
@@ -80,6 +82,7 @@ protected:
 
     QLanguageManager                *m_languageManager;
     QDataManager                    *m_dataManager;
+    QStyleSheetManager              *m_styleSheetManager;
 };
 
 #endif // QPROJECT_H

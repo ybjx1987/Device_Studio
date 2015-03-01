@@ -10,6 +10,7 @@
 #include "property/qstringproperty.h"
 #include "language/qlanguage.h"
 #include "data/qdatamanager.h"
+#include "stylesheet/qstylesheetmanager.h"
 
 #include <QFile>
 #include <QVariant>
@@ -22,7 +23,8 @@ QProject::QProject():
     m_projectStatus(PS_CLOSED),
     m_projectModified(PM_NOT_MODIFIED),
     m_languageManager(NULL),
-    m_dataManager(NULL)
+    m_dataManager(NULL),
+    m_styleSheetManager(NULL)
 {
 }
 
@@ -73,6 +75,9 @@ bool QProject::open(const QString &proFileName)
     m_dataManager = new QDataManager(this);
     m_dataManager->load(path);
 
+    m_styleSheetManager = new QStyleSheetManager(this);
+    m_styleSheetManager->load(path+"/stylesheet");
+
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
     emit projectOpened();
@@ -106,6 +111,12 @@ void QProject::close()
     {
         delete m_dataManager;
         m_dataManager = NULL;
+    }
+
+    if(m_styleSheetManager != NULL)
+    {
+        delete m_styleSheetManager;
+        m_styleSheetManager = NULL;
     }
 }
 
@@ -251,6 +262,11 @@ QDataManager* QProject::getDataManager()
     return m_dataManager;
 }
 
+QStyleSheetManager* QProject::getStyleSheetManager()
+{
+    return m_styleSheetManager;
+}
+
 bool QProject::save()
 {
     if(m_projectStatus ==PS_OPENED)
@@ -262,6 +278,7 @@ bool QProject::save()
         }
         m_languageManager->save(path+"/languages");
         m_dataManager->save(path);
+        m_styleSheetManager->save(path+"/stylesheet");
 
         foreach(QAbstractHost *host,m_forms)
         {
