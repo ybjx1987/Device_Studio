@@ -4,6 +4,7 @@
 #include "sizehandlerect.h"
 #include "qselectwidget.h"
 #include "qcommonpropertyeditdialog.h"
+#include "../qdesignerdnditem.h"
 
 #include "../../../../libs/platform/propertylist/editor/qstringeditordialog.h"
 #include "../../../../libs/platform/undocommand/qpropertyeditundocommand.h"
@@ -31,7 +32,8 @@ QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
     m_host(host),
     m_undoStack(new QUndoStack),
     m_frame(new QFrame),
-    m_selection(new Selection(m_frame))
+    m_selection(new Selection(m_frame)),
+    m_click(false)
 {
     QWidget* wid = ((QWidget*)m_host->getObject());
     wid->setAcceptDrops(true);
@@ -226,6 +228,35 @@ bool QFormPanel::hostMouseMove(QAbstractWidgetHost *host, QMouseEvent *e)
         QRect re(QRect(m_clickPoint,e->pos()).normalized());
         m_rubberBand->setGeometry(re);
     }
+    else
+    {
+        if(m_host != host
+                && m_selection->selectedHosts().contains(host)
+                && m_click
+                && !(e->modifiers() & Qt::ControlModifier))
+        {
+            QDesignerMimeData::QDesignerDnDItems items;
+
+            QList<QAbstractWidgetHost*> list = m_selection->selectedHosts();
+
+            foreach(QAbstractWidgetHost* host,list)
+            {
+                FormDnItem * item = new FormDnItem(host,e->globalPos());
+                items.append(item);
+                host->setPropertyValue("visible",false);
+                m_selection->hide(host);
+            }
+
+            QDesignerMimeData::execDrag(items,this);
+
+            m_click = false;
+            foreach(QAbstractWidgetHost * host,list)
+            {
+                host->setPropertyValue("visible",true);
+                m_selection->show(host);
+            }
+        }
+    }
     return true;
 }
 
@@ -278,6 +309,7 @@ void QFormPanel::commonPropertyEdit(QAbstractHost *host, QAbstractProperty * pro
 
 bool QFormPanel::hostMousePress(QAbstractWidgetHost *host, QMouseEvent *e)
 {
+    m_click = true;
     if(e->button()==Qt::RightButton)
     {
         if(m_selection->selectedHosts().contains(host))
@@ -303,11 +335,22 @@ bool QFormPanel::hostMousePress(QAbstractWidgetHost *host, QMouseEvent *e)
         }
         else
         {
-            if(!(e->modifiers() && Qt::ControlModifier))
+            if(e->modifiers() & Qt::ControlModifier)
             {
-                m_selection->clear();
+                m_selection->addHost(host);
             }
-            select(host);
+            else
+            {
+                if(m_selection->selectedHosts().contains(host))
+                {
+                    select(host);
+                }
+                else
+                {
+                    m_selection->clear();
+                    select(host);
+                }
+            }
         }
     }
     return true;
@@ -321,6 +364,7 @@ bool QFormPanel::hostResizeEvent(QAbstractWidgetHost *host, QEvent *)
 
 bool QFormPanel::hostMouseRelease(QAbstractWidgetHost *host, QMouseEvent *e)
 {
+    m_click = false;
     if(e->button() == Qt::RightButton)
     {
         return true;
@@ -366,7 +410,11 @@ bool QFormPanel::hostMouseRelease(QAbstractWidgetHost *host, QMouseEvent *e)
     }
     else
     {
-        m_click=false;
+        if(!(e->modifiers() & Qt::ControlModifier))
+        {
+            m_selection->clear();
+        }
+        select(host);
     }
     return true;
 }
@@ -470,12 +518,20 @@ bool QFormPanel::hostDropEvent(QAbstractWidgetHost *host, QDropEvent *e)
                 }
 
                 h->setPropertyValue("objectName",t);
+                h->setDefaultValue();
 
                 new QAddHostUndoCommand(host,h,host->getChildrenHost().size(),AHT_ADD,cmd);
             }
         }
         else
         {
+            QRect re=item->host()->getPropertyValue("geometry").toRect();
+            re.moveTo(e->pos()-item->hotSpot());
+            new QPropertyEditUndoCommand(item->host()->getUuid(),
+                                         "geometry",
+                                         re,
+                                         item->host()->getPropertyValue("geometry"),
+                                         cmd);
         }
     }
 
