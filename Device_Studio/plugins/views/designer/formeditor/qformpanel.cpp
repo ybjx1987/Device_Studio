@@ -79,6 +79,8 @@ QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
     setProperty("no-ManhattanStyle",true);
     m_frame->setObjectName("inner_frame_objectname");
     m_frame->setStyleSheet("#inner_frame_objectname{background-color:rgb(220,220,220);}");
+
+    m_selection->setUndoStack(m_undoStack);
 }
 
 QFormPanel::~QFormPanel()
@@ -198,7 +200,7 @@ bool QFormPanel::hostMousePress(QAbstractWidgetHost *host, QMouseEvent *e)
 {
     if(e->button()==Qt::RightButton)
     {
-        if(m_selection->selectedWidgets().contains((QWidget*)host->getObject()))
+        if(m_selection->selectedHosts().contains(host))
         {
             select(host);
             return true;
@@ -257,13 +259,13 @@ bool QFormPanel::hostMouseRelease(QAbstractWidgetHost *host, QMouseEvent *e)
             QWidget* wid=(QWidget*)obj;
             if(!(re & wid->geometry()).isNull())
             {
-                m_selection->addWidget(wid);
+                m_selection->addHost(h);
             }
         }
 
-        if(m_selection->selectedWidgets().size()>0)
+        if(m_selection->selectedHosts().size()>0)
         {
-            select(m_objectToHost.value((QObject*)m_selection->selectedWidgets().first()));
+            select(m_selection->selectedHosts().first());
         }
         else
         {
@@ -408,7 +410,6 @@ bool QFormPanel::hostDropEvent(QAbstractWidgetHost *host, QDropEvent *e)
 
 void QFormPanel::select(QAbstractWidgetHost *host)
 {
-    QWidget * wid = (QWidget *)host->getObject();
     if(host == m_host || host == NULL)
     {
         m_selection->clear();
@@ -418,17 +419,17 @@ void QFormPanel::select(QAbstractWidgetHost *host)
     else
     {
         setHandelVisible(false);
-        if(m_selection->selectedWidgets().contains(wid))
+        if(m_selection->selectedHosts().contains(host))
         {
-            m_selection->setCurrent(wid);
+            m_selection->setCurrent(host);
         }
         else
         {
-            m_selection->addWidget(wid);
+            m_selection->addHost(host);
         }
-        if(m_selection->selectedWidgets().size() == 1)
+        if(m_selection->selectedHosts().size() == 1)
         {
-            m_selection->setCurrent(wid);
+            m_selection->setCurrent(host);
         }
         emit hostSelected(host);
     }
@@ -535,14 +536,14 @@ void QFormPanel::hostAdded(QAbstractHost *host, int)
 void QFormPanel::hostRemoved(QAbstractHost *host)
 {
     removeHostEventFilter((QAbstractWidgetHost*)host);
-    if(m_selection->selectedWidgets().contains((QWidget*)host->getObject()))
+    if(m_selection->selectedHosts().contains((QAbstractWidgetHost*)host))
     {
-        m_selection->removeWidget((QWidget*)host->getObject());
-        if(m_selection->selectedWidgets().size()>0)
+        m_selection->removeHost((QAbstractWidgetHost*)host);
+        if(m_selection->selectedHosts().size()>0)
         {
             if(m_selection->current() == NULL)
             {
-                select(m_objectToHost.value(m_selection->selectedWidgets().first()));
+                select(m_selection->selectedHosts().first());
             }
         }
         else
@@ -566,20 +567,14 @@ void QFormPanel::sameLeft()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
-
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
-    foreach(QAbstractHost * host,hosts)
+    foreach(QAbstractWidgetHost * host,hosts)
     {
         QRect r = host->getPropertyValue("geometry").toRect();
         r.setRect(re.left(),r.top(),r.width(),r.height());
@@ -595,18 +590,13 @@ void QFormPanel::sameTop()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -624,18 +614,13 @@ void QFormPanel::sameRight()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -653,18 +638,13 @@ void QFormPanel::sameBottom()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -682,18 +662,13 @@ void QFormPanel::sameVCenter()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -711,18 +686,13 @@ void QFormPanel::sameHCenter()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -740,18 +710,13 @@ void QFormPanel::sameWidth()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -769,18 +734,13 @@ void QFormPanel::sameHeight()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -798,18 +758,13 @@ void QFormPanel::sameGeometry()
     {
         return;
     }
-    QWidgetList list = m_selection->selectedWidgets();
 
-    QList<QAbstractHost*> hosts;
-    foreach(QWidget* wid,list)
-    {
-        hosts.append(m_objectToHost.value(wid));
-    }
+    QList<QAbstractWidgetHost*> hosts = m_selection->selectedHosts();
 
     QPropertyEditUndoCommandMore *cmd =
             new QPropertyEditUndoCommandMore("geometry");
 
-    QRect re = m_selection->current()->geometry();
+    QRect re = m_selection->current()->getPropertyValue("geometry").toRect();
 
     foreach(QAbstractHost * host,hosts)
     {
@@ -823,5 +778,5 @@ void QFormPanel::sameGeometry()
 
 bool QFormPanel::enableAction()
 {
-    return m_selection->selectedWidgets().size()>1;
+    return m_selection->selectedHosts().size()>1;
 }
