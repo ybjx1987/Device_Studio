@@ -4,6 +4,7 @@
 #include "../../../libs/kernel/host/qhostfactory.h"
 #include "../../../libs/platform/qbaseitemdelegate.h"
 #include "../../../libs/kernel/host/qabstractwidgethost.h"
+#include "../../../libs/kernel/property/qabstractproperty.h"
 
 #include <QVariant>
 #include <QHeaderView>
@@ -67,6 +68,10 @@ void QHostListView::insertHost(QAbstractHost *host)
     connect(host,SIGNAL(hostRemoved(QAbstractHost*)),
             this,SLOT(removeHost(QAbstractHost*)));
 
+    QAbstractProperty * pro = host->getProperty("objectName");
+    connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
+            this,SLOT(hostNameChanged()));
+
     foreach(QAbstractHost *h,host->getChildrenHost())
     {
         insertHost(h);
@@ -100,6 +105,9 @@ void QHostListView::clear()
                    this,SLOT(addHost(QAbstractHost*)));
         disconnect(it.key(),SIGNAL(hostRemoved(QAbstractHost*)),
                    this,SLOT(removeHost(QAbstractHost*)));
+        QAbstractProperty * pro = it.key()->getProperty("objectName");
+        connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
+                this,SLOT(hostNameChanged()));
     }
     m_itemToHost.clear();
     m_hostToItem.clear();
@@ -142,6 +150,31 @@ void QHostListView::removeHost(QAbstractHost *host)
                this,SLOT(addHost(QAbstractHost*)));
     disconnect(host,SIGNAL(hostRemoved(QAbstractHost*)),
                this,SLOT(removeHost(QAbstractHost*)));
+    QAbstractProperty * pro = host->getProperty("objectName");
+    disconnect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
+            this,SLOT(hostNameChanged()));
+
+    QTreeWidgetItem * item = m_hostToItem.value(host);
     m_itemToHost.remove(m_hostToItem.value(host));
     m_hostToItem.remove(host);
+
+    delete item;
+}
+
+void QHostListView::hostNameChanged()
+{
+    QAbstractProperty * pro = (QAbstractProperty*)sender();
+
+    QMapIterator<QAbstractHost*,QTreeWidgetItem*>   it(m_hostToItem);
+
+    while(it.hasNext())
+    {
+        it.next();
+        if(it.key()->getUuid() == pro->getHostUuid())
+        {
+            it.value()->setText(0,pro->getValueText());
+            it.value()->setToolTip(0,pro->getValueText());
+            return;
+        }
+    }
 }
