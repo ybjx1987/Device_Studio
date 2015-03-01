@@ -46,6 +46,7 @@ public:
 protected:
     void    setHandelVisible(bool visible);
 
+    void    defaultPropertyEdit(QAbstractHost * host);
     void    commonPropertyEdit(QAbstractHost * host,QAbstractProperty * pro);
 protected:
     void    installHostEventFilter(QAbstractWidgetHost * host);
@@ -61,6 +62,8 @@ protected:
     bool    hostDragEnterEvent(QAbstractWidgetHost* host,QDragEnterEvent *e);
     bool    hostDropEvent(QAbstractWidgetHost* host,QDropEvent * e);
     bool    hostResizeEvent(QAbstractWidgetHost * host,QEvent * e);
+
+    bool    hostContextMenuEvent(QAbstractWidgetHost * host,QContextMenuEvent *e);
 signals:
     void    hostSelected(QAbstractWidgetHost * host);
     void    updateAction();
@@ -75,6 +78,11 @@ protected slots:
     void    formResize(const QSize &size);
     void    hostAdded(QAbstractHost* host,int index);
     void    hostRemoved(QAbstractHost * host);
+
+    void    editDefaultProperty();
+
+    void    deleteThis();
+    void    deleteSelection();
 protected:
     QAbstractWidgetHost * m_host;
     QMap<QObject*,QAbstractWidgetHost*>     m_objectToHost;

@@ -22,6 +22,9 @@
 #include <QUuid>
 #include <QGraphicsDropShadowEffect>
 #include <QVBoxLayout>
+#include <QContextMenuEvent>
+
+#include <QMenu>
 
 QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
     QWidget(parent),
@@ -189,6 +192,10 @@ bool QFormPanel::eventFilter(QObject *o, QEvent *e)
         {
             return true;
         }
+        else if(e->type() == QEvent::ContextMenu)
+        {
+            return hostContextMenuEvent(host,(QContextMenuEvent*)e);
+        }
     }
 
     return false;
@@ -224,11 +231,18 @@ bool QFormPanel::hostMouseMove(QAbstractWidgetHost *host, QMouseEvent *e)
 
 bool QFormPanel::hostDBMouseClick(QAbstractWidgetHost *host, QMouseEvent *)
 {
+    defaultPropertyEdit(host);
+
+    return true;
+}
+
+void QFormPanel::defaultPropertyEdit(QAbstractHost *host)
+{
     QString editProperty = host->property("editProperty").toString();
     QAbstractProperty * pro = host->getProperty(editProperty);
     if(pro == NULL)
     {
-        return true;
+        return;
     }
     if(editProperty == "text")
     {
@@ -246,8 +260,6 @@ bool QFormPanel::hostDBMouseClick(QAbstractWidgetHost *host, QMouseEvent *)
     {
        commonPropertyEdit(host,pro);
     }
-
-    return true;
 }
 
 void QFormPanel::commonPropertyEdit(QAbstractHost *host, QAbstractProperty * pro)
@@ -273,7 +285,12 @@ bool QFormPanel::hostMousePress(QAbstractWidgetHost *host, QMouseEvent *e)
             select(host);
             return true;
         }
-
+        else
+        {
+            m_selection->clear();
+            select(host);
+            return true;
+        }
     }
     else if(e->button() == Qt::LeftButton)
     {
@@ -304,6 +321,10 @@ bool QFormPanel::hostResizeEvent(QAbstractWidgetHost *host, QEvent *)
 
 bool QFormPanel::hostMouseRelease(QAbstractWidgetHost *host, QMouseEvent *e)
 {
+    if(e->button() == Qt::RightButton)
+    {
+        return true;
+    }
     if(!m_clickPoint.isNull())
     {
         m_clickPoint=QPoint();
@@ -847,4 +868,118 @@ void QFormPanel::sameGeometry()
 bool QFormPanel::enableAction()
 {
     return m_selection->selectedHosts().size()>1;
+}
+
+bool QFormPanel::hostContextMenuEvent(QAbstractWidgetHost *host, QContextMenuEvent *e)
+{
+    QList<QAction*>  list;
+    QAction * ac;
+
+    QMenu menu(this);
+
+    if(m_host != host)
+    {
+        QAbstractProperty * pro = host->getProperty(host->property("editProperty").toString());
+
+        if(pro != NULL)
+        {
+            ac = new QAction(QIcon(),tr("Edit [")+pro->getShowName()+tr("] value"),this);
+            connect(ac,SIGNAL(triggered()),
+                    this,SLOT(editDefaultProperty()));
+            list.append(ac);
+
+            ac = new QAction(this);
+            ac->setSeparator(true);
+            list.append(ac);
+        }
+
+        ac = new QAction(tr("Remove this"),this);
+        connect(ac,SIGNAL(triggered()),this,SLOT(deleteThis()));
+        list.append(ac);
+
+        if(m_selection->selectedHosts().size()>1)
+        {
+            ac = new QAction(tr("Remove all selection"),this);
+            connect(ac,SIGNAL(triggered()),this,SLOT(deleteSelection()));
+            list.append(ac);
+        }
+    }
+
+    if(m_selection->selectedHosts().size() > 1)
+    {
+        if(list.size()>0)
+        {
+            ac = new QAction(this);
+            ac->setSeparator(true);\
+            list.append(ac);
+        }
+
+        QStringList l;
+        l<<"designer.left"<<"designer.right"<<"designer.top"<<"designer.bottom"
+        <<""<<"designer.v-center"<<"designer.h-center"<<""
+        <<"designer.same-width"<<"designer.same-height"<<"designer.same-rect";
+
+        foreach(QString str,l)
+        {
+            QAction *a = QSoftActionMap::getAction(str);
+
+            if(a == NULL)
+            {
+                ac = new QAction(this);
+                ac->setSeparator(true);
+            }
+            else
+            {
+                ac = new QAction(a->text(),this);
+                connect(ac,SIGNAL(triggered()),a,SIGNAL(triggered()));
+            }
+            list.append(ac);
+        }
+    }
+    menu.addActions(list);
+    menu.exec(e->globalPos());
+    qDeleteAll(list);
+    return true;
+}
+
+void QFormPanel::editDefaultProperty()
+{
+    QAbstractWidgetHost * host = m_selection->current();
+    if(host != NULL)
+    {
+        defaultPropertyEdit(host);
+    }
+}
+
+void QFormPanel::deleteThis()
+{
+    QAbstractHost * host = m_selection->current();
+
+    if(host != NULL)
+    {
+        QAddHostUndoCommand *cmd;
+        cmd = new QAddHostUndoCommand(host->getParent(),host,
+                                      host->getParent()->getChildrenHost().indexOf(host),
+                                      AHT_REMOVE);
+        m_undoStack->push(cmd);
+    }
+}
+
+void QFormPanel::deleteSelection()
+{
+    QList<QAbstractWidgetHost*> list = m_selection->selectedHosts();
+
+    if(list.size()>0)
+    {
+        QBaseUndoCommand * cmd = new QBaseUndoCommand;
+
+        foreach(QAbstractWidgetHost * h,list)
+        {
+            new QAddHostUndoCommand(h->getParent(),
+                                    h,h->getParent()->getChildrenHost().indexOf(h),
+                                    AHT_REMOVE,cmd);
+        }
+
+        m_undoStack->push(cmd);
+    }
 }
