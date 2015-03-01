@@ -1,18 +1,23 @@
 #ifndef QPROPERTYEDITORPANE_H
 #define QPROPERTYEDITORPANE_H
 
+#include "../platformlibglobal.h"
+
 #include <QWidget>
 #include <QToolButton>
+
 
 class QAbstractProperty;
 class QAbstractPropertyEditor;
 
-class QPropertyEditorPane : public QWidget
+class PLATFORM_EXPORT QPropertyEditorPane : public QWidget
 {
     Q_OBJECT
 public:
     explicit QPropertyEditorPane(QAbstractProperty * property,QWidget *parent = 0);
     ~QPropertyEditorPane();
+
+    void    setShowResetButton(bool show);
 protected:
     void        paintEvent(QPaintEvent *);
     bool        eventFilter(QObject *, QEvent *);

@@ -1,5 +1,8 @@
 #include "qselectwidget.h"
 
+#include "../../../libs/kernel/host/qabstractwidgethost.h"
+#include "../../../libs/platform/undocommand/qpropertyeditundocommand.h"
+#include "../../../libs/kernel/property/qabstractproperty.h"
 
 #include <QPainter>
 
@@ -9,7 +12,9 @@
 WidgetHandle::WidgetHandle(QWidget *parent, Type t):
     QWidget(parent),
     m_type(t),
-    m_current(false)
+    m_host(NULL),
+    m_current(false),
+    m_undoStack(NULL)
 {
     setAttribute(Qt::WA_NoChildEventsForParent);
     setMouseTracking(false);
@@ -61,9 +66,14 @@ void WidgetHandle::setCurrent(bool b)
     this->update();
 }
 
-void WidgetHandle::setWidget(QWidget *w)
+void WidgetHandle::setHost(QAbstractWidgetHost *host)
 {
-    m_widget = w;
+    m_host = host;
+}
+
+void WidgetHandle::setUndoStack(QUndoStack *undoStack)
+{
+    m_undoStack = undoStack;
 }
 
 void WidgetHandle::paintEvent(QPaintEvent *)
@@ -78,29 +88,31 @@ void WidgetHandle::mousePressEvent(QMouseEvent *e)
 {
     e->accept();
 
-    if (!(m_widget && e->button() == Qt::LeftButton))
+    if (!(m_host!=NULL && e->button() == Qt::LeftButton))
         return;
 
-    QWidget *container = m_widget->parentWidget();
+    QWidget *container = ((QWidget*)m_host->getObject())->parentWidget();
 
     m_origPressPos = container->mapFromGlobal(e->globalPos());
-    m_geom = m_origGeom = m_widget->geometry();
+    m_geom = m_origGeom = m_host->getPropertyValue("geometry").toRect();
 }
 
 
 void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
 {
-    if (!(m_widget && e->buttons() & Qt::LeftButton))
+    if (!(m_host!=NULL && e->buttons() & Qt::LeftButton))
         return;
 
     e->accept();
 
-    QWidget *container = m_widget->parentWidget();
+    QWidget *container = ((QWidget*)m_host->getObject())->parentWidget();
 
     const QPoint rp = container->mapFromGlobal(e->globalPos());
     const QPoint d = rp - m_origPressPos;
 
     const QRect pr = container->rect();
+
+    const QRect re= m_host->getPropertyValue("geometry").toRect();
 
     switch (m_type)
     {
@@ -116,10 +128,9 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int h = m_origGeom.height() - d.y();
         m_geom.setHeight(h);
 
-        const int dx = m_widget->width() - w;
-        const int dy = m_widget->height() - h;
-
-        trySetGeometry(m_widget, m_widget->x() + dx, m_widget->y() + dy, w, h);
+        const int dx = re.width() - w;
+        const int dy = re.height() - h;
+        trySetGeometry(re.x() + dx, re.y() + dy, w, h);
     }
     break;
     case Top:
@@ -130,8 +141,8 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int h = m_origGeom.height() - d.y();
         m_geom.setHeight(h);
 
-        const int dy = m_widget->height() - h;
-        trySetGeometry(m_widget, m_widget->x(), m_widget->y() + dy, m_widget->width(), h);
+        const int dy = re.height() - h;
+        trySetGeometry(re.x(), re.y() + dy, re.width(), h);
     }
     break;
     case RightTop:
@@ -142,12 +153,12 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int h = m_origGeom.height() - d.y();
         m_geom.setHeight(h);
 
-        const int dy = m_widget->height() - h;
+        const int dy = re.height() - h;
 
         int w = m_origGeom.width() + d.x();
         m_geom.setWidth(w);
 
-        trySetGeometry(m_widget, m_widget->x(), m_widget->y() + dy, w, h);
+        trySetGeometry(re.x(), re.y() + dy, w, h);
     }
     break;
     case Right:
@@ -158,7 +169,7 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int w = m_origGeom.width() + d.x();
         m_geom.setWidth(w);
 
-        tryResize(m_widget, w, m_widget->height());
+        tryResize(w, re.height());
     }
     break;
     case RightBottom:
@@ -172,7 +183,7 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int h = m_origGeom.height() + d.y();
         m_geom.setHeight(h);
 
-        tryResize(m_widget, w, h);
+        tryResize(w, h);
     }
     break;
     case Bottom:
@@ -182,7 +193,7 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
 
         int h = m_origGeom.height() + d.y();
         m_geom.setHeight(h);
-        tryResize(m_widget, m_widget->width(), h);
+        tryResize(re.width(), h);
     }
     break;
     case LeftBottom:
@@ -196,9 +207,9 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int h = m_origGeom.height() + d.y();
         m_geom.setHeight(h);
 
-        int dx = m_widget->width() - w;
+        int dx = re.width() - w;
 
-        trySetGeometry(m_widget, m_widget->x() + dx, m_widget->y(), w, h);
+        trySetGeometry(re.x() + dx, re.y(), w, h);
     }
     break;
     case Left:
@@ -209,9 +220,9 @@ void WidgetHandle::mouseMoveEvent(QMouseEvent *e)
         int w = m_origGeom.width() - d.x();
         m_geom.setWidth(w);
 
-        const int dx = m_widget->width() - w;
+        const int dx = re.width() - w;
 
-        trySetGeometry(m_widget, m_widget->x() + dx, m_widget->y(), w, m_widget->height());
+        trySetGeometry(re.x() + dx, re.y(), w, re.height());
     }
     break;
     default: break;
@@ -224,12 +235,11 @@ void WidgetHandle::mouseReleaseEvent(QMouseEvent *e)
         return;
 
     e->accept();
-    emit mouse_button_release(m_origGeom,m_geom);
 }
 
-void WidgetHandle::trySetGeometry(QWidget *w, int x, int y, int width, int height)
+void WidgetHandle::trySetGeometry(int x, int y, int width, int height)
 {
-
+    QWidget * w = (QWidget*)m_host->getObject();
     int minw = w->minimumSize().width();
     minw = qMax(minw, 20);
 
@@ -246,29 +256,46 @@ void WidgetHandle::trySetGeometry(QWidget *w, int x, int y, int width, int heigh
     if (height < minh && y != w->y())
         y -= minh - height;
 
-    emit sizeChanged(x, y, qMax(minw, width), qMax(minh, height));
+    QRect n = QRect(x,y,qMax(minw,width),qMax(minh,height));
+
+    if(n != m_host->getPropertyValue("geometry").toRect()
+            && m_undoStack != NULL)
+    {
+        QPropertyEditUndoCommand * cmd = new QPropertyEditUndoCommand(
+                    m_host->getUuid(),"geometry",n,m_host->getPropertyValue("geometry"));
+
+        m_undoStack->push(cmd);
+    }
 }
 
-void WidgetHandle::tryResize(QWidget *w, int width, int height)
+void WidgetHandle::tryResize(int width, int height)
 {
+    QWidget * w= (QWidget*)m_host->getObject();
     int minw = w->minimumSize().width();
     minw = qMax(minw, 16);
 
     int minh = w->minimumSize().height();
     minh = qMax(minh, 16);
 
-    emit sizeChanged(w->x(),w->y(),qMax(minw, width), qMax(minh, height));
+    QRect n = QRect(w->x(),w->y(),qMax(minw,width),qMax(minh,height));
+
+    if(n != m_host->getPropertyValue("geometry").toRect()
+            && m_undoStack != NULL)
+    {
+        QPropertyEditUndoCommand * cmd = new QPropertyEditUndoCommand(
+                    m_host->getUuid(),"geometry",n,m_host->getPropertyValue("geometry"));
+
+        m_undoStack->push(cmd);
+    }
 }
 
 WidgetSelection::WidgetSelection(QWidget *parent)   :
-    m_widget(0),
+    m_host(0),
     m_formWindow(parent)
 {
     for (int i = WidgetHandle::LeftTop; i < WidgetHandle::TypeCount; ++i)
     {
         m_handles[i] = new WidgetHandle(m_formWindow, static_cast<WidgetHandle::Type>(i));
-        connect(m_handles[i],SIGNAL(sizeChanged(int,int,int,int)),this,SLOT(changedsize(int,int,int,int)));
-        connect(m_handles[i],SIGNAL(mouse_button_release(QRect,QRect)),this,SLOT(mouse_button_release(QRect,QRect)));
     }
     hide();
 }
@@ -281,68 +308,50 @@ void WidgetSelection::setCurrent(bool b)
     }
 }
 
-void WidgetSelection::setWidget(QWidget *w)
+void WidgetSelection::setUndoStack(QUndoStack *undoStack)
 {
-    if (m_widget != 0)
-    {
-        QWidget* wid=m_widget;
-        while(wid!=NULL)
-        {
-            wid->removeEventFilter(this);
-            wid=wid->parentWidget();
-            if(wid==m_formWindow)
-            {
-                break;
-            }
-        }
-    }
-
-    if (w == 0) {
-        hide();
-        m_widget = 0;
-        return;
-    }
-
-    m_widget = w;
-
     for (int i = WidgetHandle::LeftTop; i < WidgetHandle::TypeCount; ++i)
     {
-        m_handles[i]->setWidget(m_widget);
+        m_handles[i]->setUndoStack(undoStack);
     }
+}
 
-    QWidget* wid=m_widget;
-    while(wid!=NULL)
+void WidgetSelection::setHost(QAbstractWidgetHost * host)
+{
+    m_host = host;
+    for (int i = WidgetHandle::LeftTop; i < WidgetHandle::TypeCount; ++i)
     {
-        wid->installEventFilter(this);
-        wid=wid->parentWidget();
-        if(wid==m_formWindow)
-        {
-            break;
-        }
+        m_handles[i]->setHost(m_host);
     }
-
+    if(m_host == NULL)
+    {
+        this->hide();
+        return;
+    }
     updateGeometry();
     show();
 }
 
 bool WidgetSelection::isUsed() const
 {
-    return m_widget != 0;
+    return m_host != 0;
 }
 
-QWidget *WidgetSelection::widget()
+QAbstractWidgetHost *WidgetSelection::getHost()
 {
-    return m_widget;
+    return m_host;
 }
 
 void WidgetSelection::updateGeometry()
 {
-    if (!m_widget || !m_widget->parentWidget())
+    if (m_host == NULL)
         return;
 
-    QPoint p = m_widget->mapToGlobal(QPoint(0,0));
+    QWidget * wid = (QWidget*)m_host->getObject();
+
+    QPoint p = wid->mapToGlobal(QPoint(0,0));
     p = m_formWindow->mapFromGlobal(p);
-    const QRect r(p, m_widget->size());
+    const QRect r(p, wid->size());
 
     const int w = 6;
     const int h = 6;
@@ -388,9 +397,7 @@ void WidgetSelection::hide()
 {
     for (int i = WidgetHandle::LeftTop; i < WidgetHandle::TypeCount; ++i)
     {
-        WidgetHandle *h = m_handles[ i ];
-        if (h)
-            h->hide();
+        m_handles[i]->hide();
     }
 }
 
@@ -399,10 +406,8 @@ void WidgetSelection::show()
     for (int i = WidgetHandle::LeftTop; i < WidgetHandle::TypeCount; ++i)
     {
         WidgetHandle *h = m_handles[ i ];
-        if (h) {
-            h->show();
-            h->raise();
-        }
+        h->show();
+        h->raise();
     }
 }
 
@@ -410,58 +415,14 @@ void WidgetSelection::update()
 {
     for (int i = WidgetHandle::LeftTop; i < WidgetHandle::TypeCount; ++i)
     {
-        WidgetHandle *h = m_handles[ i ];
-        if (h)
-            h->update();
+        m_handles[ i ]->update();
     }
-}
-
-bool WidgetSelection::eventFilter(QObject *object, QEvent *event)
-{
-    QObject *o=m_widget;
-    while(1)
-    {
-        if(o==object)
-        {
-            break;
-        }
-        if(o==NULL)
-        {
-            return false;
-        }
-        o=o->parent();
-    }
-
-    switch (event->type()) {
-        default: break;
-
-        case QEvent::Move:
-        case QEvent::Resize:
-        case QEvent::ParentChange:
-            updateGeometry();
-            break;
-        case QEvent::ZOrderChange:
-            show();
-            break;
-    }
-
-    return false;
-}
-
-void WidgetSelection::changedsize(int x, int y, int width, int height)
-{
-    m_widget->setProperty("geometry",QRect(x,y,width,height));
-    updateGeometry();
-}
-
-void WidgetSelection::mouse_button_release(const QRect &old, const QRect &now)
-{
-    emit sizeChanged(m_widget,old,now);
 }
 
 Selection::Selection(QWidget *formwindow):
     m_current(NULL),
-    m_formwindow(formwindow)
+    m_formwindow(formwindow),
+    m_undoStack(NULL)
 {
 }
 
@@ -477,7 +438,7 @@ void Selection::clear()
         const SelectionHash::iterator mend = m_usedSelections.end();
         for (SelectionHash::iterator it = m_usedSelections.begin(); it != mend; ++it)
         {
-            it.value()->setWidget(0);
+            it.value()->setHost(NULL);
         }
         m_usedSelections.clear();
     }
@@ -490,9 +451,9 @@ void  Selection::clearSelectionPool()
     m_selectionPool.clear();
 }
 
-WidgetSelection *Selection::addWidget(QWidget *w)
+WidgetSelection *Selection::addHost(QAbstractWidgetHost *host)
 {
-    WidgetSelection *rc= m_usedSelections.value(w);
+    WidgetSelection *rc= m_usedSelections.value(host);
     if (rc != 0)
     {
         rc->show();
@@ -509,96 +470,83 @@ WidgetSelection *Selection::addWidget(QWidget *w)
 
     if (rc == 0) {
         rc = new WidgetSelection(m_formwindow);
-        connect(rc,SIGNAL(sizeChanged(QWidget*,QRect,QRect)),this,SIGNAL(sizeChanged(QWidget*,QRect,QRect)));
+        rc->setUndoStack(m_undoStack);
         m_selectionPool.push_back(rc);
 
     }
-    m_usedSelections.insert(w, rc);
-    rc->setWidget(w);
+    QAbstractProperty * pro = host->getProperty("geometry");
+    connect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
+            this,SLOT(hostGeometryChanged()));
+    m_usedSelections.insert(host, rc);
+    rc->setHost(host);
     return rc;
 }
 
-QWidget* Selection::removeWidget(QWidget *w)
+void Selection::removeHost(QAbstractWidgetHost *host)
 {
-    WidgetSelection *s = m_usedSelections.value(w);
-    if (!s)
-        return w;
-
+    WidgetSelection *s = m_usedSelections.value(host);
+    if (s==NULL)
+    {
+        return;
+    }
+    QAbstractProperty * pro = host->getProperty("geometry");
+    disconnect(pro,SIGNAL(valueChanged(QVariant,QVariant)),
+            this,SLOT(hostGeometryChanged()));
     if(m_current==s)
     {
         m_current->setCurrent(false);
         m_current=NULL;
     }
-    s->setWidget(0);
-    m_usedSelections.remove(w);
-    if (m_usedSelections.isEmpty())
-        return 0;
-
-    return (*m_usedSelections.begin())->widget();
+    s->setHost(NULL);
+    m_usedSelections.remove(host);
 }
 
-void Selection::repaintSelection(QWidget *w)
+void Selection::repaintSelection(QAbstractWidgetHost * host)
 {
-    if (WidgetSelection *s = m_usedSelections.value(w))
+    if (WidgetSelection *s = m_usedSelections.value(host))
+    {
         s->update();
+    }
 }
 
 void Selection::repaintSelection()
 {
     const SelectionHash::iterator mend = m_usedSelections.end();
-    for (SelectionHash::iterator it = m_usedSelections.begin(); it != mend; ++it) {
+    for (SelectionHash::iterator it = m_usedSelections.begin(); it != mend; ++it)
+    {
         it.value()->update();
     }
 }
 
-bool Selection::isWidgetSelected(QWidget *w) const{
-    return  m_usedSelections.contains(w);
+bool Selection::isHostSelected(QAbstractWidgetHost *host) const
+{
+    return  m_usedSelections.contains(host);
 }
 
-QWidgetList Selection::selectedWidgets() const
+QList<QAbstractWidgetHost*> Selection::selectedHosts() const
 {
     return m_usedSelections.keys();
 }
 
-void Selection::raiseList(const QWidgetList& l)
+void Selection::hide(QAbstractWidgetHost *host)
 {
-    const SelectionHash::iterator mend = m_usedSelections.end();
-    for (SelectionHash::iterator it = m_usedSelections.begin(); it != mend; ++it) {
-        WidgetSelection *w = it.value();
-        if (l.contains(w->widget()))
-            w->show();
-    }
-}
-
-void Selection::raiseWidget(QWidget *w)
-{
-    if (WidgetSelection *s = m_usedSelections.value(w))
-        s->show();
-}
-
-void Selection::updateGeometry(QWidget *w)
-{
-    if (WidgetSelection *s = m_usedSelections.value(w))
+    if (WidgetSelection *s = m_usedSelections.value(host))
     {
-        s->updateGeometry();
+        s->hide();
     }
 }
 
-void Selection::hide(QWidget *w)
+void Selection::show(QAbstractWidgetHost *host)
 {
-    if (WidgetSelection *s = m_usedSelections.value(w))
-        s->hide();
-}
-
-void Selection::show(QWidget *w)
-{
-    if (WidgetSelection *s = m_usedSelections.value(w))
+    if (WidgetSelection *s = m_usedSelections.value(host))
+    {
         s->show();
+    }
 }
 
-void Selection::setCurrent(QWidget *w)
+void Selection::setCurrent(QAbstractWidgetHost *host)
 {
-    WidgetSelection *s = m_usedSelections.value(w);
+    WidgetSelection *s = m_usedSelections.value(host);
     if(m_current==s)
     {
         return;
@@ -614,7 +562,33 @@ void Selection::setCurrent(QWidget *w)
     }
 }
 
-QWidget* Selection::current()
+void Selection::setUndoStack(QUndoStack *undoStack)
 {
-    return m_current==NULL?NULL:m_current->widget();
+    m_undoStack = undoStack;
+
+    const SelectionHash::iterator mend = m_usedSelections.end();
+    for (SelectionHash::iterator it = m_usedSelections.begin(); it != mend; ++it)
+    {
+        it.value()->setUndoStack(undoStack);
+    }
+}
+
+QAbstractWidgetHost* Selection::current()
+{
+    return m_current==NULL?NULL:m_current->getHost();
+}
+
+void Selection::hostGeometryChanged()
+{
+    QAbstractProperty * pro = (QAbstractProperty*)sender();
+
+    const SelectionHash::iterator mend = m_usedSelections.end();
+    for (SelectionHash::iterator it = m_usedSelections.begin(); it != mend; ++it)
+    {
+        if(it.key()->getUuid() == pro->getHostUuid())
+        {
+            it.value()->updateGeometry();
+            return;
+        }
+    }
 }

@@ -24,6 +24,8 @@ protected slots:
     void    selectChanged();
     void    addHost(QAbstractHost * host);
     void    removeHost(QAbstractHost * host);
+
+    void    hostNameChanged();
 signals:
     void    hostSelectChanged(QAbstractWidgetHost * host);
 protected:

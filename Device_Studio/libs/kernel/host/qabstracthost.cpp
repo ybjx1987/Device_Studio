@@ -352,10 +352,10 @@ void QAbstractHost::insertHost(QAbstractHost *host, int index)
 
 void QAbstractHost::removeHost(QAbstractHost *host)
 {
+    host->setPropertyValue("visible",false);
     emit hostRemoved(host);
     m_children.removeAll(host);
     host->getObject()->setParent(NULL);
-    host->getObject()->setProperty("visible",false);
 }
 
 void QAbstractHost::updateProperty()
