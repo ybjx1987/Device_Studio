@@ -30,7 +30,8 @@ SOURCES += qdesignerplugin.cpp \
     formeditor/sizehandlerect.cpp \
     qdesignerdnditem.cpp \
     formeditor/qselectwidget.cpp \
-    qhostlistview.cpp
+    qhostlistview.cpp \
+    formeditor/qcommonpropertyeditdialog.cpp
 
 HEADERS += qdesignerplugin.h \
     qdesignerwidget.h \
@@ -41,7 +42,8 @@ HEADERS += qdesignerplugin.h \
     formeditor/sizehandlerect.h \
     qdesignerdnditem.h \
     formeditor/qselectwidget.h \
-    qhostlistview.h
+    qhostlistview.h \
+    formeditor/qcommonpropertyeditdialog.h
 
 unix {
     target.path = /usr/lib
@@ -53,3 +55,6 @@ DISTFILES += \
 
 RESOURCES += \
     designer.qrc
+
+FORMS += \
+    formeditor/qcommonpropertyeditdialog.ui

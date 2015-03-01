@@ -83,3 +83,8 @@ void QPropertyEditorPane::propertyEdit(const QVariant &value)
 {
     emit propertyValueEdit(m_property,value);
 }
+
+void QPropertyEditorPane::setShowResetButton(bool show)
+{
+    m_resetButton->setVisible(show);
+}

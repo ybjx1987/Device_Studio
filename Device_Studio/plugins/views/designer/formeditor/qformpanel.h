@@ -9,6 +9,7 @@
 
 #define FRAME_SIZE 10
 
+class QAbstractProperty;
 class QAbstractHost;
 class QAbstractWidgetHost;
 class QFormContainer;
@@ -45,6 +46,7 @@ public:
 protected:
     void    setHandelVisible(bool visible);
 
+    void    commonPropertyEdit(QAbstractHost * host,QAbstractProperty * pro);
 protected:
     void    installHostEventFilter(QAbstractWidgetHost * host);
     void    removeHostEventFilter(QAbstractWidgetHost * host);

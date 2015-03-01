@@ -12,6 +12,7 @@ QLineEditHost::QLineEditHost(QAbstractWidgetHost * parent):
 {
     setProperty("needFrame",false);
     setProperty("acceptDrop",false);
+    setProperty("editProperty","text");
 }
 
 void QLineEditHost::createObject()

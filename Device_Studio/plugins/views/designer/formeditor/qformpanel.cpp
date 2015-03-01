@@ -3,7 +3,9 @@
 #include "qdesignerdnditem.h"
 #include "sizehandlerect.h"
 #include "qselectwidget.h"
+#include "qcommonpropertyeditdialog.h"
 
+#include "../../../../libs/platform/propertylist/editor/qstringeditordialog.h"
 #include "../../../../libs/platform/undocommand/qpropertyeditundocommand.h"
 #include "../../../../libs/kernel/host/qhostfactory.h"
 #include "../../../../libs/kernel/host/qabstractwidgethost.h"
@@ -99,6 +101,14 @@ void QFormPanel::installHostEventFilter(QAbstractWidgetHost *host)
 
     host->getObject()->installEventFilter(this);
 
+    QObjectList list = host->getObject()->children();
+    while(list.size()>0)
+    {
+        QObject * obj = list.takeFirst();
+        obj->installEventFilter(this);
+        list += obj->children();
+    }
+
     foreach(QAbstractHost * h,host->getChildrenHost())
     {
         installHostEventFilter((QAbstractWidgetHost*)h);
@@ -113,6 +123,15 @@ void QFormPanel::removeHostEventFilter(QAbstractWidgetHost *host)
     }
 
     host->getObject()->removeEventFilter(this);
+
+    QObjectList list = host->getObject()->children();
+
+    while(list.size()>0)
+    {
+        QObject * obj = list.takeFirst();
+        obj->removeEventFilter(this);
+        list += obj->children();
+    }
 
     foreach(QAbstractHost * h,host->getChildrenHost())
     {
@@ -158,6 +177,18 @@ bool QFormPanel::eventFilter(QObject *o, QEvent *e)
         {
             return hostResizeEvent(host,e);
         }
+        else if(e->type() == QEvent::Wheel)
+        {
+            return true;
+        }
+        else if(e->type() == QEvent::KeyPress)
+        {
+            return true;
+        }
+        else if(e->type() == QEvent::KeyRelease)
+        {
+            return true;
+        }
     }
 
     return false;
@@ -191,9 +222,46 @@ bool QFormPanel::hostMouseMove(QAbstractWidgetHost *host, QMouseEvent *e)
     return true;
 }
 
-bool QFormPanel::hostDBMouseClick(QAbstractWidgetHost *host, QMouseEvent *e)
+bool QFormPanel::hostDBMouseClick(QAbstractWidgetHost *host, QMouseEvent *)
 {
+    QString editProperty = host->property("editProperty").toString();
+    QAbstractProperty * pro = host->getProperty(editProperty);
+    if(pro == NULL)
+    {
+        return true;
+    }
+    if(editProperty == "text")
+    {
+        if(pro->inherits("QStringProperty"))
+        {
+            QStringEditorDialog dlg((QStringProperty*)pro,this);
+            dlg.exec();
+        }
+        else
+        {
+            commonPropertyEdit(host,pro);
+        }
+    }
+    else
+    {
+       commonPropertyEdit(host,pro);
+    }
+
     return true;
+}
+
+void QFormPanel::commonPropertyEdit(QAbstractHost *host, QAbstractProperty * pro)
+{
+    QCommonPropertyEditDialog dlg(pro,this);
+    dlg.exec();
+    QVariant v = dlg.getValue();
+    if(v.isValid())
+    {
+        QPropertyEditUndoCommand * cmd = new QPropertyEditUndoCommand(
+                    host->getUuid(),pro->getName(),
+                    v,pro->getValue());
+        m_undoStack->push(cmd);
+    }
 }
 
 bool QFormPanel::hostMousePress(QAbstractWidgetHost *host, QMouseEvent *e)
