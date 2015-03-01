@@ -136,6 +136,7 @@ bool QAbstractHost::fromXml(XmlNode *xml)
             }
         }
     }
+
     return true;
 }
 
