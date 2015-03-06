@@ -7,12 +7,13 @@
 class QTitleWidget;
 class QItemEndWidget;
 class QItemPropertyListView;
+class QStyleSheetItem;
 
 class QStyleSheetItemWidget : public QWidget
 {
     Q_OBJECT
 public:
-    explicit QStyleSheetItemWidget(QWidget *parent = 0);
+    explicit QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *parent = 0);
     ~QStyleSheetItemWidget();
 
 protected:
@@ -25,6 +26,7 @@ protected:
     QItemEndWidget      *m_endWidget;
     QItemPropertyListView   *m_propertyListView;
     QVBoxLayout         *m_layout;
+    QStyleSheetItem     *m_sheetItem;
 };
 
 #endif // QSTYLESHEETITEMWIDGET_H

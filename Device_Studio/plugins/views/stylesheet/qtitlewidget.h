@@ -28,6 +28,7 @@ protected:
     QList<QSingleTitleWidget*>  m_titles;
     QMap<QString,QSingleTitleWidget*>   m_textToTitle;
     QToolBarButton              *m_addButton;
+    QToolBarButton              *m_addTitleButton;
 };
 
 #endif // QTITLEWIDGET_H
