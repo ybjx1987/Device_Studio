@@ -41,7 +41,8 @@ HEADERS += \
     qstylesheetitemwidget.h \
     qitempropertylistview.h \
     qonegroupwidget.h \
-    qnewstylesheetgroupdialog.h
+    qnewstylesheetgroupdialog.h \
+    qnewstylesheetitemdialog.h
 
 SOURCES += \
     qstylesheetplugin.cpp \
@@ -54,8 +55,10 @@ SOURCES += \
     qstylesheetitemwidget.cpp \
     qitempropertylistview.cpp \
     qonegroupwidget.cpp \
-    qnewstylesheetgroupdialog.cpp
+    qnewstylesheetgroupdialog.cpp \
+    qnewstylesheetitemdialog.cpp
 
 FORMS += \
     qdeletestylesheetdialog.ui \
-    qnewstylesheetgroupdialog.ui
+    qnewstylesheetgroupdialog.ui \
+    qnewstylesheetitemdialog.ui

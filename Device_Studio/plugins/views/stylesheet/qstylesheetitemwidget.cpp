@@ -4,12 +4,13 @@
 #include "qtitlewidget.h"
 #include "qitempropertylistview.h"
 
-QStyleSheetItemWidget::QStyleSheetItemWidget(QWidget *parent) :
+QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *parent) :
     QWidget(parent),
     m_titleWidget(new QTitleWidget),
     m_endWidget(new QItemEndWidget),
     m_propertyListView(new QItemPropertyListView),
-    m_layout(new QVBoxLayout)
+    m_layout(new QVBoxLayout),
+    m_sheetItem(item)
 {
     m_layout->setMargin(0);
     m_layout->setSpacing(0);

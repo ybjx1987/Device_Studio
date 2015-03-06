@@ -9,6 +9,7 @@ QNewStyleSheetGroupDialog::QNewStyleSheetGroupDialog(const QStringList &list,QWi
     m_nameEdit(new QValidatorEdit)
 {
     ui->setupUi(this);
+    setProperty("no-ManhattanStyle",true);
     ui->horizontalLayout_2->insertWidget(1,m_nameEdit,1);
     m_nameEdit->setIntermediateList(list);
 }

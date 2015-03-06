@@ -18,7 +18,6 @@ class QStyleSheetWidget : public QAbstractPageWidget
 public:
     explicit QStyleSheetWidget(QWidget *parent = 0);
     ~QStyleSheetWidget();
-
 signals:
 
 protected:
@@ -34,6 +33,8 @@ protected slots:
 
     void    newGroup();
     void    delGroup();
+
+    void    newItem();
 
     void    groupAdded(QStyleSheetGroup * group);
     void    groupDeled(QStyleSheetGroup * group);

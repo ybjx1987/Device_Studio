@@ -24,11 +24,14 @@ QTitleWidget::QTitleWidget(QWidget *parent) :
     label->setFixedSize(16,16);
     QAction * ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add Item"),this);
     m_addButton = new QToolBarButton(ac);
-    m_addButton->setVisible(true);
+    ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add Item"),this);
+    m_addTitleButton = new QToolBarButton(ac);
+    m_addTitleButton->setVisible(true);
+    hl->addWidget(m_addTitleButton);
     hl->addWidget(label);
-    hl->addWidget(m_addButton);
     hl->addSpacerItem(new QSpacerItem(1,1,QSizePolicy::Expanding,
                                       QSizePolicy::Expanding));
+    hl->addWidget(m_addButton);
     setLayout(hl);
 
     setStyleSheet("#titleWidget{background-color:rgb(255,220,180);}");

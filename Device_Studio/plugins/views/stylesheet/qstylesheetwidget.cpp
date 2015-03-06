@@ -3,6 +3,7 @@
 #include "qstylesheetgrouplistview.h"
 #include "qonegroupwidget.h"
 #include "qnewstylesheetgroupdialog.h"
+#include "qnewstylesheetitemdialog.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/platform/minisplitter.h"
@@ -77,6 +78,7 @@ QStyleSheetWidget::QStyleSheetWidget(QWidget *parent) :
     list.append(ac);
 
     ac = QSoftActionMap::getAction("StyleSheet.Add");
+    connect(ac,SIGNAL(triggered()),this,SLOT(newItem()));
     list.append(ac);
 
     ac = new QAction(this);
@@ -129,6 +131,7 @@ void QStyleSheetWidget::projectClosed()
     {
         m_itemWidget->removeWidget(wid);
     }
+    qDeleteAll(m_widgetToGroup.keys());
     m_widgetToGroup.clear();
 
     updateAction();
@@ -229,4 +232,12 @@ void QStyleSheetWidget::groupDeled(QStyleSheetGroup *group)
     }
 
     updateAction();
+}
+
+void QStyleSheetWidget::newItem()
+{
+    QNewStyleSheetItemDialog dlg(QSoftCore::getInstance()->getProject()
+                                 ->getStyleSheetManager(),this);
+
+    dlg.exec();
 }
