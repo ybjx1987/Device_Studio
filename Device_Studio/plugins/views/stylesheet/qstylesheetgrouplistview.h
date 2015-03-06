@@ -17,10 +17,10 @@ public:
     void    init(QStyleSheetManager * manager);
 
     void    clear();
-protected slots:
-    void    select();
     void    groupAdded(QStyleSheetGroup * group);
     void    groupDeled(QStyleSheetGroup * group);
+protected slots:
+    void    select();
 signals:
     void    groupSelect(QStyleSheetGroup* group);
     void    updateAction();

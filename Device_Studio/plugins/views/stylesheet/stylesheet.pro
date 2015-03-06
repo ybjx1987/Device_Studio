@@ -34,26 +34,28 @@ HEADERS += \
     qstylesheetplugin.h \
     qstylesheetwidget.h \
     qstylesheetgrouplistview.h \
-    qnewstylesheetgroupdialog.h \
     qdeletestylesheetdialog.h \
     qsingletitlewidget.h \
     qtitlewidget.h \
     qitemendwidget.h \
     qstylesheetitemwidget.h \
-    qitempropertylistview.h
+    qitempropertylistview.h \
+    qonegroupwidget.h \
+    qnewstylesheetgroupdialog.h
 
 SOURCES += \
     qstylesheetplugin.cpp \
     qstylesheetwidget.cpp \
     qstylesheetgrouplistview.cpp \
-    qnewstylesheetgroupdialog.cpp \
     qdeletestylesheetdialog.cpp \
     qsingletitlewidget.cpp \
     qtitlewidget.cpp \
     qitemendwidget.cpp \
     qstylesheetitemwidget.cpp \
-    qitempropertylistview.cpp
+    qitempropertylistview.cpp \
+    qonegroupwidget.cpp \
+    qnewstylesheetgroupdialog.cpp
 
 FORMS += \
-    qnewstylesheetgroupdialog.ui \
-    qdeletestylesheetdialog.ui
+    qdeletestylesheetdialog.ui \
+    qnewstylesheetgroupdialog.ui

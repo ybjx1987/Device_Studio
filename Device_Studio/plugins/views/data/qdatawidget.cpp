@@ -100,11 +100,6 @@ QDataWidget::QDataWidget(QWidget * parent):
 
     m_project = QSoftCore::getInstance()->getProject();
 
-    connect(m_project,SIGNAL(projectOpened()),
-            this,SLOT(projectOpened()));
-    connect(m_project,SIGNAL(projectClosed()),
-            this,SLOT(projectClosed()));
-
     updateAction();
 
     connect(m_dataListview,SIGNAL(updateAction()),

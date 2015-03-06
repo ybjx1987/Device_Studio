@@ -127,12 +127,6 @@ QDesignerWidget::QDesignerWidget(QWidget * parent ):
     connect(QSoftCore::getInstance()->getProject(),SIGNAL(hostAdded(QAbstractWidgetHost*,int)),
             this,SLOT(formAdded(QAbstractWidgetHost*,int)));
 
-    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectOpened()),
-            this,SLOT(projectOpened()));
-
-    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectClosed()),
-            this,SLOT(projectClosed()));
-
     connect(m_formEditor,SIGNAL(select(QAbstractWidgetHost*)),
             this,SLOT(hostSelect(QAbstractWidgetHost*)));
     m_hostListView->setHost(NULL);

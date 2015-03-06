@@ -16,10 +16,6 @@ QStyleSheetGroupListView::QStyleSheetGroupListView(QWidget * parent):
 void QStyleSheetGroupListView::init(QStyleSheetManager *manager)
 {
     clear();
-    connect(manager,SIGNAL(groupAdded(QStyleSheetGroup*)),
-            this,SLOT(groupAdded(QStyleSheetGroup*)));
-    connect(manager,SIGNAL(groupDeled(QStyleSheetGroup*)),
-            this,SLOT(groupDeled(QStyleSheetGroup*)));
     QList<QStyleSheetGroup*> groups = manager->getGroups();
 
     foreach(QStyleSheetGroup * g,groups)
@@ -68,6 +64,11 @@ void QStyleSheetGroupListView::groupAdded(QStyleSheetGroup *group)
     m_groupToItem.insert(group,item);
 
     emit updateAction();
+
+    if(m_itemToGroup.size() == 1)
+    {
+        item->setSelected(true);
+    }
 }
 
 void QStyleSheetGroupListView::groupDeled(QStyleSheetGroup *group)
