@@ -11,12 +11,12 @@ class QSingleTitleWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit QSingleTitleWidget(QWidget *parent = 0);
+    explicit QSingleTitleWidget(const QString & title,QWidget *parent = 0);
     ~QSingleTitleWidget();
-
-    void    setText(const QString & title);
+    QString text();
 protected:
     void updateWidth();
+    void paintEvent(QPaintEvent *);
 signals:
     void    remove();
 protected:
