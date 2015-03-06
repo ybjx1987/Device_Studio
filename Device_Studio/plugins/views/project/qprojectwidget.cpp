@@ -59,11 +59,6 @@ QProjectWidget::QProjectWidget(QWidget * parent):
 
     connect(QSoftCore::getInstance()->getProject(),SIGNAL(hostAdded(QAbstractWidgetHost*,int)),
             m_pageView,SLOT(addHost(QAbstractWidgetHost*,int)));
-
-    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectOpened()),
-            this,SLOT(projectOpened()));
-    connect(QSoftCore::getInstance()->getProject(),SIGNAL(projectClosed()),
-            this,SLOT(projectClosed()));
 }
 
 void QProjectWidget::projectOpened()
