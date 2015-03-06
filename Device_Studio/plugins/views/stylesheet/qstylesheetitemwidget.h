@@ -6,6 +6,7 @@
 
 class QTitleWidget;
 class QItemEndWidget;
+class QItemPropertyListView;
 
 class QStyleSheetItemWidget : public QWidget
 {
@@ -22,7 +23,7 @@ public slots:
 protected:
     QTitleWidget        *m_titleWidget;
     QItemEndWidget      *m_endWidget;
-
+    QItemPropertyListView   *m_propertyListView;
     QVBoxLayout         *m_layout;
 };
 

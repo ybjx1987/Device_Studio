@@ -39,7 +39,8 @@ HEADERS += \
     qsingletitlewidget.h \
     qtitlewidget.h \
     qitemendwidget.h \
-    qstylesheetitemwidget.h
+    qstylesheetitemwidget.h \
+    qitempropertylistview.h
 
 SOURCES += \
     qstylesheetplugin.cpp \
@@ -50,7 +51,8 @@ SOURCES += \
     qsingletitlewidget.cpp \
     qtitlewidget.cpp \
     qitemendwidget.cpp \
-    qstylesheetitemwidget.cpp
+    qstylesheetitemwidget.cpp \
+    qitempropertylistview.cpp
 
 FORMS += \
     qnewstylesheetgroupdialog.ui \

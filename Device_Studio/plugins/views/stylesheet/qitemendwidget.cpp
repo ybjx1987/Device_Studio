@@ -36,4 +36,5 @@ void QItemEndWidget::paintEvent(QPaintEvent *)
     StyleHelper::horizontalGradient(&p,rect(),rect(),true);
     p.setPen(QColor(128,128,128));
     p.drawLine(0,height()-1,width()-1,height()-1);
+    //p.drawLine(0,0,width()-1,0);
 }

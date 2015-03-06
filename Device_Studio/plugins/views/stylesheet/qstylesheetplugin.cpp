@@ -2,8 +2,6 @@
 
 #include "qstylesheetwidget.h"
 
-#include "qstylesheetitemwidget.h"
-
 #include <qplugin.h>
 #include <QIcon>
 #include <QVariant>
@@ -13,9 +11,6 @@ void QStyleSheetPlugin::createWidget()
 {
     m_widget = new QStyleSheetWidget;
     m_widget->setProperty("panelwidget",true);
-
-    QStyleSheetItemWidget * wid = new QStyleSheetItemWidget;
-    wid->setVisible(true);
 }
 
 QString QStyleSheetPlugin::getPluginName()

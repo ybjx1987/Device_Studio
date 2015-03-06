@@ -1,29 +1,27 @@
-#ifndef QPROJECTWIDGET_H
-#define QPROJECTWIDGET_H
+#ifndef QSTYLESHEETWIDGET_H
+#define QSTYLESHEETWIDGET_H
 
-#include "../../../libs/platform/qabstractpagewidget.h"
+#include <QWidget>
+#include <QStackedWidget>
 
-class StyledBar;
 class QStyleSheetGroupListView;
+class StyledBar;
 
-class QStyleSheetWidget : public QAbstractPageWidget
+class QStyleSheetWidget : public QWidget
 {
     Q_OBJECT
 public:
-    QStyleSheetWidget(QWidget * parent = NULL);
-protected:
-    void    initAction();
-protected slots:
-    void    projectOpened();
-    void    projectClosed();
+    explicit QStyleSheetWidget(QWidget *parent = 0);
+    ~QStyleSheetWidget();
 
-    void    newGroup();
-    void    delGroup();
+signals:
+
 public slots:
-    void    updateAction();
 protected:
-    QStyleSheetGroupListView    *m_groupView;
-    StyledBar                   *m_groupViewBar;
+    QStyleSheetGroupListView    *m_groupListView;
+    StyledBar                   *m_groupListViewBar;
+    QStackedWidget              *m_itemWidget;
+    StyledBar                   *m_itemWidgetBar;
 };
 
-#endif // QPROJECTWIDGET_H
+#endif // QSTYLESHEETWIDGET_H
