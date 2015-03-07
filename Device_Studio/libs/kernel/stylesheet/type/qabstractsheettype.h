@@ -10,7 +10,7 @@ class QAbstractSheetType : public QObject
 {
     Q_OBJECT
 public:
-    explicit QAbstractSheetType(QObject *parent = 0);
+    explicit QAbstractSheetType(QAbstractSheetType *parent = 0);
     ~QAbstractSheetType();
 
     void    setName(const QString & name);
@@ -23,7 +23,7 @@ public:
     QVariant        getValue();
     virtual QString getValueText();
     virtual QIcon   getValueIcon();
-    virtual QString getStleSheet();
+    virtual QString getStyleSheet();
 
     virtual bool    toXml(XmlNode * xml);
     virtual bool    fromXml(XmlNode * xml);
@@ -32,6 +32,9 @@ public:
 
     void            setEnabled(bool enabled);
     bool            getEnabled();
+
+    QAbstractSheetType *getParent();
+    QList<QAbstractSheetType*>  getChildren();
 signals:
     void    enabledChanged(bool enabled);
     void    valueChanged(const QVariant & value);
@@ -41,6 +44,9 @@ protected:
     QString     m_showName;
     bool        m_enabled;
     QVariant    m_value;
+
+    QAbstractSheetType  *m_parent;
+    QList<QAbstractSheetType*>  m_children;
 };
 
 #endif // QABSTRACTSHEETTYPE_H

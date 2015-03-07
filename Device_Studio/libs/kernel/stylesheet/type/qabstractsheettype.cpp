@@ -4,11 +4,15 @@
 
 #include <QIcon>
 
-QAbstractSheetType::QAbstractSheetType(QObject *parent) :
+QAbstractSheetType::QAbstractSheetType(QAbstractSheetType *parent) :
     QObject(parent),
-    m_enabled(true)
+    m_enabled(true),
+    m_parent(parent)
 {
-
+    if(m_parent != NULL)
+    {
+        m_parent->m_children.append(this);
+    }
 }
 
 QAbstractSheetType::~QAbstractSheetType()
@@ -74,7 +78,7 @@ QIcon QAbstractSheetType::getValueIcon()
     return QIcon();
 }
 
-QString QAbstractSheetType::getStleSheet()
+QString QAbstractSheetType::getStyleSheet()
 {
     QString ret;
     ret = m_name+":"+getValue().toString()+";";
@@ -100,4 +104,14 @@ bool QAbstractSheetType::fromXml(XmlNode *xml)
     m_enabled = xml->getProperty("enabled") =="true";
     m_value = xml->getProperty("value");
     return true;
+}
+
+QList<QAbstractSheetType*> QAbstractSheetType::getChildren()
+{
+    return m_children;
+}
+
+QAbstractSheetType* QAbstractSheetType::getParent()
+{
+    return m_parent;
 }

@@ -1,11 +1,12 @@
 #include "qsheetpropertyfactory.h"
 
 #include "type/qabstractsheettype.h"
+#include "type/qurlsheettype.h"
 
-QMap<QString,QMetaObject*>     QSheetPropertyFactory::m_metaMap;
+QMap<QString,QMetaObject>     QSheetPropertyFactory::m_metaMap;
 
 void QSheetPropertyFactory::registerProperty(const QString & name,
-                                             QMetaObject * meta)
+                                             QMetaObject meta)
 {
     if(m_metaMap.contains(name))
     {
@@ -17,13 +18,12 @@ void QSheetPropertyFactory::registerProperty(const QString & name,
 
 QAbstractSheetType* QSheetPropertyFactory::createProperty(const QString &name)
 {
-    QMetaObject * meta = m_metaMap.value(name);
-    if(meta == NULL)
+    if(!m_metaMap.keys().contains(name))
     {
         return NULL;
     }
-
-    QAbstractSheetType *pro = (QAbstractSheetType*)meta->newInstance();
+    QMetaObject meta = m_metaMap.value(name);
+    QAbstractSheetType *pro = (QAbstractSheetType*)meta.newInstance();
     return pro;
 }
 
@@ -34,4 +34,5 @@ QStringList QSheetPropertyFactory::getPropertyInfo()
 
 void QSheetPropertyFactory::registerInnerProperty()
 {
+    registerProperty("background-image",QUrlSheetType::staticMetaObject);
 }

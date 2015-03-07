@@ -1,11 +1,11 @@
 #include "qitempropertylistview.h"
 
 #include "../../../libs/platform/qbaseitemdelegate.h"
+#include "../../../libs/kernel/stylesheet/qsheetpropertyfactory.h"
+#include "../../../libs/kernel/stylesheet/type/qabstractsheettype.h"
 
 #include <QHeaderView>
 #include <QComboBox>
-
-static QStringList g_propertyName = QStringList()<<"background-image";
 
 class QItemPropertyDelegate: public QBaseItemDelegate
 {
@@ -23,8 +23,8 @@ QWidget * QItemPropertyDelegate::createEditor(QWidget *parent, const QStyleOptio
     if(index.column() == 0)
     {
         QComboBox * comboBox = new QComboBox(parent);
-
-        comboBox->addItems(g_propertyName);
+        QStringList list = QSheetPropertyFactory::getPropertyInfo();
+        comboBox->addItems(list);
         wid = comboBox;
     }
 
