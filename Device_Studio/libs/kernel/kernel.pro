@@ -88,7 +88,8 @@ SOURCES += \
     stylesheet/type/qfontstylesheettype.cpp \
     stylesheet/type/qstringsheettype.cpp \
     stylesheet/type/qtextdecorationsheettype.cpp \
-    stylesheet/type/qfontsheettype.cpp
+    stylesheet/type/qfontsheettype.cpp \
+    stylesheet/type/qfontfamilysheettype.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -162,7 +163,8 @@ HEADERS +=\
     stylesheet/type/qfontstylesheettype.h \
     stylesheet/type/qstringsheettype.h \
     stylesheet/type/qtextdecorationsheettype.h \
-    stylesheet/type/qfontsheettype.h
+    stylesheet/type/qfontsheettype.h \
+    stylesheet/type/qfontfamilysheettype.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

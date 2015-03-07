@@ -7,7 +7,7 @@ class QRepeatSheetType : public QAbstractEnumSheetType
 {
     Q_OBJECT
 public:
-    QRepeatSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QRepeatSheetType(QAbstractSheetType * parent = NULL);
     ~QRepeatSheetType();
 
     QStringList getValueList();

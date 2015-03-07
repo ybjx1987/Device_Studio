@@ -44,5 +44,5 @@ void QSheetTypeEditorFactory::registerInnerEditor()
     registerEditor("QRepeatSheetType",QEnumSheetTypeEditor::staticMetaObject);
     registerEditor("QTextDecorationSheetType",QEnumSheetTypeEditor::staticMetaObject);
     registerEditor("QFontSheetType",QFontSheetTypeEditor::staticMetaObject);
-
+    registerEditor("QFontFamilySheetType",QEnumSheetTypeEditor::staticMetaObject);
 }

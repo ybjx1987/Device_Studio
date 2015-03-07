@@ -19,8 +19,14 @@ QEnumSheetTypeEditor::QEnumSheetTypeEditor(QAbstractSheetType * property,
     setLayout(hb);
 
     m_combo->addItems(etype->getValueList());
-    m_combo->setCurrentText(etype->getValue().toString());
-
+    if(etype->getValueList().contains(etype->getValue().toString()))
+    {
+        m_combo->setCurrentText(etype->getValue().toString());
+    }
+    else
+    {
+        m_combo->setCurrentIndex(-1);
+    }
     connect(m_combo,SIGNAL(currentIndexChanged(int)),
             this,SLOT(propertyEdited()));
 }

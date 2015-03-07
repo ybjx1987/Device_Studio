@@ -60,7 +60,11 @@ bool QFontSheetType::toXml(XmlNode *xml)
     xml->setProperty("name",value.m_name);
     xml->setProperty("size",QString::number(value.m_size));
     xml->setProperty("style",value.m_style);
-    return QAbstractSheetType::toXml(xml);
+    xml->setTitle("Property");
+    xml->setProperty("type",getName());
+    xml->setProperty("enabled",m_enabled?"true":"false");
+
+    return true;
 }
 
 bool QFontSheetType::fromXml(XmlNode *xml)
@@ -69,9 +73,10 @@ bool QFontSheetType::fromXml(XmlNode *xml)
     value.m_name = xml->getProperty("name");
     value.m_style = xml->getProperty("style");
     value.m_size = xml->getProperty("size").toInt();
+    m_enabled = xml->getProperty("enabled") =="true";
 
-    if(value.m_name == "" || value.m_style == ""
-            || value.m_size <= 0)
+    if(value.m_name == "" && value.m_style == ""
+            && value.m_size <= 0)
     {
         m_value = QVariant();
     }
@@ -79,7 +84,7 @@ bool QFontSheetType::fromXml(XmlNode *xml)
     {
         m_value=QVariant::fromValue<tagFontSheetType>(value);
     }
-    return QAbstractSheetType::fromXml(xml);
+    return true;
 }
 
 bool QFontSheetType::equal(const QVariant &value)
