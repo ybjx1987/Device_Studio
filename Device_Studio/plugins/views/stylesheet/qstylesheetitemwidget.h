@@ -8,6 +8,7 @@ class QTitleWidget;
 class QItemEndWidget;
 class QItemPropertyListView;
 class QStyleSheetItem;
+class QStyleSheetItemTitle;
 
 class QStyleSheetItemWidget : public QWidget
 {
@@ -22,6 +23,10 @@ signals:
 
 protected slots:
     void    addTitle();
+    void    delTitle(const QString &title);
+
+    void    titleAdded(QStyleSheetItemTitle * title);
+    void    titleDeled(QStyleSheetItemTitle * title);
 protected:
     QTitleWidget        *m_titleWidget;
     QItemEndWidget      *m_endWidget;

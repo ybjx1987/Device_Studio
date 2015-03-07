@@ -55,7 +55,7 @@ void QTitleWidget::addTitle(const QString &title)
     QSingleTitleWidget * wid = new QSingleTitleWidget(title,this);
     wid->setVisible(true);
     QHBoxLayout *l = (QHBoxLayout*)layout();
-    l->insertWidget(l->count()-3,wid);
+    l->insertWidget(l->count()-4,wid);
     m_titles.append(wid);
     m_textToTitle.insert(title,wid);
     connect(wid,SIGNAL(remove()),this,SLOT(titleDeled()));

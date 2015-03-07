@@ -74,18 +74,40 @@ bool QStyleSheetItemTitle::fromXml(XmlNode *xml)
     m_type = xml->getProperty("type");
     m_subControl = xml->getProperty("subcontrol");
     m_states = xml->getProperty("states").split(";");
-    return true;
+
+    if(m_name == "" || (m_type != "By Name" && m_type != "By Type"))
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }
 }
 
-bool QStyleSheetItemTitle::operator ==(const QStyleSheetItemTitle & title)
+bool QStyleSheetItemTitle::operator ==(const QStyleSheetItemTitle & title)const
 {
-    return (m_name = title.m_name
-            && m_type = title.m_type
+    return (m_name == title.m_name
+            && m_type == title.m_type
             && m_subControl == title.m_subControl
             && m_states == title.m_states);
 }
 
-bool QStyleSheetItemTitle::operator !=(const QStyleSheetItemTitle & title)
+bool QStyleSheetItemTitle::operator !=(const QStyleSheetItemTitle & title)const
 {
     return !((*this)==title);
+}
+
+QString QStyleSheetItemTitle::getText()
+{
+    QString str;
+    if(m_type == "By Name")
+    {
+        str="#";
+    }
+
+    str+=m_name;
+    str+=m_subControl;
+    str+=m_states.join("");
+    return str;
 }

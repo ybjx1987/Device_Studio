@@ -28,8 +28,10 @@ public:
     bool    fromXml(XmlNode * xml);
     bool    toXml(XmlNode * xml);
 
-    bool    operator ==(const QStyleSheetItemTitle & title);
-    bool    operator !=(const QStyleSheetItemTitle & title);
+    QString getText();
+
+    bool    operator ==(const QStyleSheetItemTitle & title)const;
+    bool    operator !=(const QStyleSheetItemTitle & title)const;
 public slots:
 protected:
     QString     m_name;

@@ -5,6 +5,9 @@
 #include "qitempropertylistview.h"
 #include "qnewtitledialog.h"
 
+#include "../../../libs/kernel/stylesheet/qstylesheetitem.h"
+#include "../../../libs/kernel/stylesheet/qstylesheetitemtitle.h"
+
 QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *parent) :
     QWidget(parent),
     m_titleWidget(new QTitleWidget),
@@ -25,6 +28,20 @@ QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *par
     updateHeight();
 
     connect(m_titleWidget,SIGNAL(addTitle()),this,SLOT(addTitle()));
+    connect(m_titleWidget,SIGNAL(delTitle(QString)),
+            this,SLOT(delTitle(QString)));
+
+    foreach(QStyleSheetItemTitle *title,m_sheetItem->getTitles())
+    {
+        m_titleWidget->addTitle(title->getText());
+    }
+
+    connect(m_sheetItem,SIGNAL(titleAdded(QStyleSheetItemTitle*)),
+            this,SLOT(titleAdded(QStyleSheetItemTitle*)));
+    connect(m_sheetItem,SIGNAL(titleDeled(QStyleSheetItemTitle*)),
+            this,SLOT(titleDeled(QStyleSheetItemTitle*)));
+
+    setMinimumWidth(600);
 }
 
 QStyleSheetItemWidget::~QStyleSheetItemWidget()
@@ -44,6 +61,28 @@ void QStyleSheetItemWidget::updateHeight()
 
 void QStyleSheetItemWidget::addTitle()
 {
-    QNewTitleDialog dlg(this);
+    QNewTitleDialog dlg(m_sheetItem,this);
     dlg.exec();
+}
+
+void QStyleSheetItemWidget::titleAdded(QStyleSheetItemTitle *title)
+{
+    m_titleWidget->addTitle(title->getText());
+}
+
+void QStyleSheetItemWidget::titleDeled(QStyleSheetItemTitle *title)
+{
+    m_titleWidget->removeTitle(title->getText());
+}
+
+void QStyleSheetItemWidget::delTitle(const QString &title)
+{
+    foreach(QStyleSheetItemTitle *t,m_sheetItem->getTitles())
+    {
+        if(t->getText() == title)
+        {
+            m_sheetItem->delTitle(t);
+            return;
+        }
+    }
 }

@@ -7,13 +7,17 @@
 #include "../../../libs/kernel/host/qabstractwidgethost.h"
 #include "../../../libs/kernel/host/qhostfactory.h"
 #include "../../../libs/kernel/host/qwidgethost.h"
+#include "../../../libs/kernel/stylesheet/qstylesheetitemtitle.h"
+#include "../../../libs/kernel/stylesheet/qstylesheetitem.h"
 
 #include <QCompleter>
+#include <QMessageBox>
 
-QNewTitleDialog::QNewTitleDialog(QWidget *parent) :
+QNewTitleDialog::QNewTitleDialog(QStyleSheetItem * item,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QNewTitleDialog),
-    m_nameEdit(new QValidatorEdit)
+    m_nameEdit(new QValidatorEdit),
+    m_item(item)
 {
     ui->setupUi(this);
     ui->horizontalLayout->addWidget(m_nameEdit,1);
@@ -66,7 +70,54 @@ QNewTitleDialog::~QNewTitleDialog()
 
 void QNewTitleDialog::on_okBtn_clicked()
 {
+    QString name = m_nameEdit->value();
+    if(name == "")
+    {
+        QMessageBox::warning(this,tr("Error"),
+                             tr("Name cann't been empty!"));
+        return;
+    }
+    QString type = ui->typeList->currentText();
+    if(type == "")
+    {
+        QMessageBox::warning(this,tr("Error"),
+                             tr("You must choose a type!"));
+        return;
+    }
 
+    QString subControl = ui->subControl->currentText();
+    if(subControl =="none")
+    {
+        subControl ="";
+    }
+
+    QStringList states;
+
+    foreach(QCheckBox * box,m_subControls)
+    {
+        if(box->isChecked())
+        {
+            states.append(box->text());
+        }
+    }
+
+    QStyleSheetItemTitle * title = new QStyleSheetItemTitle;
+    title->setName(name);
+    title->setType(type);
+    title->setSubControl(subControl);
+    title->setStates(states);
+
+    foreach(QStyleSheetItemTitle * t,m_item->getTitles())
+    {
+        if((*t) == (*title))
+        {
+            QMessageBox::warning(this,tr("Error"),
+                                 tr("This title has been added!"));
+            return;
+        }
+    }
+    m_item->addTitle(title);
+    close();
 }
 
 void QNewTitleDialog::on_cancleBtn_clicked()

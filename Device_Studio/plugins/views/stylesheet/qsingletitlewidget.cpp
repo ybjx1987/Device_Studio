@@ -31,11 +31,9 @@ QSingleTitleWidget::~QSingleTitleWidget()
 
 void QSingleTitleWidget::updateWidth()
 {
-    QFontMetrics fm(m_text->font());
+    int w = m_text->sizeHint().width();
 
-    int w = fm.width(m_text->text());
-
-    w += 33;
+    w += 22;
     if(w < 40)
     {
         w=40;

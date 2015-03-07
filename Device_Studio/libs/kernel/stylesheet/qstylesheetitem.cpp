@@ -79,10 +79,12 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
             QStyleSheetItemTitle *t = new QStyleSheetItemTitle;
             if(!t->fromXml(node))
             {
-                clear();
-                return false;
+                delete t;
             }
-            m_titles.append(t);
+            else
+            {
+                m_titles.append(t);
+            }
         }
         else if(node->getTitle() == "Property")
         {
@@ -90,7 +92,14 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
                         node->getProperty("proName"));
             if(pro != NULL)
             {
-                pro->fromXml(node);
+                if(pro->fromXml(node))
+                {
+                    m_propertys.append(pro);
+                }
+                else
+                {
+                    delete pro;
+                }
             }
         }
     }
