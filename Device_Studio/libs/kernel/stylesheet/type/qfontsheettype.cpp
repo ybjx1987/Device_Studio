@@ -20,11 +20,18 @@ QFontSheetType::~QFontSheetType()
 
 QString QFontSheetType::getValueText()
 {
-    tagFontSheetType value = getValue().value<tagFontSheetType>();
+    if(getValue().isValid())
+    {
+        tagFontSheetType value = getValue().value<tagFontSheetType>();
 
-    QString str;
-    str = value.m_style+" "+QString::number(value.m_size)+"px "+value.m_name;
-    return str;
+        QString str;
+        str = value.m_style+" "+QString::number(value.m_size)+"px "+value.m_name;
+        return str;
+    }
+    else
+    {
+        return "Invalid";
+    }
 }
 
 bool QFontSheetType::toXml(XmlNode *xml)

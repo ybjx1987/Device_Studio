@@ -19,6 +19,8 @@ public:
 protected slots:
     void    addProperty(QAbstractSheetType * property);
     void    delProperty(QAbstractSheetType * property);
+    void    propertyReplaced(QAbstractSheetType * oldPro,
+                             QAbstractSheetType * newPro);
 signals:
     void    needUpdateHeight();
 public:

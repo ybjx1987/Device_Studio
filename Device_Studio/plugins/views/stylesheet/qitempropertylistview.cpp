@@ -119,6 +119,8 @@ QItemPropertyListView::QItemPropertyListView(QStyleSheetItem * item,QWidget * pa
             this,SLOT(addProperty(QAbstractSheetType*)));
     connect(m_sheetItem,SIGNAL(propertyDeled(QAbstractSheetType*)),
             this,SLOT(delProperty(QAbstractSheetType*)));
+    connect(m_sheetItem,SIGNAL(propertyReplaced(QAbstractSheetType*,QAbstractSheetType*)),
+            this,SLOT(propertyReplaced(QAbstractSheetType*,QAbstractSheetType*)));
 }
 
 QItemPropertyListView::~QItemPropertyListView()
@@ -166,4 +168,16 @@ void QItemPropertyListView::delProperty(QAbstractSheetType *property)
 void QItemPropertyListView::clickEditItem(QTreeWidgetItem *item, int index)
 {
     editItem(item,index);
+}
+
+void QItemPropertyListView::propertyReplaced(QAbstractSheetType *oldPro, QAbstractSheetType *newPro)
+{
+    QTreeWidgetItem * item = m_propertyToItem.value(oldPro);
+    item->setText(0,newPro->getName());
+    item->setToolTip(0,newPro->getName());
+    item->setText(1,newPro->getValueText());
+    item->setToolTip(1,newPro->getValueText());
+    item->setIcon(1,newPro->getValueIcon());
+    m_itemToProperty.insert(item,newPro);
+    m_propertyToItem.insert(newPro,item);
 }

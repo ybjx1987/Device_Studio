@@ -3,7 +3,7 @@
 QFontStyleSheetType::QFontStyleSheetType(QAbstractSheetType * parent):
     QAbstractEnumSheetType(parent)
 {
-
+    setValue("normal");
 }
 
 QFontStyleSheetType::~QFontStyleSheetType()

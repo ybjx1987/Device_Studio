@@ -3,7 +3,7 @@
 QAlignmentSheetType::QAlignmentSheetType(QAbstractSheetType * parent):
     QAbstractEnumSheetType(parent)
 {
-
+    setValue("left center");
 }
 
 QAlignmentSheetType::~QAlignmentSheetType()

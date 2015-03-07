@@ -6,7 +6,6 @@ QNumberSheetType::QNumberSheetType(QAbstractSheetType * parent):
     QAbstractSheetType(parent),
     m_type("Integer")
 {
-
 }
 
 QNumberSheetType::~QNumberSheetType()

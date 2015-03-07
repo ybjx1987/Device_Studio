@@ -3,7 +3,7 @@
 QBorderStyleSheetType::QBorderStyleSheetType(QAbstractSheetType * parent):
     QAbstractEnumSheetType(parent)
 {
-
+    setValue("none");
 }
 
 QBorderStyleSheetType::~QBorderStyleSheetType()

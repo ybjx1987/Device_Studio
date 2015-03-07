@@ -3,7 +3,7 @@
 QTextDecorationSheetType::QTextDecorationSheetType(QAbstractSheetType * parent):
     QAbstractEnumSheetType(parent)
 {
-
+    setValue("none");
 }
 
 QTextDecorationSheetType::~QTextDecorationSheetType()

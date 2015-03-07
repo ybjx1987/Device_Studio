@@ -3,7 +3,6 @@
 QLengthSheetType::QLengthSheetType(QAbstractSheetType * parent):
     QNumberSheetType(parent)
 {
-    setType("Integer");
 }
 
 QLengthSheetType::~QLengthSheetType()

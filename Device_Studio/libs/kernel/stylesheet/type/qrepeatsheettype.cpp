@@ -3,7 +3,7 @@
 QRepeatSheetType::QRepeatSheetType(QAbstractSheetType * parent):
     QAbstractEnumSheetType(parent)
 {
-
+    setValue("repeat");
 }
 
 QRepeatSheetType::~QRepeatSheetType()

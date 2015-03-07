@@ -3,7 +3,7 @@
 QUrlSheetType::QUrlSheetType(QAbstractSheetType * parent):
     QAbstractSheetType(parent)
 {
-
+    setValue("");
 }
 
 QUrlSheetType::~QUrlSheetType()
