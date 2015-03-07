@@ -22,6 +22,7 @@ protected:
     void    paintEvent(QPaintEvent *);
 signals:
     void    delTitle(const QString & title);
+    void    addTitle();
 protected slots:
     void    titleDeled();
 protected:

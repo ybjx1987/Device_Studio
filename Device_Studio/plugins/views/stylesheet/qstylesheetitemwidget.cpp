@@ -3,6 +3,7 @@
 #include "qitemendwidget.h"
 #include "qtitlewidget.h"
 #include "qitempropertylistview.h"
+#include "qnewtitledialog.h"
 
 QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *parent) :
     QWidget(parent),
@@ -22,6 +23,8 @@ QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *par
     setLayout(m_layout);
 
     updateHeight();
+
+    connect(m_titleWidget,SIGNAL(addTitle()),this,SLOT(addTitle()));
 }
 
 QStyleSheetItemWidget::~QStyleSheetItemWidget()
@@ -37,4 +40,10 @@ void QStyleSheetItemWidget::updateHeight()
     h += m_propertyListView->height();
     h += m_endWidget->height();
     setFixedHeight(h);
+}
+
+void QStyleSheetItemWidget::addTitle()
+{
+    QNewTitleDialog dlg(this);
+    dlg.exec();
 }

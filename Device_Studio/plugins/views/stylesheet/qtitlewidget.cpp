@@ -36,6 +36,8 @@ QTitleWidget::QTitleWidget(QWidget *parent) :
 
     setStyleSheet("#titleWidget{background-color:rgb(255,220,180);}");
     setFixedHeight(22);
+
+    connect(m_addTitleButton,SIGNAL(clicked()),this,SIGNAL(addTitle()));
 }
 
 QTitleWidget::~QTitleWidget()

@@ -20,7 +20,8 @@ protected:
     void    updateHeight();
 signals:
 
-public slots:
+protected slots:
+    void    addTitle();
 protected:
     QTitleWidget        *m_titleWidget;
     QItemEndWidget      *m_endWidget;
