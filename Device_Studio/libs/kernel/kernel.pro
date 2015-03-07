@@ -78,7 +78,17 @@ SOURCES += \
     stylesheet/qstylesheetitemtitle.cpp \
     stylesheet/qsheetpropertyfactory.cpp \
     stylesheet/type/qabstractsheettype.cpp \
-    stylesheet/type/qurlsheettype.cpp
+    stylesheet/type/qurlsheettype.cpp \
+    stylesheet/type/qnumbersheettype.cpp \
+    stylesheet/type/qlengthsheettype.cpp \
+    stylesheet/type/qalignmentsheettype.cpp \
+    stylesheet/type/qrepeatsheettype.cpp \
+    stylesheet/type/qabstractenumsheettype.cpp \
+    stylesheet/type/qborderstylesheettype.cpp \
+    stylesheet/type/qfontstylesheettype.cpp \
+    stylesheet/type/qstringsheettype.cpp \
+    stylesheet/type/qtextdecorationsheettype.cpp \
+    stylesheet/type/qfontsheettype.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -142,7 +152,17 @@ HEADERS +=\
     stylesheet/qstylesheetitemtitle.h \
     stylesheet/qsheetpropertyfactory.h \
     stylesheet/type/qabstractsheettype.h \
-    stylesheet/type/qurlsheettype.h
+    stylesheet/type/qurlsheettype.h \
+    stylesheet/type/qnumbersheettype.h \
+    stylesheet/type/qlengthsheettype.h \
+    stylesheet/type/qalignmentsheettype.h \
+    stylesheet/type/qrepeatsheettype.h \
+    stylesheet/type/qabstractenumsheettype.h \
+    stylesheet/type/qborderstylesheettype.h \
+    stylesheet/type/qfontstylesheettype.h \
+    stylesheet/type/qstringsheettype.h \
+    stylesheet/type/qtextdecorationsheettype.h \
+    stylesheet/type/qfontsheettype.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
