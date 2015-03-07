@@ -89,7 +89,7 @@ bool QStyleSheetGroup::toXml(XmlNode *xml)
 bool QStyleSheetGroup::fromXml(XmlNode *xml)
 {
     clear();
-    if(xml->getTitle() == "Group")
+    if(xml->getTitle() != "Group")
     {
         return false;
     }
@@ -118,7 +118,6 @@ bool QStyleSheetGroup::fromXml(XmlNode *xml)
 
 bool QStyleSheetGroup::load(const QString &filePath)
 {
-    setProperty("fileName","");
     QFile f(filePath);
 
     if(!f.exists())
@@ -142,7 +141,7 @@ bool QStyleSheetGroup::load(const QString &filePath)
 
     if(!fromXml(&xml))
     {
-        setProperty("fileName",filePath);
+        setProperty("fileName","");
         return false;
     }
     else

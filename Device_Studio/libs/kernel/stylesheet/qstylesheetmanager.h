@@ -20,6 +20,7 @@ public:
     void    delGroup(QStyleSheetGroup * group);
 
     void    clear();
+    void    clearFile(const QString & path);
 
     QList<QStyleSheetGroup*> getGroups();
     QStringList              getGroupNames();

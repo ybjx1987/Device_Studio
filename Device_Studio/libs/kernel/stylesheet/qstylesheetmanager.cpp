@@ -20,8 +20,9 @@ QStyleSheetManager::~QStyleSheetManager()
     clear();
 }
 
-void QStyleSheetManager::save(const QString &path)
+void QStyleSheetManager::load(const QString &path)
 {
+    clear();
     QDir dir(path);
     if(!dir.exists())
     {
@@ -62,6 +63,7 @@ void QStyleSheetManager::save(const QString &path)
             QStyleSheetGroup * group = new QStyleSheetGroup;
             if(group->load(name))
             {
+                group->setProperty("fileName",obj->getText());
                 m_groups.append(group);
                 m_uuidToGroup.insert(group->getUuid(),group);
             }
@@ -73,16 +75,15 @@ void QStyleSheetManager::save(const QString &path)
     }
 }
 
-void QStyleSheetManager::load(const QString & path)
+void QStyleSheetManager::save(const QString & path)
 {
-    clear();
-
+    clearFile(path);
     XmlNode xml;
     xml.setTitle("StyleSheetGroups");
 
     foreach(QStyleSheetGroup * g,m_groups)
     {
-        if(g->save(g->property("fileName").toString()))
+        if(g->save(path+"/"+g->property("fileName").toString()))
         {
             XmlNode * node = new XmlNode(&xml);
             node->setTitle("Group");
@@ -100,7 +101,7 @@ void QStyleSheetManager::load(const QString & path)
     f.resize(0);
 
     QString buffer;
-    if(!xml.load(buffer))
+    if(!xml.save(buffer))
     {
         f.close();
         return;
@@ -115,6 +116,7 @@ void QStyleSheetManager::addGroup(const QString &name)
     QStyleSheetGroup * group = new QStyleSheetGroup;
 
     group->setName(name);
+    group->setProperty("fileName",name+".xml");
 
     m_groups.append(group);
     m_uuidToGroup.insert(group->getUuid(),group);
@@ -155,4 +157,15 @@ QStringList QStyleSheetManager::getGroupNames()
         list.append(g->getName());
     }
     return list;
+}
+
+void QStyleSheetManager::clearFile(const QString &path)
+{
+    QDir dir(path);
+    QFileInfoList list = dir.entryInfoList(QDir::Files | QDir::Dirs
+                                          | QDir::NoDotAndDotDot);
+    while(list.size()>0)
+    {
+        dir.rmdir(list.takeFirst().filePath());
+    }
 }
