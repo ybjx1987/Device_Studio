@@ -22,12 +22,14 @@ protected:
     void    paintEvent(QPaintEvent *);
 signals:
     void    delTitle(const QString & title);
+    void    addTitle();
+    void    delItem();
 protected slots:
     void    titleDeled();
 protected:
     QList<QSingleTitleWidget*>  m_titles;
     QMap<QString,QSingleTitleWidget*>   m_textToTitle;
-    QToolBarButton              *m_addButton;
+    QToolBarButton              *m_delButton;
     QToolBarButton              *m_addTitleButton;
 };
 

@@ -1,47 +1,42 @@
 #include "qsheetpropertyfactory.h"
 
-#include "qabstractsheetproperty.h"
+#include "type/qabstractsheettype.h"
+#include "type/qurlsheettype.h"
 
-QMap<QString,QSheetPropertyInfo*>     QSheetPropertyFactory::m_metaMap;
-QList<QSheetPropertyInfo*>            QSheetPropertyFactory::m_metas;
+QMap<QString,QMetaObject>     QSheetPropertyFactory::m_metaMap;
 
-void QSheetPropertyFactory::registerProperty(QSheetPropertyInfo *info)
+void QSheetPropertyFactory::registerProperty(const QString & name,
+                                             QMetaObject meta)
 {
-    if(m_metaMap.contains(info->m_name) || info == NULL)
+    if(m_metaMap.contains(name))
     {
         return;
     }
 
-    m_metaMap.insert(info->m_name,info);
-    m_metas.append(info);
+    m_metaMap.insert(name,meta);
 }
 
-QAbstractSheetProperty* QSheetPropertyFactory::createProperty(const QString &name)
+QAbstractSheetType* QSheetPropertyFactory::createProperty(const QString &name)
 {
-    QSheetPropertyInfo * info = m_metaMap.value(name);
-    if(info == NULL)
+    if(!m_metaMap.keys().contains(name))
     {
         return NULL;
     }
-
-    QAbstractSheetProperty *pro = (QAbstractSheetProperty*)info->m_metaObject->newInstance();
-    if(pro!=NULL)
+    QMetaObject meta = m_metaMap.value(name);
+    QAbstractSheetType *pro = (QAbstractSheetType*)meta.newInstance();
+    if(pro != NULL)
     {
-        pro->setProperty("proName",info->m_name);
+        pro->setName(name);
     }
     return pro;
 }
 
-QList<QSheetPropertyInfo*> QSheetPropertyFactory::getPropertyInfo()
+QStringList QSheetPropertyFactory::getPropertyInfo()
 {
-    return m_metas;
-}
-
-QSheetPropertyInfo * QSheetPropertyFactory::getPropertyInfo(const QString &name)
-{
-    return m_metaMap.value(name);
+    return m_metaMap.keys();
 }
 
 void QSheetPropertyFactory::registerInnerProperty()
 {
+    registerProperty("background-image",QUrlSheetType::staticMetaObject);
 }

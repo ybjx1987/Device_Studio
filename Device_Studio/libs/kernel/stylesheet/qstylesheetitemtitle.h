@@ -2,6 +2,7 @@
 #define QSTYLESHEETITEMTITLE_H
 
 #include <QObject>
+#include <QStringList>
 
 class XmlNode;
 
@@ -18,19 +19,25 @@ public:
     void    setType(const QString & type);
     QString getType();
 
-    void    setEnabled(bool enabled);
-    bool    getEnabled();
+    void    setSubControl(const QString & subControl);
+    QString getSubControl();
+
+    void    setStates(const QStringList & states);
+    QStringList getStates();
 
     bool    fromXml(XmlNode * xml);
     bool    toXml(XmlNode * xml);
 
-signals:
-    void    propertyChanged(const QString & proName);
+    QString getText();
+
+    bool    operator ==(const QStyleSheetItemTitle & title)const;
+    bool    operator !=(const QStyleSheetItemTitle & title)const;
 public slots:
 protected:
     QString     m_name;
     QString     m_type;
-    bool        m_enabled;
+    QString     m_subControl;
+    QStringList m_states;
 };
 
 #endif // QSTYLESHEETITEMTITLE_H

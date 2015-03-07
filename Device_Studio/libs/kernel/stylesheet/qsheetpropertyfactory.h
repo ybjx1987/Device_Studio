@@ -5,21 +5,18 @@
 #include <QMap>
 #include <QMetaObject>
 
-class QSheetPropertyInfo;
-class QAbstractSheetProperty;
+class QAbstractSheetType;
 
 class QSheetPropertyFactory
 {
 public:
-    static void registerProperty(QSheetPropertyInfo *info);
-    static QAbstractSheetProperty* createProperty(const QString& name);
-    static QList<QSheetPropertyInfo*> getPropertyInfo();
-    static QSheetPropertyInfo *  getPropertyInfo(const QString &name);
+    static void registerProperty(const QString & name,QMetaObject mate);
+    static QAbstractSheetType* createProperty(const QString& name);
+    static QStringList getPropertyInfo();
 
     static void registerInnerProperty();
 protected:
-    static QMap<QString,QSheetPropertyInfo*>     m_metaMap;
-    static QList<QSheetPropertyInfo*>            m_metas;
+    static QMap<QString,QMetaObject>     m_metaMap;
 };
 
 #endif // QSHEETPROPERTYFACTORY_H

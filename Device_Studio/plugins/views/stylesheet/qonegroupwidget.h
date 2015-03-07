@@ -19,10 +19,12 @@ public:
     void clear();
 signals:
 
-public slots:
+protected slots:
     void    itemAdded(QStyleSheetItem * item);
     void    itemDeled(QStyleSheetItem * item);
-protected:
+
+    void    delItem();
+protected slots:
 
     void    updateRect();
 protected:

@@ -31,11 +31,9 @@ QSingleTitleWidget::~QSingleTitleWidget()
 
 void QSingleTitleWidget::updateWidth()
 {
-    QFontMetrics fm(m_text->font());
+    int w = m_text->sizeHint().width();
 
-    int w = fm.width(m_text->text());
-
-    w += 33;
+    w += 22;
     if(w < 40)
     {
         w=40;
@@ -55,7 +53,7 @@ void QSingleTitleWidget::paintEvent(QPaintEvent *)
     QPainter p(this);
 
     p.setPen(QColor(192,192,192));
-    p.drawLine(width()-2,0,width()-2,height());
+    p.drawLine(width()-2,0,width()-2,height()-2);
     p.setPen(QColor(255,255,255));
-    p.drawLine(width()-1,0,width()-1,height());
+    p.drawLine(width()-1,0,width()-1,height()-2);
 }

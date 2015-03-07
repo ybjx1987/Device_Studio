@@ -8,6 +8,7 @@ class QTitleWidget;
 class QItemEndWidget;
 class QItemPropertyListView;
 class QStyleSheetItem;
+class QStyleSheetItemTitle;
 
 class QStyleSheetItemWidget : public QWidget
 {
@@ -16,11 +17,16 @@ public:
     explicit QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *parent = 0);
     ~QStyleSheetItemWidget();
 
-protected:
     void    updateHeight();
 signals:
+    void    delItem();
+    void    needUpdateHeight();
+protected slots:
+    void    addTitle();
+    void    delTitle(const QString &title);
 
-public slots:
+    void    titleAdded(QStyleSheetItemTitle * title);
+    void    titleDeled(QStyleSheetItemTitle * title);
 protected:
     QTitleWidget        *m_titleWidget;
     QItemEndWidget      *m_endWidget;
