@@ -6,7 +6,7 @@
 
 class XmlNode;
 class QStyleSheetItemTitle;
-class QAbstractSheetProperty;
+class QAbstractSheetType;
 
 class QStyleSheetItem : public QObject
 {
@@ -16,7 +16,7 @@ public:
     ~QStyleSheetItem();
 
     QList<QStyleSheetItemTitle*>    getTitles();
-    QList<QAbstractSheetProperty*>  getPropertys();
+    QList<QAbstractSheetType*>  getPropertys();
 
     void    clear();
 
@@ -26,20 +26,20 @@ public:
     void    addTitle(QStyleSheetItemTitle * title);
     void    delTitle(QStyleSheetItemTitle * title);
 
-    void    addProperty(QAbstractSheetProperty * property);
-    void    delProperty(QAbstractSheetProperty * property);
+    void    addProperty(QAbstractSheetType * property);
+    void    delProperty(QAbstractSheetType * property);
 
     QString getUuid();
 signals:
     void    titleAdded(QStyleSheetItemTitle * title);
     void    titleDeled(QStyleSheetItemTitle * title);
 
-    void    propertyAdded(QAbstractSheetProperty * property);
-    void    propertyDeled(QAbstractSheetProperty * property);
+    void    propertyAdded(QAbstractSheetType * property);
+    void    propertyDeled(QAbstractSheetType * property);
 public slots:
 protected:
     QList<QStyleSheetItemTitle*>    m_titles;
-    QList<QAbstractSheetProperty*>  m_propertys;
+    QList<QAbstractSheetType*>  m_propertys;
     QString                         m_uuid;
 };
 

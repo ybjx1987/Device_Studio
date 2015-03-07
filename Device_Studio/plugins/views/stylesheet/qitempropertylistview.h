@@ -5,7 +5,7 @@
 
 #include <QMap>
 
-class QAbstractSheetProperty;
+class QAbstractSheetType;
 
 class QItemPropertyListView : public QBaseListView
 {
@@ -14,16 +14,16 @@ public:
     QItemPropertyListView(QWidget * parent = NULL);
     ~QItemPropertyListView();
 
-    void    addProperty(QAbstractSheetProperty * property);
-    void    delProperty(QAbstractSheetProperty * property);
+    void    addProperty(QAbstractSheetType * property);
+    void    delProperty(QAbstractSheetType * property);
 
 public:
     void    updateHeight();
 protected:
     void clickEditItem(QTreeWidgetItem *item, int index);
 protected:
-    QMap<QAbstractSheetProperty*,QTreeWidgetItem*>  m_propertyToItem;
-    QMap<QTreeWidgetItem*,QAbstractSheetProperty*>  m_itemToProperty;
+    QMap<QAbstractSheetType*,QTreeWidgetItem*>  m_propertyToItem;
+    QMap<QTreeWidgetItem*,QAbstractSheetType*>  m_itemToProperty;
     QTreeWidgetItem     *m_emptyItem;
 };
 

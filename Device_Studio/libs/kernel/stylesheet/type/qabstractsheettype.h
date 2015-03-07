@@ -1,25 +1,17 @@
-#ifndef QABSTRACTSHEETPROPERTY_H
-#define QABSTRACTSHEETPROPERTY_H
+#ifndef QABSTRACTSHEETTYPE_H
+#define QABSTRACTSHEETTYPE_H
 
 #include <QObject>
 #include <QVariant>
 
 class XmlNode;
 
-class QSheetPropertyInfo
-{
-public:
-    QString     m_name;
-    QString     m_showName;
-    QMetaObject *m_metaObject;
-};
-
-class QAbstractSheetProperty : public QObject
+class QAbstractSheetType : public QObject
 {
     Q_OBJECT
 public:
-    explicit QAbstractSheetProperty(QObject *parent = 0);
-    ~QAbstractSheetProperty();
+    explicit QAbstractSheetType(QObject *parent = 0);
+    ~QAbstractSheetType();
 
     void    setName(const QString & name);
     QString getName();
@@ -30,6 +22,7 @@ public:
     virtual void    setValue(const QVariant & value);
     QVariant        getValue();
     virtual QString getValueText();
+    virtual QIcon   getValueIcon();
     virtual QString getStleSheet();
 
     virtual bool    toXml(XmlNode * xml);
@@ -50,4 +43,4 @@ protected:
     QVariant    m_value;
 };
 
-#endif // QABSTRACTSHEETPROPERTY_H
+#endif // QABSTRACTSHEETTYPE_H

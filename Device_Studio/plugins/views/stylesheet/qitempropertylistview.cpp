@@ -65,12 +65,12 @@ void QItemPropertyListView::updateHeight()
     setFixedHeight(m_propertyToItem.keys().size()*22+22);
 }
 
-void QItemPropertyListView::addProperty(QAbstractSheetProperty *property)
+void QItemPropertyListView::addProperty(QAbstractSheetType *property)
 {
 
 }
 
-void QItemPropertyListView::delProperty(QAbstractSheetProperty *property)
+void QItemPropertyListView::delProperty(QAbstractSheetType *property)
 {
 
 }

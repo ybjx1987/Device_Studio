@@ -75,9 +75,9 @@ SOURCES += \
     stylesheet/qstylesheetmanager.cpp \
     stylesheet/qstylesheetgroup.cpp \
     stylesheet/qstylesheetitem.cpp \
-    stylesheet/qabstractsheetproperty.cpp \
     stylesheet/qstylesheetitemtitle.cpp \
-    stylesheet/qsheetpropertyfactory.cpp
+    stylesheet/qsheetpropertyfactory.cpp \
+    stylesheet/type/qabstractsheettype.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -138,9 +138,9 @@ HEADERS +=\
     stylesheet/qstylesheetmanager.h \
     stylesheet/qstylesheetgroup.h \
     stylesheet/qstylesheetitem.h \
-    stylesheet/qabstractsheetproperty.h \
     stylesheet/qstylesheetitemtitle.h \
-    stylesheet/qsheetpropertyfactory.h
+    stylesheet/qsheetpropertyfactory.h \
+    stylesheet/type/qabstractsheettype.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

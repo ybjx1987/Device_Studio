@@ -1,40 +1,42 @@
-#include "qabstractsheetproperty.h"
+#include "qabstractsheettype.h"
 
-#include "../xmlnode.h"
+#include "../../xmlnode.h"
 
-QAbstractSheetProperty::QAbstractSheetProperty(QObject *parent) :
+#include <QIcon>
+
+QAbstractSheetType::QAbstractSheetType(QObject *parent) :
     QObject(parent),
     m_enabled(true)
 {
 
 }
 
-QAbstractSheetProperty::~QAbstractSheetProperty()
+QAbstractSheetType::~QAbstractSheetType()
 {
 
 }
 
-void QAbstractSheetProperty::setName(const QString &name)
+void QAbstractSheetType::setName(const QString &name)
 {
     m_name = name;
 }
 
-QString QAbstractSheetProperty::getName()
+QString QAbstractSheetType::getName()
 {
     return m_name;
 }
 
-void QAbstractSheetProperty::setShowName(const QString &showName)
+void QAbstractSheetType::setShowName(const QString &showName)
 {
     m_showName = showName;
 }
 
-QString QAbstractSheetProperty::getShowName()
+QString QAbstractSheetType::getShowName()
 {
     return m_showName;
 }
 
-void QAbstractSheetProperty::setEnabled(bool enabled)
+void QAbstractSheetType::setEnabled(bool enabled)
 {
     if(m_enabled != enabled)
     {
@@ -43,12 +45,12 @@ void QAbstractSheetProperty::setEnabled(bool enabled)
     }
 }
 
-bool QAbstractSheetProperty::getEnabled()
+bool QAbstractSheetType::getEnabled()
 {
     return m_enabled;
 }
 
-void QAbstractSheetProperty::setValue(const QVariant &value)
+void QAbstractSheetType::setValue(const QVariant &value)
 {
     if(!equal(value))
     {
@@ -57,29 +59,34 @@ void QAbstractSheetProperty::setValue(const QVariant &value)
     }
 }
 
-QVariant QAbstractSheetProperty::getValue()
+QVariant QAbstractSheetType::getValue()
 {
     return m_value;
 }
 
-QString QAbstractSheetProperty::getValueText()
+QString QAbstractSheetType::getValueText()
 {
     return m_value.toString();
 }
 
-QString QAbstractSheetProperty::getStleSheet()
+QIcon QAbstractSheetType::getValueIcon()
+{
+    return QIcon();
+}
+
+QString QAbstractSheetType::getStleSheet()
 {
     QString ret;
     ret = m_name+":"+getValue().toString()+";";
     return ret;
 }
 
-bool QAbstractSheetProperty::equal(const QVariant &value)
+bool QAbstractSheetType::equal(const QVariant &value)
 {
     return m_value == value;
 }
 
-bool QAbstractSheetProperty::toXml(XmlNode *xml)
+bool QAbstractSheetType::toXml(XmlNode *xml)
 {
     xml->setTitle("Property");
     xml->setProperty("type",property("proName").toString());
@@ -88,7 +95,7 @@ bool QAbstractSheetProperty::toXml(XmlNode *xml)
     return true;
 }
 
-bool QAbstractSheetProperty::fromXml(XmlNode *xml)
+bool QAbstractSheetType::fromXml(XmlNode *xml)
 {
     m_enabled = xml->getProperty("enabled") =="true";
     m_value = xml->getProperty("value");

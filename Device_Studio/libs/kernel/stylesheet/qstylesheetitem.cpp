@@ -1,7 +1,7 @@
 #include "qstylesheetitem.h"
 
 #include "qstylesheetitemtitle.h"
-#include "qabstractsheetproperty.h"
+#include "type/qabstractsheettype.h"
 #include "qstylesheetitemtitle.h"
 #include "qsheetpropertyfactory.h"
 
@@ -20,7 +20,7 @@ QStyleSheetItem::~QStyleSheetItem()
     clear();
 }
 
-QList<QAbstractSheetProperty*> QStyleSheetItem::getPropertys()
+QList<QAbstractSheetType*> QStyleSheetItem::getPropertys()
 {
     return m_propertys;
 }
@@ -44,7 +44,7 @@ bool QStyleSheetItem::toXml(XmlNode *xml)
         }
     }
 
-    foreach(QAbstractSheetProperty * pro,m_propertys)
+    foreach(QAbstractSheetType * pro,m_propertys)
     {
         XmlNode * obj = new XmlNode(xml);
         obj->setTitle("Property");
@@ -88,7 +88,7 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
         }
         else if(node->getTitle() == "Property")
         {
-            QAbstractSheetProperty * pro = QSheetPropertyFactory::createProperty(
+            QAbstractSheetType * pro = QSheetPropertyFactory::createProperty(
                         node->getProperty("proName"));
             if(pro != NULL)
             {
@@ -138,7 +138,7 @@ void QStyleSheetItem::delTitle(QStyleSheetItemTitle *title)
     delete title;
 }
 
-void QStyleSheetItem::addProperty(QAbstractSheetProperty *property)
+void QStyleSheetItem::addProperty(QAbstractSheetType *property)
 {
     if(m_propertys.contains(property))
     {
@@ -149,7 +149,7 @@ void QStyleSheetItem::addProperty(QAbstractSheetProperty *property)
     emit propertyAdded(property);
 }
 
-void QStyleSheetItem::delProperty(QAbstractSheetProperty *property)
+void QStyleSheetItem::delProperty(QAbstractSheetType *property)
 {
     if(!m_propertys.contains(property))
     {
