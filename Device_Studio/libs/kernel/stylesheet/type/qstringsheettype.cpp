@@ -3,7 +3,7 @@
 QStringSheetType::QStringSheetType(QAbstractSheetType * parent):
     QAbstractSheetType(parent)
 {
-
+    setValue("");
 }
 
 QStringSheetType::~QStringSheetType()
