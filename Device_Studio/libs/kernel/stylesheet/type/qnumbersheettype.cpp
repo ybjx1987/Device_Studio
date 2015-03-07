@@ -35,7 +35,11 @@ QString QNumberSheetType::getType()
 
 void QNumberSheetType::setType(const QString &type)
 {
-    m_type = type;
+    if(m_type != type)
+    {
+        m_type = type;
+        emit needUpdate();
+    }
 }
 
 bool QNumberSheetType::toXml(XmlNode *xml)

@@ -11,6 +11,7 @@ QLengthSheetTypeEditor::QLengthSheetTypeEditor(QAbstractSheetType * property,
     QHBoxLayout *hb = (QHBoxLayout*)layout();
     hb->setMargin(0);
     hb->setSpacing(0);
+    m_intValue->setSuffix(" px");
 }
 
 QLengthSheetTypeEditor::~QLengthSheetTypeEditor()

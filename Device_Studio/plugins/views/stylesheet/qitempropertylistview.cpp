@@ -160,6 +160,8 @@ void QItemPropertyListView::addProperty(QAbstractSheetType *property)
     item->setText(1,property->getValueText());
     item->setToolTip(1,property->getValueText());
     item->setIcon(1,property->getValueIcon());
+    connect(property,SIGNAL(needUpdate()),
+            this,SLOT(needUpdate()));
     m_itemToProperty.insert(item,property);
     m_propertyToItem.insert(property,item);
 
@@ -196,6 +198,22 @@ void QItemPropertyListView::propertyReplaced(QAbstractSheetType *oldPro, QAbstra
     item->setText(1,newPro->getValueText());
     item->setToolTip(1,newPro->getValueText());
     item->setIcon(1,newPro->getValueIcon());
+    connect(newPro,SIGNAL(needUpdate()),
+            this,SLOT(needUpdate()));
     m_itemToProperty.insert(item,newPro);
     m_propertyToItem.insert(newPro,item);
+}
+
+void QItemPropertyListView::needUpdate()
+{
+    QAbstractSheetType * property = (QAbstractSheetType*)sender();
+
+    QTreeWidgetItem * item = m_propertyToItem.value(property);
+
+    if(item != NULL)
+    {
+        item->setText(1,property->getValueText());
+        item->setToolTip(1,property->getValueText());
+        item->setIcon(1,property->getValueIcon());
+    }
 }

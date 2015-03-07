@@ -18,6 +18,8 @@ protected slots:
     virtual void    propertyChanged();
 
 protected:
+    void    paintEvent(QPaintEvent *);
+protected:
     QAbstractSheetType  *m_property;
 };
 

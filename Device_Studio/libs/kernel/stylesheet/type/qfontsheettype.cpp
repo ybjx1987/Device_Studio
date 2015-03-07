@@ -25,7 +25,27 @@ QString QFontSheetType::getValueText()
         tagFontSheetType value = getValue().value<tagFontSheetType>();
 
         QString str;
-        str = value.m_style+" "+QString::number(value.m_size)+"px "+value.m_name;
+
+        if(value.m_style != "")
+        {
+            str = value.m_style;
+        }
+        if(value.m_size > 0)
+        {
+            if(str != "")
+            {
+                str += " ";
+            }
+            str += (QString::number(value.m_size)+"px");
+        }
+        if(value.m_name != "")
+        {
+            if(str != "")
+            {
+                str += " ";
+            }
+            str += value.m_name;
+        }
         return str;
     }
     else
@@ -53,9 +73,12 @@ bool QFontSheetType::fromXml(XmlNode *xml)
     if(value.m_name == "" || value.m_style == ""
             || value.m_size <= 0)
     {
-        return false;
+        m_value = QVariant();
     }
-    m_value=QVariant::fromValue<tagFontSheetType>(value);
+    else
+    {
+        m_value=QVariant::fromValue<tagFontSheetType>(value);
+    }
     return QAbstractSheetType::fromXml(xml);
 }
 

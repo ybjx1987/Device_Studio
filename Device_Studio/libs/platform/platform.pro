@@ -64,7 +64,8 @@ HEADERS += \
     stylesheet/qnumbersheettypeeditor.h \
     stylesheet/qsheettypeeditorfactory.h \
     stylesheet/qlengthsheettypeeditor.h \
-    stylesheet/qenumsheettypeeditor.h
+    stylesheet/qenumsheettypeeditor.h \
+    stylesheet/qfontsheettypeeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -110,7 +111,8 @@ SOURCES += \
     stylesheet/qnumbersheettypeeditor.cpp \
     stylesheet/qsheettypeeditorfactory.cpp \
     stylesheet/qlengthsheettypeeditor.cpp \
-    stylesheet/qenumsheettypeeditor.cpp
+    stylesheet/qenumsheettypeeditor.cpp \
+    stylesheet/qfontsheettypeeditor.cpp
 
 RESOURCES += \
     platform.qrc

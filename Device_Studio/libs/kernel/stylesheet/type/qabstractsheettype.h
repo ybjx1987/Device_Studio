@@ -35,6 +35,7 @@ public:
 signals:
     void    enabledChanged(bool enabled);
     void    valueChanged(const QVariant & value);
+    void    needUpdate();
 public slots:
 protected:
     QString     m_name;

@@ -28,6 +28,10 @@ QNumberSheetTypeEditor::QNumberSheetTypeEditor(QAbstractSheetType * property,
     connect(m_floatValue,SIGNAL(valueChanged(double)),this,SLOT(propertyEdited()));
     connect(m_typeComboBox,SIGNAL(currentIndexChanged(int)),
             this,SLOT(typeChanged()));
+
+    m_intValue->setRange(-9999999,9999999);
+    m_floatValue->setRange(-99999999,99999999);
+    m_floatValue->setDecimals(6);
 }
 
 QNumberSheetTypeEditor::~QNumberSheetTypeEditor()

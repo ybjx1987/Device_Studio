@@ -50,6 +50,7 @@ void QAbstractSheetType::setValue(const QVariant &value)
     {
         m_value = value;
         emit valueChanged(value);
+        emit needUpdate();
     }
 }
 
