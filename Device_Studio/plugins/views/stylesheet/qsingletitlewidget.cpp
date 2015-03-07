@@ -53,7 +53,7 @@ void QSingleTitleWidget::paintEvent(QPaintEvent *)
     QPainter p(this);
 
     p.setPen(QColor(192,192,192));
-    p.drawLine(width()-2,0,width()-2,height());
+    p.drawLine(width()-2,0,width()-2,height()-2);
     p.setPen(QColor(255,255,255));
-    p.drawLine(width()-1,0,width()-1,height());
+    p.drawLine(width()-1,0,width()-1,height()-2);
 }

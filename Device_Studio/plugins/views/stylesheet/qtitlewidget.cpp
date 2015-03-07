@@ -22,22 +22,23 @@ QTitleWidget::QTitleWidget(QWidget *parent) :
     QImage image(":/inner/images/begin.png");
     label->setPixmap(QPixmap::fromImage(image));
     label->setFixedSize(16,16);
-    QAction * ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add Item"),this);
-    m_addButton = new QToolBarButton(ac);
-    ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add Item"),this);
+    QAction * ac = new QAction(QIcon(":/inner/images/delete_item.png"),tr("Remove Item"),this);
+    m_delButton = new QToolBarButton(ac);
+    ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add Title"),this);
     m_addTitleButton = new QToolBarButton(ac);
     m_addTitleButton->setVisible(true);
     hl->addWidget(m_addTitleButton);
     hl->addWidget(label);
     hl->addSpacerItem(new QSpacerItem(1,1,QSizePolicy::Expanding,
                                       QSizePolicy::Expanding));
-    hl->addWidget(m_addButton);
+    hl->addWidget(m_delButton);
     setLayout(hl);
 
     setStyleSheet("#titleWidget{background-color:rgb(255,220,180);}");
     setFixedHeight(22);
 
     connect(m_addTitleButton,SIGNAL(clicked()),this,SIGNAL(addTitle()));
+    connect(m_delButton,SIGNAL(clicked()),this,SIGNAL(delItem()));
 }
 
 QTitleWidget::~QTitleWidget()

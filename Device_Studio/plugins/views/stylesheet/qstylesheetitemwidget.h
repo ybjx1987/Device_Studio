@@ -20,7 +20,7 @@ public:
 protected:
     void    updateHeight();
 signals:
-
+    void    delItem();
 protected slots:
     void    addTitle();
     void    delTitle(const QString &title);

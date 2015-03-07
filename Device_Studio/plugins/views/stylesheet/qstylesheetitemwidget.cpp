@@ -30,6 +30,8 @@ QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *par
     connect(m_titleWidget,SIGNAL(addTitle()),this,SLOT(addTitle()));
     connect(m_titleWidget,SIGNAL(delTitle(QString)),
             this,SLOT(delTitle(QString)));
+    connect(m_titleWidget,SIGNAL(delItem()),
+            this,SIGNAL(delItem()));
 
     foreach(QStyleSheetItemTitle *title,m_sheetItem->getTitles())
     {

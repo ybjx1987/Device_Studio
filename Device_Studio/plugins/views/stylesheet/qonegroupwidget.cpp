@@ -25,6 +25,7 @@ QOneGroupWidget::QOneGroupWidget(QStyleSheetGroup * group,QWidget *parent) :
         QStyleSheetItemWidget * wid = new QStyleSheetItemWidget(item,this);
         m_itemToWidget.insert(item,wid);
         m_layout->insertWidget(m_layout->count()-1,wid);
+        connect(wid,SIGNAL(delItem()),this,SLOT(delItem()));
     }
 
     connect(group,SIGNAL(itemAdded(QStyleSheetItem*)),
@@ -44,6 +45,7 @@ void QOneGroupWidget::itemAdded(QStyleSheetItem *item)
 
     m_itemToWidget.insert(item,wid);
     m_layout->insertWidget(m_layout->count()-1,wid);
+    connect(wid,SIGNAL(delItem()),this,SLOT(delItem()));
 
     updateRect();
 }
@@ -78,4 +80,20 @@ void QOneGroupWidget::clear()
 {
     qDeleteAll(m_itemToWidget.values());
     m_itemToWidget.clear();
+}
+
+void QOneGroupWidget::delItem()
+{
+    QStyleSheetItemWidget * wid = (QStyleSheetItemWidget*)sender();
+
+    QMapIterator<QStyleSheetItem*,QStyleSheetItemWidget*> it(m_itemToWidget);
+    while(it.hasNext())
+    {
+        it.next();
+        if(it.value() == wid)
+        {
+            m_group->delItem(it.key());
+            return;
+        }
+    }
 }
