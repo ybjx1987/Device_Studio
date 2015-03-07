@@ -88,6 +88,7 @@ void QProject::close()
 {
     if(m_projectStatus == PS_OPENED)
     {
+        setProjectStatus(PS_CLOSED);
         emit projectClosed();
     }
     setProjectStatus(PS_CLOSED);

@@ -166,6 +166,7 @@ void QStyleSheetManager::clearFile(const QString &path)
                                           | QDir::NoDotAndDotDot);
     while(list.size()>0)
     {
-        dir.rmdir(list.takeFirst().filePath());
+        QFile f(list.takeFirst().filePath());
+        f.remove();
     }
 }

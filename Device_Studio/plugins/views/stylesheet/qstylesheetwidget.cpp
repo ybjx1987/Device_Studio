@@ -2,6 +2,7 @@
 
 #include "qstylesheetgrouplistview.h"
 #include "qonegroupwidget.h"
+#include "qdeletestylesheetdialog.h"
 #include "qnewstylesheetgroupdialog.h"
 #include "qnewstylesheetitemdialog.h"
 
@@ -207,7 +208,11 @@ void QStyleSheetWidget::newGroup()
 
 void QStyleSheetWidget::delGroup()
 {
+    QDeleteStyleSheetDialog dlg(this);
 
+    dlg.init(QSoftCore::getInstance()->getProject()->getStyleSheetManager());
+
+    dlg.exec();
 }
 
 void QStyleSheetWidget::groupAdded(QStyleSheetGroup *group)
