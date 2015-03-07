@@ -28,6 +28,8 @@ public:
 
     void    addProperty(QAbstractSheetType * property);
     void    delProperty(QAbstractSheetType * property);
+    void    replaceProperty(QAbstractSheetType * oldPro,
+                            QAbstractSheetType * newPro);
 
     QString getUuid();
 signals:
@@ -36,6 +38,8 @@ signals:
 
     void    propertyAdded(QAbstractSheetType * property);
     void    propertyDeled(QAbstractSheetType * property);
+    void    propertyReplaced(QAbstractSheetType * oldPro,
+                             QAbstractSheetType * newPro);
 public slots:
 protected:
     QList<QStyleSheetItemTitle*>    m_titles;

@@ -17,10 +17,10 @@ public:
     explicit QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *parent = 0);
     ~QStyleSheetItemWidget();
 
-protected:
     void    updateHeight();
 signals:
     void    delItem();
+    void    needUpdateHeight();
 protected slots:
     void    addTitle();
     void    delTitle(const QString &title);

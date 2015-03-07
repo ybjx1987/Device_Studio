@@ -16,9 +16,6 @@ public:
     void    setName(const QString & name);
     QString getName();
 
-    void    setShowName(const QString & showName);
-    QString getShowName();
-
     virtual void    setValue(const QVariant & value);
     QVariant        getValue();
     virtual QString getValueText();
@@ -41,7 +38,6 @@ signals:
 public slots:
 protected:
     QString     m_name;
-    QString     m_showName;
     bool        m_enabled;
     QVariant    m_value;
 

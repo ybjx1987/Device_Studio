@@ -30,16 +30,6 @@ QString QAbstractSheetType::getName()
     return m_name;
 }
 
-void QAbstractSheetType::setShowName(const QString &showName)
-{
-    m_showName = showName;
-}
-
-QString QAbstractSheetType::getShowName()
-{
-    return m_showName;
-}
-
 void QAbstractSheetType::setEnabled(bool enabled)
 {
     if(m_enabled != enabled)
@@ -93,7 +83,7 @@ bool QAbstractSheetType::equal(const QVariant &value)
 bool QAbstractSheetType::toXml(XmlNode *xml)
 {
     xml->setTitle("Property");
-    xml->setProperty("type",property("proName").toString());
+    xml->setProperty("type",getName());
     xml->setProperty("value",m_value.toString());
     xml->setProperty("enabled",m_enabled?"true":"false");
     return true;

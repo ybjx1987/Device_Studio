@@ -89,7 +89,7 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
         else if(node->getTitle() == "Property")
         {
             QAbstractSheetType * pro = QSheetPropertyFactory::createProperty(
-                        node->getProperty("proName"));
+                        node->getProperty("type"));
             if(pro != NULL)
             {
                 if(pro->fromXml(node))
@@ -159,6 +159,18 @@ void QStyleSheetItem::delProperty(QAbstractSheetType *property)
     emit propertyDeled(property);
     m_propertys.removeAll(property);
     delete property;
+}
+
+void QStyleSheetItem::replaceProperty(QAbstractSheetType *oldPro, QAbstractSheetType *newPro)
+{
+    if(!m_propertys.contains(oldPro))
+    {
+        return;
+    }
+
+    m_propertys.replace(m_propertys.indexOf(oldPro),newPro);
+    emit propertyReplaced(oldPro,newPro);
+    delete oldPro;
 }
 
 QString QStyleSheetItem::getUuid()

@@ -13,7 +13,14 @@ QUrlSheetType::~QUrlSheetType()
 
 QString QUrlSheetType::getValueText()
 {
-    return QString("url(%1)").arg(getValue().toString());
+    if(getValue().toString() != "")
+    {
+        return QString("url(%1)").arg(getValue().toString());
+    }
+    else
+    {
+        return "None";
+    }
 }
 
 QIcon QUrlSheetType::getValueIcon()

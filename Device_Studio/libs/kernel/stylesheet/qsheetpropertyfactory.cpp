@@ -24,6 +24,10 @@ QAbstractSheetType* QSheetPropertyFactory::createProperty(const QString &name)
     }
     QMetaObject meta = m_metaMap.value(name);
     QAbstractSheetType *pro = (QAbstractSheetType*)meta.newInstance();
+    if(pro != NULL)
+    {
+        pro->setName(name);
+    }
     return pro;
 }
 

@@ -12,7 +12,7 @@ QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *par
     QWidget(parent),
     m_titleWidget(new QTitleWidget),
     m_endWidget(new QItemEndWidget),
-    m_propertyListView(new QItemPropertyListView),
+    m_propertyListView(new QItemPropertyListView(item)),
     m_layout(new QVBoxLayout),
     m_sheetItem(item)
 {
@@ -44,6 +44,9 @@ QStyleSheetItemWidget::QStyleSheetItemWidget(QStyleSheetItem * item,QWidget *par
             this,SLOT(titleDeled(QStyleSheetItemTitle*)));
 
     setMinimumWidth(600);
+
+    connect(m_propertyListView,SIGNAL(needUpdateHeight()),
+            this,SIGNAL(needUpdateHeight()));
 }
 
 QStyleSheetItemWidget::~QStyleSheetItemWidget()

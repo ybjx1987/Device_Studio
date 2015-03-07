@@ -24,7 +24,7 @@ protected slots:
     void    itemDeled(QStyleSheetItem * item);
 
     void    delItem();
-protected:
+protected slots:
 
     void    updateRect();
 protected:

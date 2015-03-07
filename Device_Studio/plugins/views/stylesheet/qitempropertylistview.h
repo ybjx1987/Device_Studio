@@ -6,25 +6,32 @@
 #include <QMap>
 
 class QAbstractSheetType;
+class QStyleSheetItem;
+class QItemPropertyDelegate;
 
 class QItemPropertyListView : public QBaseListView
 {
     Q_OBJECT
 public:
-    QItemPropertyListView(QWidget * parent = NULL);
+    QItemPropertyListView(QStyleSheetItem * item,QWidget * parent = NULL);
     ~QItemPropertyListView();
 
+protected slots:
     void    addProperty(QAbstractSheetType * property);
     void    delProperty(QAbstractSheetType * property);
-
+signals:
+    void    needUpdateHeight();
 public:
     void    updateHeight();
+protected:
+    friend class QItemPropertyDelegate;
 protected:
     void clickEditItem(QTreeWidgetItem *item, int index);
 protected:
     QMap<QAbstractSheetType*,QTreeWidgetItem*>  m_propertyToItem;
     QMap<QTreeWidgetItem*,QAbstractSheetType*>  m_itemToProperty;
     QTreeWidgetItem     *m_emptyItem;
+    QStyleSheetItem     *m_sheetItem;
 };
 
 #endif // QITEMPROPERTYLISTVIEW_H

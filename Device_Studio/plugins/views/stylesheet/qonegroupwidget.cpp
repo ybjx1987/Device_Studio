@@ -26,6 +26,8 @@ QOneGroupWidget::QOneGroupWidget(QStyleSheetGroup * group,QWidget *parent) :
         m_itemToWidget.insert(item,wid);
         m_layout->insertWidget(m_layout->count()-1,wid);
         connect(wid,SIGNAL(delItem()),this,SLOT(delItem()));
+        connect(wid,SIGNAL(needUpdateHeight()),
+                this,SLOT(updateRect()));
     }
 
     connect(group,SIGNAL(itemAdded(QStyleSheetItem*)),
@@ -46,7 +48,8 @@ void QOneGroupWidget::itemAdded(QStyleSheetItem *item)
     m_itemToWidget.insert(item,wid);
     m_layout->insertWidget(m_layout->count()-1,wid);
     connect(wid,SIGNAL(delItem()),this,SLOT(delItem()));
-
+    connect(wid,SIGNAL(needUpdateHeight()),
+            this,SLOT(updateRect()));
     updateRect();
 }
 
@@ -70,6 +73,7 @@ void QOneGroupWidget::updateRect()
     while(it.hasNext())
     {
         it.next();
+        it.value()->updateHeight();
         h += it.value()->height();
     }
 
