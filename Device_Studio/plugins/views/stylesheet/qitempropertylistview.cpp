@@ -4,6 +4,8 @@
 #include "../../../libs/kernel/stylesheet/qsheetpropertyfactory.h"
 #include "../../../libs/kernel/stylesheet/type/qabstractsheettype.h"
 #include "../../../libs/kernel/stylesheet/qstylesheetitem.h"
+#include "../../../libs/platform/stylesheet/qabstractsheetpropertyeditor.h"
+#include "../../../libs/platform/stylesheet/qsheettypeeditorfactory.h"
 
 #include <QHeaderView>
 #include <QComboBox>
@@ -14,11 +16,16 @@ public:
     QItemPropertyDelegate(QItemPropertyListView* view):m_listView(view){}
     QWidget * createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const;
     void    drawDisplay(QPainter *painter, const QStyleOptionViewItem &option, const QRect &rect, const QString &text) const;
-
+    void    updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &) const;
     void    setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &index) const;
 protected:
     QItemPropertyListView   *m_listView;
 };
+
+void QItemPropertyDelegate::updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option, const QModelIndex &) const
+{
+    editor->setGeometry(option.rect.adjusted(0,0,0,-1));
+}
 
 QWidget * QItemPropertyDelegate::createEditor(QWidget *parent, const QStyleOptionViewItem &, const QModelIndex &index) const
 {
@@ -31,11 +38,22 @@ QWidget * QItemPropertyDelegate::createEditor(QWidget *parent, const QStyleOptio
         comboBox->addItems(list);
         comboBox->setCurrentIndex(1);
         wid = comboBox;
-    }
-
-    if(wid != NULL)
-    {
         wid->setProperty("no-ManhattanStyle",true);
+    }
+    else
+    {
+        QTreeWidgetItem * item = m_listView->itemFromIndex(index);
+        QAbstractSheetType * property = m_listView->m_itemToProperty.value(item);
+        if(property != NULL && property->getEnabled())
+        {
+            QAbstractSheetPropertyEditor * editor = QSheetTypeEditorFactory::create(property->metaObject()->className(),
+                                                                                          property);
+            if(editor != NULL)
+            {
+                editor->setParent(parent);
+            }
+            wid = editor;
+        }
     }
     return wid;
 }
@@ -119,6 +137,8 @@ QItemPropertyListView::QItemPropertyListView(QStyleSheetItem * item,QWidget * pa
             this,SLOT(addProperty(QAbstractSheetType*)));
     connect(m_sheetItem,SIGNAL(propertyDeled(QAbstractSheetType*)),
             this,SLOT(delProperty(QAbstractSheetType*)));
+    connect(m_sheetItem,SIGNAL(propertyReplaced(QAbstractSheetType*,QAbstractSheetType*)),
+            this,SLOT(propertyReplaced(QAbstractSheetType*,QAbstractSheetType*)));
 }
 
 QItemPropertyListView::~QItemPropertyListView()
@@ -140,6 +160,8 @@ void QItemPropertyListView::addProperty(QAbstractSheetType *property)
     item->setText(1,property->getValueText());
     item->setToolTip(1,property->getValueText());
     item->setIcon(1,property->getValueIcon());
+    connect(property,SIGNAL(needUpdate()),
+            this,SLOT(needUpdate()));
     m_itemToProperty.insert(item,property);
     m_propertyToItem.insert(property,item);
 
@@ -166,4 +188,32 @@ void QItemPropertyListView::delProperty(QAbstractSheetType *property)
 void QItemPropertyListView::clickEditItem(QTreeWidgetItem *item, int index)
 {
     editItem(item,index);
+}
+
+void QItemPropertyListView::propertyReplaced(QAbstractSheetType *oldPro, QAbstractSheetType *newPro)
+{
+    QTreeWidgetItem * item = m_propertyToItem.value(oldPro);
+    item->setText(0,newPro->getName());
+    item->setToolTip(0,newPro->getName());
+    item->setText(1,newPro->getValueText());
+    item->setToolTip(1,newPro->getValueText());
+    item->setIcon(1,newPro->getValueIcon());
+    connect(newPro,SIGNAL(needUpdate()),
+            this,SLOT(needUpdate()));
+    m_itemToProperty.insert(item,newPro);
+    m_propertyToItem.insert(newPro,item);
+}
+
+void QItemPropertyListView::needUpdate()
+{
+    QAbstractSheetType * property = (QAbstractSheetType*)sender();
+
+    QTreeWidgetItem * item = m_propertyToItem.value(property);
+
+    if(item != NULL)
+    {
+        item->setText(1,property->getValueText());
+        item->setToolTip(1,property->getValueText());
+        item->setIcon(1,property->getValueIcon());
+    }
 }

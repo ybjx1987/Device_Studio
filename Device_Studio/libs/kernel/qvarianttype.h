@@ -44,5 +44,25 @@ public:
 typedef QList<tagMemeryValueInfo> MemeryValueItems;
 Q_DECLARE_METATYPE(MemeryValueItems)
 
+class tagFontSheetType
+{
+public:
+    QString m_name;
+    int     m_size;
+    QString m_style;
+    bool operator ==(const tagFontSheetType &type) const
+    {
+        return (type.m_name==m_name
+                && type.m_size==m_size
+                && type.m_style==m_style);
+    }
+
+    bool operator !=(const tagFontSheetType &type) const
+    {
+        return !((*this) == type);
+    }
+};
+Q_DECLARE_METATYPE(tagFontSheetType)
+
 #endif // QVARIANTTYPE
 

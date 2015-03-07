@@ -59,7 +59,13 @@ HEADERS += \
     propertylist/editor/qstringpropertyeditor.h \
     propertylist/editor/qstringeditordialog.h \
     propertylist/editor/qfloatpropertyeditor.h \
-    qabstractstylesheetpropertyeditor.h
+    qabstractstylesheetpropertyeditor.h \
+    stylesheet/qabstractsheetpropertyeditor.h \
+    stylesheet/qnumbersheettypeeditor.h \
+    stylesheet/qsheettypeeditorfactory.h \
+    stylesheet/qlengthsheettypeeditor.h \
+    stylesheet/qenumsheettypeeditor.h \
+    stylesheet/qfontsheettypeeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -100,7 +106,13 @@ SOURCES += \
     propertylist/editor/qstringpropertyeditor.cpp \
     propertylist/editor/qstringeditordialog.cpp \
     propertylist/editor/qfloatpropertyeditor.cpp \
-    qabstractstylesheetpropertyeditor.cpp
+    qabstractstylesheetpropertyeditor.cpp \
+    stylesheet/qabstractsheetpropertyeditor.cpp \
+    stylesheet/qnumbersheettypeeditor.cpp \
+    stylesheet/qsheettypeeditorfactory.cpp \
+    stylesheet/qlengthsheettypeeditor.cpp \
+    stylesheet/qenumsheettypeeditor.cpp \
+    stylesheet/qfontsheettypeeditor.cpp
 
 RESOURCES += \
     platform.qrc

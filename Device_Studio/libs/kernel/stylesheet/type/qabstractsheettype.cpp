@@ -50,6 +50,7 @@ void QAbstractSheetType::setValue(const QVariant &value)
     {
         m_value = value;
         emit valueChanged(value);
+        emit needUpdate();
     }
 }
 
@@ -71,7 +72,7 @@ QIcon QAbstractSheetType::getValueIcon()
 QString QAbstractSheetType::getStyleSheet()
 {
     QString ret;
-    ret = m_name+":"+getValue().toString()+";";
+    ret = m_name+":"+getValueText()+";";
     return ret;
 }
 
