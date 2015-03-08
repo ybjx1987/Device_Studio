@@ -1,7 +1,6 @@
 #include "qurlsheettype.h"
 
-QUrlSheetType::QUrlSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent)
+QUrlSheetType::QUrlSheetType()
 {
     setValue("");
 }

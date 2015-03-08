@@ -9,7 +9,7 @@ class QUrlSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QUrlSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QUrlSheetType();
     ~QUrlSheetType();
 
     QString getValueText();

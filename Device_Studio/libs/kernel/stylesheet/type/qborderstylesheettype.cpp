@@ -1,7 +1,6 @@
 #include "qborderstylesheettype.h"
 
-QBorderStyleSheetType::QBorderStyleSheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QBorderStyleSheetType::QBorderStyleSheetType()
 {
     setValue("none");
 }

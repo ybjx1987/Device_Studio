@@ -4,15 +4,10 @@
 
 #include <QIcon>
 
-QAbstractSheetType::QAbstractSheetType(QAbstractSheetType *parent) :
-    QObject(parent),
-    m_enabled(true),
-    m_parent(parent)
+QAbstractSheetType::QAbstractSheetType() :
+    QObject(NULL),
+    m_enabled(true)
 {
-    if(m_parent != NULL)
-    {
-        m_parent->m_children.append(this);
-    }
 }
 
 QAbstractSheetType::~QAbstractSheetType()
@@ -95,14 +90,4 @@ bool QAbstractSheetType::fromXml(XmlNode *xml)
     m_enabled = xml->getProperty("enabled") =="true";
     m_value = xml->getProperty("value");
     return true;
-}
-
-QList<QAbstractSheetType*> QAbstractSheetType::getChildren()
-{
-    return m_children;
-}
-
-QAbstractSheetType* QAbstractSheetType::getParent()
-{
-    return m_parent;
 }

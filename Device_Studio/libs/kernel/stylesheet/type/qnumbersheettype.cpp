@@ -2,8 +2,7 @@
 
 #include "../../xmlnode.h"
 
-QNumberSheetType::QNumberSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent),
+QNumberSheetType::QNumberSheetType():
     m_type("Integer")
 {
     setValue(0);

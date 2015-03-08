@@ -7,8 +7,7 @@
 #include "../../qvarianttype.h"
 #include "../../xmlnode.h"
 
-QFontSheetType::QFontSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent)
+QFontSheetType::QFontSheetType()
 {
 
 }

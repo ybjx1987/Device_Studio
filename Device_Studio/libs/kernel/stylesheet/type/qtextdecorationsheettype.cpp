@@ -1,7 +1,6 @@
 #include "qtextdecorationsheettype.h"
 
-QTextDecorationSheetType::QTextDecorationSheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QTextDecorationSheetType::QTextDecorationSheetType()
 {
     setValue("none");
 }

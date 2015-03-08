@@ -2,8 +2,7 @@
 
 #include <QFontDatabase>
 
-QFontFamilySheetType::QFontFamilySheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QFontFamilySheetType::QFontFamilySheetType()
 {
     setValue("");
 }

@@ -7,7 +7,7 @@ class QLengthSheetType : public QNumberSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QLengthSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QLengthSheetType();
     ~QLengthSheetType();
 
 

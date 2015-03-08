@@ -1,7 +1,6 @@
 #include "qlengthsheettype.h"
 
-QLengthSheetType::QLengthSheetType(QAbstractSheetType * parent):
-    QNumberSheetType(parent)
+QLengthSheetType::QLengthSheetType()
 {
 }
 

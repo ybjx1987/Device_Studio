@@ -11,7 +11,7 @@ class QFontSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QFontSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QFontSheetType();
     ~QFontSheetType();
 
     QString getValueText();
