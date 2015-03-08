@@ -15,7 +15,7 @@ QStringList QTextDecorationSheetType::getValueList()
 {
     QStringList list;
 
-    list<<"none"<<"underline"<<"overline"<<"ine-through";
+    list<<"none"<<"underline"<<"overline"<<"line-through";
 
     return list;
 }

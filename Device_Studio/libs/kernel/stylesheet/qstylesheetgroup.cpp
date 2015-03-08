@@ -32,7 +32,9 @@ void QStyleSheetGroup::addItem(QStyleSheetItem *item)
 
     m_uuidToItem.insert(item->getUuid(),item);
     m_items.append(item);
-
+    connect(item,SIGNAL(needUpdateStyleSheet()),
+            this,SLOT(needUpdateStyleSheet()));
+    emit needUpdateStyleSheet(QList<QStyleSheetItem*>()<<item);
     emit itemAdded(item);
 }
 
@@ -46,6 +48,7 @@ void QStyleSheetGroup::delItem(QStyleSheetItem *item)
     emit itemDeled(item);
     m_uuidToItem.remove(item->getUuid());
     m_items.removeAll(item);
+    emit needUpdateStyleSheet(QList<QStyleSheetItem*>()<<item);
     delete item;
 }
 
@@ -110,6 +113,8 @@ bool QStyleSheetGroup::fromXml(XmlNode *xml)
             item->fromXml(obj);
             m_items.append(item);
             m_uuidToItem.insert(item->getUuid(),item);
+            connect(item,SIGNAL(needUpdateStyleSheet()),
+                    this,SLOT(needUpdateStyleSheet()));
         }
     }
 
@@ -186,4 +191,9 @@ void QStyleSheetGroup::clear()
     qDeleteAll(m_items);
     m_items.clear();
     m_uuidToItem.clear();
+}
+
+void QStyleSheetGroup::needUpdateStyleSheet()
+{
+    emit needUpdateStyleSheet(QList<QStyleSheetItem*>()<<((QStyleSheetItem*)sender()));
 }

@@ -64,6 +64,8 @@ void QStyleSheetManager::load(const QString &path)
             if(group->load(name))
             {
                 group->setProperty("fileName",obj->getText());
+                connect(group,SIGNAL(needUpdateStyleSheet(QList<QStyleSheetItem*>)),
+                        this,SIGNAL(needUpdateStyleSheet(QList<QStyleSheetItem*>)));
                 m_groups.append(group);
                 m_uuidToGroup.insert(group->getUuid(),group);
             }
@@ -134,6 +136,7 @@ void QStyleSheetManager::delGroup(QStyleSheetGroup *group)
     m_groups.removeAll(group);
     m_uuidToGroup.remove(group->getUuid());
     emit groupDeled(group);
+    emit needUpdateStyleSheet(group->getItems());
     delete group;
 }
 

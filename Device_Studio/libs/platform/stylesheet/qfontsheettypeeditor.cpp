@@ -2,6 +2,7 @@
 
 #include "../../kernel/qvarianttype.h"
 #include "../../kernel/stylesheet/type/qabstractsheettype.h"
+#include "../stylehelper.h"
 
 #include <QHBoxLayout>
 #include <QFontDatabase>
@@ -14,8 +15,11 @@ QFontSheetTypeEditor::QFontSheetTypeEditor(QAbstractSheetType * property,
     m_styleCombo(new QComboBox),
     m_sizeEditor(new QSpinBox)
 {
-    m_styleCombo->setProperty("no-painter",true);
-    m_nameCombo->setProperty("no-painter",true);
+    m_nameCombo->setProperty("no-ManhattanStyle",true);
+    m_styleCombo->setProperty("no-ManhattanStyle",true);
+    m_sizeEditor->setProperty("no-ManhattanStyle",true);
+    m_sizeEditor->setAttribute(Qt::WA_Hover);
+    m_sizeEditor->setFixedHeight(StyleHelper::navigationWidgetHeight() - 4);
     static QFontDatabase data;
     g_fontName = data.families();
     QHBoxLayout * hb = new QHBoxLayout;

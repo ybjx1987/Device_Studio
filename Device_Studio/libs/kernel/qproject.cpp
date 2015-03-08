@@ -11,6 +11,7 @@
 #include "language/qlanguage.h"
 #include "data/qdatamanager.h"
 #include "stylesheet/qstylesheetmanager.h"
+#include "qstylesheetsync.h"
 
 #include <QFile>
 #include <QVariant>
@@ -24,7 +25,8 @@ QProject::QProject():
     m_projectModified(PM_NOT_MODIFIED),
     m_languageManager(NULL),
     m_dataManager(NULL),
-    m_styleSheetManager(NULL)
+    m_styleSheetManager(NULL),
+    m_styleSheetSync(NULL)
 {
 }
 
@@ -78,6 +80,10 @@ bool QProject::open(const QString &proFileName)
     m_styleSheetManager = new QStyleSheetManager(this);
     m_styleSheetManager->load(path+"/stylesheet");
 
+    m_styleSheetSync = new QStyleSheetSync(m_styleSheetManager,
+                                           m_forms,
+                                           this);
+
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
     emit projectOpened();
@@ -93,6 +99,12 @@ void QProject::close()
     }
     setProjectStatus(PS_CLOSED);
     setModified(PM_NOT_MODIFIED);
+
+    if(m_styleSheetSync != NULL)
+    {
+        delete m_styleSheetSync;
+        m_styleSheetSync = NULL;
+    }
 
     qDeleteAll(m_forms);
     m_forms.clear();
@@ -153,6 +165,7 @@ void QProject::addForm(QAbstractWidgetHost *host, int index)
     m_forms.insert(index,host);
     connect(host,SIGNAL(needUpdate(QStringProperty*)),
             this,SLOT(updateStringProperty(QStringProperty*)));
+    m_styleSheetSync->addForm(host);
     emit hostAdded(host,index);
 }
 

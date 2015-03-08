@@ -55,27 +55,6 @@ bool panelWidget(const QWidget *widget)
     return false;
 }
 
-bool painterWidget(const QWidget *widget)
-{
-    if (!widget)
-        return false;
-
-    const QWidget *p = widget;
-    while (p) {
-        if (qobject_cast<const QToolBar *>(p) ||
-            qobject_cast<const QStatusBar *>(p) ||
-            qobject_cast<const QMenuBar *>(p))
-            return true;
-        if(p->property("no-painter").toBool())
-        {
-            return false;
-        }
-        p = p->parentWidget();
-
-    }
-    return true;
-}
-
 bool lightColored(const QWidget *widget)
 {
     if (!widget)
@@ -194,7 +173,7 @@ void ManhattanStyle::polish(QWidget *widget)
 void ManhattanStyle::drawControl(ControlElement element, const QStyleOption *option,
                                  QPainter *painter, const QWidget *widget) const
 {
-    if (!panelWidget(widget) || !painterWidget(widget))
+    if (!panelWidget(widget))
         return QProxyStyle::drawControl(element, option, painter, widget);
 
     switch (element) {
@@ -401,7 +380,7 @@ void ManhattanStyle::drawControl(ControlElement element, const QStyleOption *opt
 
 void ManhattanStyle::drawPrimitive(PrimitiveElement element, const QStyleOption *option, QPainter *painter, const QWidget *widget) const
 {
-    if(!panelWidget(widget) || painterWidget(widget))
+    if(!panelWidget(widget))
     {
         return QProxyStyle::drawPrimitive(element,option,painter,widget);
     }
@@ -517,7 +496,7 @@ void ManhattanStyle::drawPrimitive(PrimitiveElement element, const QStyleOption 
 
 void ManhattanStyle::drawComplexControl(ComplexControl control, const QStyleOptionComplex *option, QPainter *painter, const QWidget *widget) const
 {
-    if(!panelWidget(widget) || !painterWidget(widget))
+    if(!panelWidget(widget))
     {
         QProxyStyle::drawComplexControl(control,option,painter,widget);
         return;
