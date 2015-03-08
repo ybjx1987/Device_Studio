@@ -127,7 +127,7 @@ QItemPropertyListView::QItemPropertyListView(QStyleSheetItem * item,QWidget * pa
 
     m_emptyItem = new QTreeWidgetItem(this);
     m_emptyItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsEditable);
-
+    m_emptyItem->setText(0,tr("Click to add new property"));
     foreach(QAbstractSheetType * pro,m_sheetItem->getPropertys())
     {
         addProperty(pro);
