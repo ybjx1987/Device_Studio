@@ -44,13 +44,26 @@ QString QFontSheetType::getValueText()
             {
                 str += " ";
             }
-            str += value.m_name;
+            str += ( "\""+value.m_name+"\"");
         }
         return str;
     }
     else
     {
         return "Invalid";
+    }
+}
+
+QString QFontSheetType::getStyleSheet()
+{
+    QString ret = getValueText();
+    if(ret == "Invalid")
+    {
+        return "";
+    }
+    else
+    {
+        return (m_name+" : "+ret);
     }
 }
 

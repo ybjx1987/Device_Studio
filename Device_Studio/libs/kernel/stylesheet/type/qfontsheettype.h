@@ -15,6 +15,7 @@ public:
     ~QFontSheetType();
 
     QString getValueText();
+    QString getStyleSheet();
 
     virtual bool    toXml(XmlNode * xml);
     virtual bool    fromXml(XmlNode * xml);

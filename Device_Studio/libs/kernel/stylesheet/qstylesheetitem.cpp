@@ -219,17 +219,29 @@ QString QStyleSheetItem::getStyleSheet(const QString & title)
     }
     else
     {
-        ret +="{";
+        ret +="{\n";
     }
-
+    QString buffer;
     foreach(QAbstractSheetType * property,m_propertys)
     {
-        if(ret != "")
+        if(property->getEnabled())
         {
-            ret += "\n";
+            QString str = property->getStyleSheet();
+            if(str != "")
+            {
+                if(buffer != "")
+                {
+                    buffer += "\n";
+                }
+                buffer +=(str+";");
+            }
         }
-        ret +=property->getStyleSheet();
     }
+    if(buffer == "")
+    {
+        return "";
+    }
+    ret += buffer;
     ret +="\n}";
     return ret;
 }

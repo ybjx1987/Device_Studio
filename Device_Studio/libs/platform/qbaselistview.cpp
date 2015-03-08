@@ -7,6 +7,7 @@
 #include <QHeaderView>
 #include <QMouseEvent>
 #include <QVariant>
+#include <QApplication>
 
 QBaseListView::QBaseListView(QWidget *parent):
     QTreeWidget(parent)
@@ -51,6 +52,11 @@ void QBaseListView::drawRow(QPainter *painter, const QStyleOptionViewItem &optio
 
 void QBaseListView::mousePressEvent(QMouseEvent *event)
 {
+    QWidget * wid = qApp->focusWidget();
+    if(wid != NULL)
+    {
+        wid->clearFocus();
+    }
     QTreeWidget::mousePressEvent(event);
 
     QTreeWidgetItem *item = itemAt(event->pos());

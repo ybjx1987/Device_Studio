@@ -187,7 +187,7 @@ void QItemPropertyListView::delProperty(QAbstractSheetType *property)
 
 void QItemPropertyListView::clickEditItem(QTreeWidgetItem *item, int index)
 {
-    editItem(item,index);
+    edit(indexFromItem(item,index),QAbstractItemView::AllEditTriggers,NULL);
 }
 
 void QItemPropertyListView::propertyReplaced(QAbstractSheetType *oldPro, QAbstractSheetType *newPro)

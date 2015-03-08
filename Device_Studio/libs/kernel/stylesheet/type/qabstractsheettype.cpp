@@ -72,7 +72,7 @@ QIcon QAbstractSheetType::getValueIcon()
 QString QAbstractSheetType::getStyleSheet()
 {
     QString ret;
-    ret = m_name+":"+getValueText()+";";
+    ret = m_name+":"+getValueText();
     return ret;
 }
 

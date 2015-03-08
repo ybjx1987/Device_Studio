@@ -11,6 +11,7 @@ public:
 
     QStringList getValueList();
     QString     getValueText();
+    QString     getStyleSheet();
 };
 
 #endif // QFONTFAMILYSHEETTYPE_H
