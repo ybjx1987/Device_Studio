@@ -1,7 +1,6 @@
 #include "qalignmentsheettype.h"
 
-QAlignmentSheetType::QAlignmentSheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QAlignmentSheetType::QAlignmentSheetType()
 {
     setValue("left center");
 }

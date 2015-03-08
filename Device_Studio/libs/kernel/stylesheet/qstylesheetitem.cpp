@@ -94,6 +94,8 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
             {
                 if(pro->fromXml(node))
                 {
+                    connect(pro,SIGNAL(needUpdate()),
+                            this,SIGNAL(needUpdateStyleSheet()));
                     m_propertys.append(pro);
                 }
                 else
@@ -125,6 +127,7 @@ void QStyleSheetItem::addTitle(QStyleSheetItemTitle *title)
     m_titles.append(title);
 
     emit titleAdded(title);
+    emit needUpdateStyleSheet();
 }
 
 void QStyleSheetItem::delTitle(QStyleSheetItemTitle *title)
@@ -136,6 +139,7 @@ void QStyleSheetItem::delTitle(QStyleSheetItemTitle *title)
     emit titleDeled(title);
     m_titles.removeAll(title);
     delete title;
+    emit needUpdateStyleSheet();
 }
 
 void QStyleSheetItem::addProperty(QAbstractSheetType *property)
@@ -146,7 +150,10 @@ void QStyleSheetItem::addProperty(QAbstractSheetType *property)
     }
 
     m_propertys.append(property);
+    connect(property,SIGNAL(needUpdate()),
+            this,SIGNAL(needUpdateStyleSheet()));
     emit propertyAdded(property);
+    emit needUpdateStyleSheet();
 }
 
 void QStyleSheetItem::delProperty(QAbstractSheetType *property)
@@ -159,6 +166,7 @@ void QStyleSheetItem::delProperty(QAbstractSheetType *property)
     emit propertyDeled(property);
     m_propertys.removeAll(property);
     delete property;
+    emit needUpdateStyleSheet();
 }
 
 void QStyleSheetItem::replaceProperty(QAbstractSheetType *oldPro, QAbstractSheetType *newPro)
@@ -170,10 +178,70 @@ void QStyleSheetItem::replaceProperty(QAbstractSheetType *oldPro, QAbstractSheet
 
     m_propertys.replace(m_propertys.indexOf(oldPro),newPro);
     emit propertyReplaced(oldPro,newPro);
+    connect(newPro,SIGNAL(needUpdate()),
+            this,SIGNAL(needUpdateStyleSheet()));
     delete oldPro;
+    emit needUpdateStyleSheet();
 }
 
 QString QStyleSheetItem::getUuid()
 {
     return m_uuid;
+}
+
+QString QStyleSheetItem::getStyleSheet(const QString & title)
+{
+    QString ret = "";
+
+    if(m_titles.size() == 0 || m_propertys.size() ==0)
+    {
+        return ret;
+    }
+
+    foreach(QStyleSheetItemTitle *t,m_titles)
+    {
+        QString temp;
+        temp = (t->getType()=="By Name")?"#":"";
+        temp+=t->getName();
+        if(title == temp)
+        {
+            if(ret != "")
+            {
+                ret +=",";
+            }
+            ret += t->getText();
+        }
+    }
+
+    if(ret == "")
+    {
+        return ret;
+    }
+    else
+    {
+        ret +="{\n";
+    }
+    QString buffer;
+    foreach(QAbstractSheetType * property,m_propertys)
+    {
+        if(property->getEnabled())
+        {
+            QString str = property->getStyleSheet();
+            if(str != "")
+            {
+                if(buffer != "")
+                {
+                    buffer += "\n";
+                }
+                buffer +=(str+";");
+            }
+        }
+    }
+    if(buffer == "")
+    {
+        return "";
+    }
+    ret += buffer;
+    ret +="\n}";
+    return ret;
 }

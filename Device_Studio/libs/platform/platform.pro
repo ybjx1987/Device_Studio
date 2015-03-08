@@ -7,6 +7,7 @@ DESTDIR = ../../../temp/bin/Device_Studio.app/Contents/MacOS
 DEFINES += PLATFORM_LIBRARY
 
 LIBS += -L../../../temp/bin/Device_Studio.app/Contents/MacOS -lkernel
+LIBS += -L../../../temp/bin/Device_Studio.app/Contents/MacOS -lgradienteditor
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
@@ -65,7 +66,8 @@ HEADERS += \
     stylesheet/qsheettypeeditorfactory.h \
     stylesheet/qlengthsheettypeeditor.h \
     stylesheet/qenumsheettypeeditor.h \
-    stylesheet/qfontsheettypeeditor.h
+    stylesheet/qfontsheettypeeditor.h \
+    stylesheet/qbrushsheettypeeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -112,7 +114,8 @@ SOURCES += \
     stylesheet/qsheettypeeditorfactory.cpp \
     stylesheet/qlengthsheettypeeditor.cpp \
     stylesheet/qenumsheettypeeditor.cpp \
-    stylesheet/qfontsheettypeeditor.cpp
+    stylesheet/qfontsheettypeeditor.cpp \
+    stylesheet/qbrushsheettypeeditor.cpp
 
 RESOURCES += \
     platform.qrc

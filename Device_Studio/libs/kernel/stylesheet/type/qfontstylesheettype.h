@@ -7,7 +7,7 @@ class QFontStyleSheetType : public QAbstractEnumSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QFontStyleSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QFontStyleSheetType();
     ~QFontStyleSheetType();
 
     QStringList getValueList();

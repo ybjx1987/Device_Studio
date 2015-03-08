@@ -7,7 +7,7 @@ class QTextDecorationSheetType : public QAbstractEnumSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QTextDecorationSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QTextDecorationSheetType();
     ~QTextDecorationSheetType();
 
     QStringList getValueList();

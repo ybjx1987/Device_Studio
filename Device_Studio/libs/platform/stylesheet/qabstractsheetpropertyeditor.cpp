@@ -8,6 +8,7 @@ QAbstractSheetPropertyEditor::QAbstractSheetPropertyEditor(QAbstractSheetType * 
     QWidget(parent),
     m_property(property)
 {
+    setFocusPolicy(Qt::StrongFocus);
     connect(m_property,SIGNAL(valueChanged(QVariant)),
             this,SLOT(propertyChanged()));
 

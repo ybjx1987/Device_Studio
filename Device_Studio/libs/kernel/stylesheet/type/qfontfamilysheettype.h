@@ -6,11 +6,12 @@ class QFontFamilySheetType : public QAbstractEnumSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QFontFamilySheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QFontFamilySheetType();
     ~QFontFamilySheetType();
 
     QStringList getValueList();
     QString     getValueText();
+    QString     getStyleSheet();
 };
 
 #endif // QFONTFAMILYSHEETTYPE_H

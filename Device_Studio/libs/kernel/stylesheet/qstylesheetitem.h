@@ -32,6 +32,8 @@ public:
                             QAbstractSheetType * newPro);
 
     QString getUuid();
+
+    QString getStyleSheet(const QString & title);
 signals:
     void    titleAdded(QStyleSheetItemTitle * title);
     void    titleDeled(QStyleSheetItemTitle * title);
@@ -40,6 +42,8 @@ signals:
     void    propertyDeled(QAbstractSheetType * property);
     void    propertyReplaced(QAbstractSheetType * oldPro,
                              QAbstractSheetType * newPro);
+
+    void    needUpdateStyleSheet();
 public slots:
 protected:
     QList<QStyleSheetItemTitle*>    m_titles;

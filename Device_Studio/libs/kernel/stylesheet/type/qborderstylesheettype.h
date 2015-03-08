@@ -7,7 +7,7 @@ class QBorderStyleSheetType : public QAbstractEnumSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QBorderStyleSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QBorderStyleSheetType();
     ~QBorderStyleSheetType();
 
     QStringList getValueList();

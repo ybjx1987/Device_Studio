@@ -1,7 +1,6 @@
 #include "qrepeatsheettype.h"
 
-QRepeatSheetType::QRepeatSheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QRepeatSheetType::QRepeatSheetType()
 {
     setValue("repeat");
 }

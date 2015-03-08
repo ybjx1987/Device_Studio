@@ -12,6 +12,7 @@
 #include "type/qtextdecorationsheettype.h"
 #include "type/qfontsheettype.h"
 #include "type/qfontfamilysheettype.h"
+#include "type/qbrushsheettype.h"
 
 QMap<QString,QMetaObject>     QSheetPropertyFactory::m_metaMap;
 
@@ -83,5 +84,14 @@ void QSheetPropertyFactory::registerInnerProperty()
     registerProperty("font-family",QFontFamilySheetType::staticMetaObject);
     registerProperty("text-decoration",QTextDecorationSheetType::staticMetaObject);
     registerProperty("font",QFontSheetType::staticMetaObject);
+    registerProperty("background-color",QBrushSheetType::staticMetaObject);
+    registerProperty("border-top-color",QBrushSheetType::staticMetaObject);
+    registerProperty("border-left-color",QBrushSheetType::staticMetaObject);
+    registerProperty("border-right-color",QBrushSheetType::staticMetaObject);
+    registerProperty("border-bottom-color",QBrushSheetType::staticMetaObject);
+    registerProperty("border-color",QBrushSheetType::staticMetaObject);
+    registerProperty("color",QBrushSheetType::staticMetaObject);
+    registerProperty("selection-background-color",QBrushSheetType::staticMetaObject);
+    registerProperty("selection-color",QBrushSheetType::staticMetaObject);
 
 }

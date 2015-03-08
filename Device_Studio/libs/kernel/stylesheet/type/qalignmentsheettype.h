@@ -7,7 +7,7 @@ class QAlignmentSheetType : public QAbstractEnumSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QAlignmentSheetType(QAbstractSheetType * parent=NULL);
+    Q_INVOKABLE QAlignmentSheetType();
     ~QAlignmentSheetType();
 
     QStringList  getValueList();

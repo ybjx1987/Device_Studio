@@ -5,6 +5,7 @@
 #include <QMap>
 
 class QStyleSheetGroup;
+class QStyleSheetItem;
 
 class QStyleSheetManager : public QObject
 {
@@ -27,6 +28,8 @@ public:
 signals:
     void    groupAdded(QStyleSheetGroup * group);
     void    groupDeled(QStyleSheetGroup * group);
+
+    void    needUpdateStyleSheet(const QList<QStyleSheetItem*> &items);
 public slots:
 protected:
     QList<QStyleSheetGroup*>    m_groups;

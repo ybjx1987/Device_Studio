@@ -4,6 +4,7 @@
 #include <QString>
 #include <QVariant>
 #include <QList>
+#include <QGradient>
 
 struct tagComboItem
 {
@@ -63,6 +64,42 @@ public:
     }
 };
 Q_DECLARE_METATYPE(tagFontSheetType)
+
+Q_DECLARE_METATYPE(QGradient)
+
+class tagBrushSheetType
+{
+public:
+    QString m_type;
+    QVariant m_value;
+    QString m_alpha;
+
+    bool operator ==(const tagBrushSheetType &type) const
+    {
+        if(m_type != type.m_type || m_alpha != type.m_alpha)
+        {
+            return false;
+        }
+        if(m_type == "Color")
+        {
+            QColor c1 = m_value.value<QColor>();
+            QColor c2 = type.m_value.value<QColor>();
+            return c1 == c2;
+        }
+        else
+        {
+            QGradient g1 = m_value.value<QGradient>();
+            QGradient g2 = type.m_value.value<QGradient>();
+            return g1 == g2;
+        }
+    }
+
+    bool operator !=(const tagBrushSheetType &type) const
+    {
+        return !((*this) == type);
+    }
+};
+Q_DECLARE_METATYPE(tagBrushSheetType)
 
 #endif // QVARIANTTYPE
 

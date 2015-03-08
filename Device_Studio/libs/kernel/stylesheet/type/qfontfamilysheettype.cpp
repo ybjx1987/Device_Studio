@@ -2,8 +2,7 @@
 
 #include <QFontDatabase>
 
-QFontFamilySheetType::QFontFamilySheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QFontFamilySheetType::QFontFamilySheetType()
 {
     setValue("");
 }
@@ -21,7 +20,19 @@ QString QFontFamilySheetType::getValueText()
     }
     else
     {
-        return m_value.toString();
+        return ("\""+m_value.toString()+"\"");
+    }
+}
+
+QString QFontFamilySheetType::getStyleSheet()
+{
+    if(m_value.toString() != "")
+    {
+        return (m_name+": \""+m_value.toString()+"\"");
+    }
+    else
+    {
+        return "";
     }
 }
 

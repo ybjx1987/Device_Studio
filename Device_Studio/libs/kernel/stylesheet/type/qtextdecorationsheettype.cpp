@@ -1,7 +1,6 @@
 #include "qtextdecorationsheettype.h"
 
-QTextDecorationSheetType::QTextDecorationSheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QTextDecorationSheetType::QTextDecorationSheetType()
 {
     setValue("none");
 }
@@ -15,7 +14,7 @@ QStringList QTextDecorationSheetType::getValueList()
 {
     QStringList list;
 
-    list<<"none"<<"underline"<<"overline"<<"ine-through";
+    list<<"none"<<"underline"<<"overline"<<"line-through";
 
     return list;
 }

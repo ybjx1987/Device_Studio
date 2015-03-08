@@ -1,7 +1,6 @@
 #include "qfontstylesheettype.h"
 
-QFontStyleSheetType::QFontStyleSheetType(QAbstractSheetType * parent):
-    QAbstractEnumSheetType(parent)
+QFontStyleSheetType::QFontStyleSheetType()
 {
     setValue("normal");
 }

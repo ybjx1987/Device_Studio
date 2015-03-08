@@ -4,6 +4,7 @@
 #include "qlengthsheettypeeditor.h"
 #include "qenumsheettypeeditor.h"
 #include "qfontsheettypeeditor.h"
+#include "qbrushsheettypeeditor.h"
 
 QMap<QString,QMetaObject> QSheetTypeEditorFactory::m_nameToMeta;
 
@@ -45,4 +46,5 @@ void QSheetTypeEditorFactory::registerInnerEditor()
     registerEditor("QTextDecorationSheetType",QEnumSheetTypeEditor::staticMetaObject);
     registerEditor("QFontSheetType",QFontSheetTypeEditor::staticMetaObject);
     registerEditor("QFontFamilySheetType",QEnumSheetTypeEditor::staticMetaObject);
+    registerEditor("QBrushSheetType",QBrushSheetTypeEditor::staticMetaObject);
 }

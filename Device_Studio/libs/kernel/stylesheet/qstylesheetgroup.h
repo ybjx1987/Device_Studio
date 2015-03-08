@@ -32,10 +32,12 @@ public:
 signals:
     void    itemAdded(QStyleSheetItem * item);
     void    itemDeled(QStyleSheetItem * item);
+    void    needUpdateStyleSheet(const QList<QStyleSheetItem*> &items);
 protected:
     bool    toXml(XmlNode * xml);
     bool    fromXml(XmlNode * xml);
-public slots:
+protected slots:
+    void    needUpdateStyleSheet();
 protected:
     QList<QStyleSheetItem*> m_items;
     QMap<QString,QStyleSheetItem*>  m_uuidToItem;

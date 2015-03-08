@@ -7,7 +7,7 @@ class QNumberSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QNumberSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QNumberSheetType();
     ~QNumberSheetType();
 
     QString getValueText();

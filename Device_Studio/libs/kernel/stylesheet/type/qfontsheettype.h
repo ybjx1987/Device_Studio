@@ -11,10 +11,11 @@ class QFontSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QFontSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QFontSheetType();
     ~QFontSheetType();
 
     QString getValueText();
+    QString getStyleSheet();
 
     virtual bool    toXml(XmlNode * xml);
     virtual bool    fromXml(XmlNode * xml);

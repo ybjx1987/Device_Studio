@@ -6,7 +6,7 @@
 class QAbstractEnumSheetType: public QAbstractSheetType
 {
 public:
-    QAbstractEnumSheetType(QAbstractSheetType * parent = NULL);
+    QAbstractEnumSheetType();
     ~QAbstractEnumSheetType();
 
     virtual QStringList  getValueList() = 0;
