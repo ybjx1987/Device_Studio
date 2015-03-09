@@ -4,15 +4,28 @@
 
 #include <QIcon>
 
-QAbstractSheetType::QAbstractSheetType() :
-    QObject(NULL),
-    m_enabled(true)
+QAbstractSheetType::QAbstractSheetType(QAbstractSheetType *parent):
+    QObject(parent),
+    m_enabled(true),
+    m_parent(parent)
 {
+    if(m_parent != NULL)
+    {
+        m_parent->m_children.append(this);
+    }
 }
 
 QAbstractSheetType::~QAbstractSheetType()
 {
+    while(m_children.size()>0)
+    {
+        delete m_children.first();
+    }
 
+    if(m_parent != NULL)
+    {
+        m_parent->m_children.removeAll(this);
+    }
 }
 
 void QAbstractSheetType::setName(const QString &name)
@@ -66,9 +79,21 @@ QIcon QAbstractSheetType::getValueIcon()
 
 QString QAbstractSheetType::getStyleSheet()
 {
-    QString ret;
-    ret = m_name+":"+getValueText();
-    return ret;
+    QString ret=getStyleSheetValue();
+    if(ret == "Invalid" || ret == "")
+    {
+        return "";
+    }
+    else
+    {
+        ret = m_name+":"+ret;
+        return ret;
+    }
+}
+
+QString QAbstractSheetType::getStyleSheetValue()
+{
+    return getValueText();
 }
 
 bool QAbstractSheetType::equal(const QVariant &value)
@@ -76,18 +101,63 @@ bool QAbstractSheetType::equal(const QVariant &value)
     return m_value == value;
 }
 
-bool QAbstractSheetType::toXml(XmlNode *xml)
+void QAbstractSheetType::toXml(XmlNode *xml)
 {
     xml->setTitle("Property");
     xml->setProperty("type",getName());
-    xml->setProperty("value",m_value.toString());
     xml->setProperty("enabled",m_enabled?"true":"false");
-    return true;
+    foreach(QAbstractSheetType * child,m_children)
+    {
+        XmlNode * obj = new XmlNode(xml);
+        child->toXml(obj);
+    }
+
+    return;
 }
 
-bool QAbstractSheetType::fromXml(XmlNode *xml)
+void QAbstractSheetType::fromXml(XmlNode *xml)
 {
     m_enabled = xml->getProperty("enabled") =="true";
-    m_value = xml->getProperty("value");
-    return true;
+    foreach(QAbstractSheetType * child,m_children)
+    {
+        foreach(XmlNode * obj,xml->getChildren())
+        {
+            if(obj->getProperty("type")== child->getName())
+            {
+                child->fromXml(obj);
+                break;
+            }
+        }
+    }
+
+    return;
+}
+
+QAbstractSheetType * QAbstractSheetType::getParent()
+{
+    return m_parent;
+}
+
+QList<QAbstractSheetType*> QAbstractSheetType::getChildren()
+{
+    return m_children;
+}
+
+void QAbstractSheetType::setTypeProperty(const QString &xml)
+{
+    XmlNode node;
+    if(node.load(xml))
+    {
+        parserProperty(&node);
+    }
+}
+
+void QAbstractSheetType::parserProperty(XmlNode *)
+{
+
+}
+
+void QAbstractSheetType::updateValue()
+{
+
 }

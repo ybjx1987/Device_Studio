@@ -7,8 +7,13 @@ class QStringSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QStringSheetType();
+    Q_INVOKABLE QStringSheetType(QAbstractSheetType * parent=NULL);
     ~QStringSheetType();
+
+    QString getValueText();
+
+    void toXml(XmlNode *xml);
+    void fromXml(XmlNode *xml);
 };
 
 #endif // QSTRINGSHEETTYPE_H

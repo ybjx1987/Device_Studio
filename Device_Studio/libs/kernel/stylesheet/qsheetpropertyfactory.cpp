@@ -3,29 +3,21 @@
 #include "type/qabstractsheettype.h"
 #include "type/qurlsheettype.h"
 #include "type/qnumbersheettype.h"
-#include "type/qlengthsheettype.h"
-#include "type/qalignmentsheettype.h"
-#include "type/qrepeatsheettype.h"
-#include "type/qborderstylesheettype.h"
-#include "type/qfontstylesheettype.h"
 #include "type/qstringsheettype.h"
-#include "type/qtextdecorationsheettype.h"
 #include "type/qfontsheettype.h"
-#include "type/qfontfamilysheettype.h"
 #include "type/qbrushsheettype.h"
 #include "type/qbordersheettype.h"
 
-QMap<QString,QMetaObject>     QSheetPropertyFactory::m_metaMap;
+QMap<QString,TypeInfo>     QSheetPropertyFactory::m_metaMap;
 
-void QSheetPropertyFactory::registerProperty(const QString & name,
-                                             QMetaObject meta)
+void QSheetPropertyFactory::registerProperty(const TypeInfo & info)
 {
-    if(m_metaMap.contains(name))
+    if(m_metaMap.contains(info.m_name))
     {
         return;
     }
 
-    m_metaMap.insert(name,meta);
+    m_metaMap.insert(info.m_name,info);
 }
 
 QAbstractSheetType* QSheetPropertyFactory::createProperty(const QString &name)
@@ -34,11 +26,12 @@ QAbstractSheetType* QSheetPropertyFactory::createProperty(const QString &name)
     {
         return NULL;
     }
-    QMetaObject meta = m_metaMap.value(name);
-    QAbstractSheetType *pro = (QAbstractSheetType*)meta.newInstance();
+    TypeInfo info = m_metaMap.value(name);
+    QAbstractSheetType *pro = (QAbstractSheetType*)info.m_metaObject.newInstance();
     if(pro != NULL)
     {
-        pro->setName(name);
+        pro->setName(info.m_name);
+        pro->setTypeProperty(info.m_property);
     }
     return pro;
 }
@@ -50,40 +43,58 @@ QStringList QSheetPropertyFactory::getPropertyInfo()
 
 void QSheetPropertyFactory::registerInnerProperty()
 {
-    registerProperty("background-image",QUrlSheetType::staticMetaObject);
-    registerProperty("image",QUrlSheetType::staticMetaObject);
-    registerProperty("icon-size",QLengthSheetType::staticMetaObject);
-    registerProperty("margin-top",QLengthSheetType::staticMetaObject);
-    registerProperty("margin-left",QLengthSheetType::staticMetaObject);
-    registerProperty("margin-right",QLengthSheetType::staticMetaObject);
-    registerProperty("margin-bottom",QLengthSheetType::staticMetaObject);
-    registerProperty("max-width",QLengthSheetType::staticMetaObject);
-    registerProperty("min-width",QLengthSheetType::staticMetaObject);
-    registerProperty("max-height",QLengthSheetType::staticMetaObject);
-    registerProperty("min-height",QLengthSheetType::staticMetaObject);
-    registerProperty("opacity",QNumberSheetType::staticMetaObject);
-    registerProperty("padding-top",QLengthSheetType::staticMetaObject);
-    registerProperty("padding-left",QLengthSheetType::staticMetaObject);
-    registerProperty("padding-right",QLengthSheetType::staticMetaObject);
-    registerProperty("padding-bottom",QLengthSheetType::staticMetaObject);
-    registerProperty("background-position",QAlignmentSheetType::staticMetaObject);
-    registerProperty("image-position",QAlignmentSheetType::staticMetaObject);
-    registerProperty("subcontrol-position",QAlignmentSheetType::staticMetaObject);
-    registerProperty("text-align",QAlignmentSheetType::staticMetaObject);
-    registerProperty("background-repeat",QRepeatSheetType::staticMetaObject);
-    registerProperty("border",QBorderSheetType::staticMetaObject);
-    registerProperty("border-top",QBorderSheetType::staticMetaObject);
-    registerProperty("border-left",QBorderSheetType::staticMetaObject);
-    registerProperty("border-bottom",QBorderSheetType::staticMetaObject);
-    registerProperty("border-right",QBorderSheetType::staticMetaObject);
-    registerProperty("font-style",QFontStyleSheetType::staticMetaObject);
-    registerProperty("font-size",QLengthSheetType::staticMetaObject);
-    registerProperty("font-family",QFontFamilySheetType::staticMetaObject);
-    registerProperty("text-decoration",QTextDecorationSheetType::staticMetaObject);
-    registerProperty("font",QFontSheetType::staticMetaObject);
-    registerProperty("background-color",QBrushSheetType::staticMetaObject);
-    registerProperty("color",QBrushSheetType::staticMetaObject);
-    registerProperty("selection-background-color",QBrushSheetType::staticMetaObject);
-    registerProperty("selection-color",QBrushSheetType::staticMetaObject);
+    TypeInfo info;
+    info.m_name = "image";
+    info.m_metaObject = QUrlSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "icon-size";
+    info.m_metaObject = QNumberSheetType::staticMetaObject;
+    info.m_property = "<Property minValue =\"0\" maxValue=\"100\"/>";
+    registerProperty(info);
+    info.m_name = "padding-top";
+    info.m_metaObject = QNumberSheetType::staticMetaObject;
+    info.m_property = "<Property minValue =\"0\" maxValue=\"1000\"/>";
+    registerProperty(info);
+    info.m_name = "padding-right";
+    info.m_metaObject = QNumberSheetType::staticMetaObject;
+    info.m_property = "<Property minValue =\"0\" maxValue=\"1000\"/>";
+    registerProperty(info);
+    info.m_name = "padding-bottom";
+    info.m_metaObject = QNumberSheetType::staticMetaObject;
+    info.m_property = "<Property minValue =\"0\" maxValue=\"1000\"/>";
+    registerProperty(info);
+    info.m_name = "padding-left";
+    info.m_metaObject = QNumberSheetType::staticMetaObject;
+    info.m_property = "<Property minValue =\"0\" maxValue=\"1000\"/>";
+    registerProperty(info);
+    info.m_name = "border";
+    info.m_metaObject = QBorderSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "border-top";
+    info.m_metaObject = QBorderSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "border-right";
+    info.m_metaObject = QBorderSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "border-left";
+    info.m_metaObject = QBorderSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "border-bottom";
+    info.m_metaObject = QBorderSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "font";
+    info.m_metaObject = QFontSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "color";
+    info.m_metaObject = QBrushSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "selection-background-color";
+    info.m_metaObject = QBrushSheetType::staticMetaObject;
+    registerProperty(info);
+    info.m_name = "selection-color";
+    info.m_metaObject = QBrushSheetType::staticMetaObject;
+    registerProperty(info);
 
+    //registerProperty("text-decoration",QTextDecorationSheetType::staticMetaObject);
+    //registerProperty("background-color",QBrushSheetType::staticMetaObject);
 }

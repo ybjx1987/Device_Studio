@@ -1,8 +1,6 @@
 #include "qfontsheettype.h"
 
 #include "qstringsheettype.h"
-#include "qlengthsheettype.h"
-#include "qfontstylesheettype.h"
 
 #include "../../qvarianttype.h"
 #include "../../xmlnode.h"
@@ -53,7 +51,7 @@ QString QFontSheetType::getValueText()
     }
 }
 
-QString QFontSheetType::getStyleSheet()
+QString QFontSheetType::getStyleSheetValue()
 {
     QString ret = getValueText();
     if(ret == "Invalid")
@@ -62,11 +60,11 @@ QString QFontSheetType::getStyleSheet()
     }
     else
     {
-        return (m_name+" : "+ret);
+        return ret;
     }
 }
 
-bool QFontSheetType::toXml(XmlNode *xml)
+void QFontSheetType::toXml(XmlNode *xml)
 {
     tagFontSheetType value = getValue().value<tagFontSheetType>();
     xml->setProperty("name",value.m_name);
@@ -75,11 +73,9 @@ bool QFontSheetType::toXml(XmlNode *xml)
     xml->setTitle("Property");
     xml->setProperty("type",getName());
     xml->setProperty("enabled",m_enabled?"true":"false");
-
-    return true;
 }
 
-bool QFontSheetType::fromXml(XmlNode *xml)
+void QFontSheetType::fromXml(XmlNode *xml)
 {
     tagFontSheetType value;
     value.m_name = xml->getProperty("name");
@@ -96,7 +92,6 @@ bool QFontSheetType::fromXml(XmlNode *xml)
     {
         m_value=QVariant::fromValue<tagFontSheetType>(value);
     }
-    return true;
 }
 
 bool QFontSheetType::equal(const QVariant &value)

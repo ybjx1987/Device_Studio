@@ -3,26 +3,19 @@
 
 #include "qabstractsheetpropertyeditor.h"
 
-#include <QComboBox>
 #include <QSpinBox>
-#include <QDoubleSpinBox>
 
 class QNumberSheetTypeEditor : public QAbstractSheetPropertyEditor
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QNumberSheetTypeEditor(QAbstractSheetType * property,QWidget * parent = NULL);
+    Q_INVOKABLE QNumberSheetTypeEditor(QAbstractSheetType * property,
+                                       QWidget * parent = NULL);
     ~QNumberSheetTypeEditor();
-
-protected:
-    void    propertyChanged();
 protected slots:
-    void    propertyEdited();
-    void    typeChanged();
+    void    valueEdited();
 protected:
-    QComboBox       *m_typeComboBox;
-    QSpinBox        *m_intValue;
-    QDoubleSpinBox  *m_floatValue;
+    QSpinBox        *m_valueEditor;
 };
 
 #endif // QNUMBERSHEETTYPEEDITOR_H

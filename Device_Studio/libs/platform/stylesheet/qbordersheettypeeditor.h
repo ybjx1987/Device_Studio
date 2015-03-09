@@ -17,8 +17,12 @@ protected slots:
     void    widthChanged();
     void    styleChanged();
 protected:
+
+    void    propertyChanged();
+protected:
     QSpinBox        *m_borderWidth;
     QComboBox       *m_borderStyle;
+    QAbstractSheetType  *m_borderProperty;
 };
 
 #endif // QBORDERSHEETTYPEEDITOR_H

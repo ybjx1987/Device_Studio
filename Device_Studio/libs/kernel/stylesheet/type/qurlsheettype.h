@@ -1,21 +1,23 @@
 #ifndef QURLSHEETTYPE_H
 #define QURLSHEETTYPE_H
 
-#include "qabstractsheettype.h"
+#include "qstringsheettype.h"
 
 #include <QIcon>
 
-class QUrlSheetType : public QAbstractSheetType
+class QUrlSheetType : public QStringSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QUrlSheetType();
+    Q_INVOKABLE QUrlSheetType(QAbstractSheetType * parent = NULL);
     ~QUrlSheetType();
 
     QString getValueText();
     QIcon   getValueIcon();
 
-    QString getStyleSheet();
+    QString getStyleSheetValue();
+
+
 };
 
 #endif // QURLSHEETTYPE_H

@@ -101,5 +101,27 @@ public:
 };
 Q_DECLARE_METATYPE(tagBrushSheetType)
 
+class tagBorderSheetType
+{
+public:
+    QString     m_borderStyle;
+    int         m_borderWidth;
+    tagBrushSheetType   m_borderBrush;
+
+    bool operator ==(const tagBorderSheetType &type) const
+    {
+        return (m_borderStyle != type.m_borderStyle
+                && m_borderWidth != type.m_borderWidth
+                && m_borderBrush != type.m_borderBrush);
+    }
+
+    bool operator !=(const tagBorderSheetType &type) const
+    {
+        return !((*this) == type);
+    }
+};
+
+Q_DECLARE_METATYPE(tagBorderSheetType)
+
 #endif // QVARIANTTYPE
 

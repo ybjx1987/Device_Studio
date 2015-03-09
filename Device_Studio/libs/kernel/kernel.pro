@@ -80,18 +80,12 @@ SOURCES += \
     stylesheet/type/qabstractsheettype.cpp \
     stylesheet/type/qurlsheettype.cpp \
     stylesheet/type/qnumbersheettype.cpp \
-    stylesheet/type/qlengthsheettype.cpp \
-    stylesheet/type/qalignmentsheettype.cpp \
-    stylesheet/type/qrepeatsheettype.cpp \
-    stylesheet/type/qabstractenumsheettype.cpp \
-    stylesheet/type/qfontstylesheettype.cpp \
     stylesheet/type/qstringsheettype.cpp \
-    stylesheet/type/qtextdecorationsheettype.cpp \
     stylesheet/type/qfontsheettype.cpp \
-    stylesheet/type/qfontfamilysheettype.cpp \
     qstylesheetsync.cpp \
     stylesheet/type/qbrushsheettype.cpp \
-    stylesheet/type/qbordersheettype.cpp
+    stylesheet/type/qbordersheettype.cpp \
+    stylesheet/type/qenumsheettype.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -157,18 +151,12 @@ HEADERS +=\
     stylesheet/type/qabstractsheettype.h \
     stylesheet/type/qurlsheettype.h \
     stylesheet/type/qnumbersheettype.h \
-    stylesheet/type/qlengthsheettype.h \
-    stylesheet/type/qalignmentsheettype.h \
-    stylesheet/type/qrepeatsheettype.h \
-    stylesheet/type/qabstractenumsheettype.h \
-    stylesheet/type/qfontstylesheettype.h \
     stylesheet/type/qstringsheettype.h \
-    stylesheet/type/qtextdecorationsheettype.h \
     stylesheet/type/qfontsheettype.h \
-    stylesheet/type/qfontfamilysheettype.h \
     qstylesheetsync.h \
     stylesheet/type/qbrushsheettype.h \
-    stylesheet/type/qbordersheettype.h
+    stylesheet/type/qbordersheettype.h \
+    stylesheet/type/qenumsheettype.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

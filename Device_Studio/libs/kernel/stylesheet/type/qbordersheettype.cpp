@@ -1,12 +1,41 @@
 #include "qbordersheettype.h"
 
+#include "qbrushsheettype.h"
+#include "qnumbersheettype.h"
+#include "qenumsheettype.h"
+
 #include "../../qvarianttype.h"
 #include "../../xmlnode.h"
+#include "../qsheetpropertyfactory.h"
 
-QBorderSheetType::QBorderSheetType():
-    m_borderWidth(0)
+QBorderSheetType::QBorderSheetType(QAbstractSheetType * parent):
+    QAbstractSheetType(parent),
+    m_borderStyle(NULL),
+    m_borderWidth(NULL),
+    m_borderBrush(NULL)
 {
-
+    m_borderStyle = new QEnumSheetType(this);
+    m_borderWidth = new QNumberSheetType(this);
+    m_borderBrush = new QBrushSheetType(this);
+    m_borderStyle->setTypeProperty("<Property>"
+                                   "<Item>dashed</Item>"
+                                   "<Item>dot-dash</Item>"
+                                   "<Item>dot-dot-dash</Item>"
+                                   "<Item>dotted</Item>"
+                                   "<Item>double</Item>"
+                                   "<Item>groove</Item>"
+                                   "<Item>inset</Item>"
+                                   "<Item>outset</Item>"
+                                   "<Item>ridge</Item>"
+                                   "<Item>solid</Item>"
+                                   "<Item>none</Item>"
+                                   "</Property>");
+    connect(m_borderStyle,SIGNAL(valueChanged(QVariant)),
+            this,SLOT(updateValue()));
+    connect(m_borderWidth,SIGNAL(valueChanged(QVariant)),
+            this,SLOT(updateValue()));
+    connect(m_borderBrush,SIGNAL(valueChanged(QVariant)),
+            this,SLOT(updateValue()));
 }
 
 QBorderSheetType::~QBorderSheetType()
@@ -16,115 +45,71 @@ QBorderSheetType::~QBorderSheetType()
 
 QString QBorderSheetType::getValueText()
 {
-    QString str = QBrushSheetType::getValueText();
-
-    if(str == "Invalid")
-    {
-        return str;
-    }
-
-    if(!getStyleList().contains(m_borderStyle) || m_borderWidth <= 0)
+    if(!getValue().isValid())
     {
         return "Invalid";
     }
 
-    str = QString::number(m_borderWidth)+"px " + m_borderStyle+" "+str;
-    return str;
+    tagBorderSheetType value = getValue().value<tagBorderSheetType>();
+
+    if(!value.m_borderBrush.m_value.isValid()
+            || value.m_borderWidth <=0 || value.m_borderStyle == "")
+    {
+        return "Invalid";
+    }
+
+    return m_borderWidth->getValueText()+" "
+            + m_borderStyle->getValueText()+" "
+            +m_borderBrush->getValueText();
+}
+
+QString QBorderSheetType::getStyleSheetValue()
+{
+    QString str1,str2,str3;
+    str1 = m_borderWidth->getStyleSheetValue();
+    str2 = m_borderStyle->getStyleSheetValue();
+    str3 = m_borderBrush->getStyleSheetValue();
+
+    if(str1 == "" || str1 == "Invalid" || str2 == ""
+            || str2 == "Invalid" || str3 == ""
+            || str3 == "Invalid")
+    {
+        return "";
+    }
+
+    return str1 + " " + str2 + " " +str3;
 }
 
 QStringList QBorderSheetType::getStyleList()
 {
-    QStringList list;
-
-    list<<"dashed"<<"dot-dash"<<"dot-dot-dash"<<"dotted"
-       <<"double"<<"groove"<<"inset"<<"solid"<<"none";
-
-    return list;
+    return m_borderStyle->getValueList();
 }
 
-QString QBorderSheetType::getStyleSheet()
+void QBorderSheetType::setValue(const QVariant &value)
 {
-    if(!getValue().isValid() || m_borderStyle == "" || m_borderWidth<=0)
-    {
-        return "";
-    }
-    QString str;
-    tagBrushSheetType value = getValue().value<tagBrushSheetType>();
-    if(value.m_type == "Color")
-    {
-        QColor c = value.m_value.value<QColor>();
-        if(value.m_alpha == "true")
-        {
-            str = QString("rgb(%1,%2,%3,%4)").arg(c.red())
-                    .arg(c.green()).arg(c.blue()).arg(c.alpha());
-        }
-        else
-        {
-            str = QString("rgb(%1,%2,%3)").arg(c.red())
-                    .arg(c.green()).arg(c.blue());
-        }
-    }
-    else if(value.m_type == "Gradient")
-    {
-        QGradient g = value.m_value.value<QGradient>();
-        if(g.type() == QGradient::NoGradient)
-        {
-            return "";
-        }
-        str = styleSheetCode(g);
-    }
-    else
-    {
-        return "";
-    }
+    tagBorderSheetType v = value.value<tagBorderSheetType>();
 
-    if(str != "")
-    {
-        str = m_name + ":" +QString::number(m_borderWidth)+"px "+m_borderStyle+" "+str;
-    }
-    return str;
+
+    m_borderBrush->setValue(QVariant::fromValue<tagBrushSheetType>(v.m_borderBrush));
+    m_borderStyle->setValue(v.m_borderStyle);
+    m_borderWidth->setValue(v.m_borderWidth);
+    QAbstractSheetType::setValue(value);
 }
 
-bool QBorderSheetType::toXml(XmlNode *xml)
+void QBorderSheetType::updateValue()
 {
-    QBrushSheetType::toXml(xml);
-    xml->setProperty("borderstyle",m_borderStyle);
-    xml->setProperty("borderwidth",QString::number(m_borderWidth));
-    return true;
-}
-
-bool QBorderSheetType::fromXml(XmlNode *xml)
-{
-    m_borderStyle = xml->getProperty("borderstyle");
-    m_borderWidth = xml->getProperty("borderwidth").toInt();
-    QBrushSheetType::fromXml(xml);
-    return true;
-}
-
-void QBorderSheetType::setBorderWidth(int width)
-{
-    if(m_borderWidth != width)
+    tagBorderSheetType v;
+    if(m_borderBrush!=NULL)
     {
-        m_borderWidth = width;
-        emit needUpdate();
+        v.m_borderBrush = m_borderBrush->getValue().value<tagBrushSheetType>();
     }
-}
-
-int QBorderSheetType::getBorderWidth()
-{
-    return m_borderWidth;
-}
-
-void QBorderSheetType::setBorderStyle(const QString &style)
-{
-    if(m_borderStyle != style)
+    if(m_borderWidth != NULL)
     {
-        m_borderStyle = style;
-        emit needUpdate();
+        v.m_borderWidth = m_borderWidth->getValue().toInt();
     }
-}
-
-QString QBorderSheetType::getBorderStyle()
-{
-    return m_borderStyle;
+    if(m_borderStyle != NULL)
+    {
+        v.m_borderStyle = m_borderStyle->getValue().toString();
+    }
+    setValue(QVariant::fromValue<tagBorderSheetType>(v));
 }

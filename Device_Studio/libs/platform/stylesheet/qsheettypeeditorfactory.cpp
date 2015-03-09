@@ -1,7 +1,6 @@
 #include "qsheettypeeditorfactory.h"
 
 #include "qnumbersheettypeeditor.h"
-#include "qlengthsheettypeeditor.h"
 #include "qenumsheettypeeditor.h"
 #include "qfontsheettypeeditor.h"
 #include "qbrushsheettypeeditor.h"
@@ -39,15 +38,8 @@ QAbstractSheetPropertyEditor * QSheetTypeEditorFactory::create(const QString &na
 void QSheetTypeEditorFactory::registerInnerEditor()
 {
     registerEditor("QNumberSheetType",QNumberSheetTypeEditor::staticMetaObject);
-    registerEditor("QLengthSheetType",QLengthSheetTypeEditor::staticMetaObject);
-    registerEditor("QAlignmentSheetType",QEnumSheetTypeEditor::staticMetaObject);
-    registerEditor("QBorderStyleSheetType",QEnumSheetTypeEditor::staticMetaObject);
-    registerEditor("QFontStyleSheetType",QEnumSheetTypeEditor::staticMetaObject);
-    registerEditor("QRepeatSheetType",QEnumSheetTypeEditor::staticMetaObject);
-    registerEditor("QTextDecorationSheetType",QEnumSheetTypeEditor::staticMetaObject);
+    registerEditor("QEnumSheetType",QEnumSheetTypeEditor::staticMetaObject);
     registerEditor("QFontSheetType",QFontSheetTypeEditor::staticMetaObject);
-    registerEditor("QFontFamilySheetType",QEnumSheetTypeEditor::staticMetaObject);
     registerEditor("QBrushSheetType",QBrushSheetTypeEditor::staticMetaObject);
     registerEditor("QBorderSheetType",QBorderSheetTypeEditor::staticMetaObject);
-
 }
