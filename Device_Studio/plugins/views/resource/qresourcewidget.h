@@ -14,6 +14,8 @@ public:
 protected slots:
     void    projectOpened();
     void    projectClosed();
+
+    void    addResource();
 protected:
     void    registerAction();
     void    updateAction();

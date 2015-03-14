@@ -1,6 +1,7 @@
 #include "qresourcewidget.h"
 
 #include "qresourcelistview.h"
+#include "qaddresourcedialog.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/platform/minisplitter.h"
@@ -86,6 +87,7 @@ void QResourceWidget::registerAction()
     QAction * ac;
 
     ac = new QAction(QIcon(":/inner/images/add.png"),tr("Add Resource"),this);
+    connect(ac,SIGNAL(triggered()),this,SLOT(addResource()));
     QSoftActionMap::insertAction("resource.add",ac);
 
     ac = new QAction(QIcon(":/inner/images/del.png"),tr("Delete Resource"),this);
@@ -113,4 +115,11 @@ void QResourceWidget::updateAction()
             QSoftActionMap::getAction("resource.del")->setEnabled(false);
         }
     }
+}
+
+void QResourceWidget::addResource()
+{
+    QAddResourceDialog dlg(this);
+
+    dlg.exec();
 }

@@ -33,9 +33,14 @@ DISTFILES += \
 HEADERS += \
     qresourceplugin.h \
     qresourcewidget.h \
-    qresourcelistview.h
+    qresourcelistview.h \
+    qaddresourcedialog.h
 
 SOURCES += \
     qresourceplugin.cpp \
     qresourcewidget.cpp \
-    qresourcelistview.cpp
+    qresourcelistview.cpp \
+    qaddresourcedialog.cpp
+
+FORMS += \
+    qaddresourcedialog.ui
