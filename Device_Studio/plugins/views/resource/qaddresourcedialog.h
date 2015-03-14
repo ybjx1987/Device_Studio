@@ -15,6 +15,7 @@ class ResourceFileInfo
 {
 public:
     QString     m_path;
+    QString     m_sourcePath;
     QString     m_type;
 };
 
@@ -28,7 +29,9 @@ public:
 protected:
     void addResource(ResourceFileInfo * info);
 
-    QStringList getEnabledString(const QString & path);
+    QStringList getEnabledString(QTreeWidgetItem * item);
+
+    void    updateName();
 protected slots:
     void fromSystem();
     void fromLocal();

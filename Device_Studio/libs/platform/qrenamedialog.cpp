@@ -3,10 +3,10 @@
 
 #include "qvalidatoredit.h"
 
-QRenameDialog::QRenameDialog(QWidget *parent) :
+QRenameDialog::QRenameDialog(const QString & reg,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QRenameDialog),
-    m_nameEdit(new QValidatorEdit("[_a-zA-Z][_a-zA-Z0-9]{,64}")),
+    m_nameEdit(new QValidatorEdit(reg)),
     m_ret(0)
 {
     ui->setupUi(this);

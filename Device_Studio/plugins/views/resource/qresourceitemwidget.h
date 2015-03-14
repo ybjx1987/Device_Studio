@@ -17,6 +17,8 @@ public:
     ResourceFileInfo *getInfo();
     void    setText(const QString & text);
     QString getText();
+
+    void    setInvalid(bool invalid);
 protected:
     void    enterEvent(QEvent *);
     void    leaveEvent(QEvent *);

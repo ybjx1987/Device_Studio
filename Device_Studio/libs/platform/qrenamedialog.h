@@ -14,7 +14,7 @@ class PLATFORM_EXPORT QRenameDialog : public QDialog
 {
     Q_OBJECT
 public:
-    explicit QRenameDialog(QWidget *parent = 0);
+    explicit QRenameDialog(const QString & reg="[_a-zA-Z][_a-zA-Z0-9]{,64}",QWidget *parent = 0);
     ~QRenameDialog();
 
     void setNameList(const QStringList &list);

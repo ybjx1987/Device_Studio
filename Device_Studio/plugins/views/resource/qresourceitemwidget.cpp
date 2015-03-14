@@ -67,3 +67,15 @@ void QResourceItemWidget::leaveEvent(QEvent *)
     m_removeButton->setVisible(false);
     m_renameButton->setVisible(false);
 }
+
+void QResourceItemWidget::setInvalid(bool invalid)
+{
+    if(invalid)
+    {
+        m_textLabel->setStyleSheet("color:rgb(255,0,0);");
+    }
+    else
+    {
+        m_textLabel->setStyleSheet("color:rgb(0,0,0);");
+    }
+}

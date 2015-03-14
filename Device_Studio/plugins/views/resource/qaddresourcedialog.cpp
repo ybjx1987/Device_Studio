@@ -54,16 +54,19 @@ void QAddResourceDialog::fromSystem()
     {
         foreach(QString str,dlg.getSelected())
         {
-            if(!m_nameToInfo.keys().contains(str))
+            if(!m_nameToInfo.keys().contains(qApp->applicationDirPath()+"/systemResources/"+str))
             {
                 ResourceFileInfo *info = new ResourceFileInfo;
                 info->m_path = str;
                 info->m_type="system";
+                info->m_sourcePath = qApp->applicationDirPath()+"/systemResources/"+str;
                 addResource(info);
             }
 
         }
     }
+
+    updateName();
 }
 
 void QAddResourceDialog::fromLocal()
@@ -76,15 +79,18 @@ void QAddResourceDialog::fromLocal()
         int index = str.lastIndexOf("/");
 
         QString name = "user/"+str.mid(index+1);
-        if(!m_nameToInfo.keys().contains(name))
+        if(!m_nameToInfo.keys().contains(str))
         {
             ResourceFileInfo *info = new ResourceFileInfo;
             info->m_path = name;
             info->m_type="local";
+            info->m_sourcePath = str;
             addResource(info);
         }
 
     }
+
+    updateName();
 }
 
 void QAddResourceDialog::on_pushButton_2_clicked()
@@ -124,7 +130,7 @@ void QAddResourceDialog::addResource(ResourceFileInfo *info)
     item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     m_resourceToItem.insert(info,item);
     m_itemToResource.insert(item,info);
-    m_nameToInfo.insert(info->m_path,info);
+    m_nameToInfo.insert(info->m_sourcePath,info);
 }
 
 void QAddResourceDialog::itemRemove()
@@ -137,7 +143,7 @@ void QAddResourceDialog::itemRemove()
 
     m_resourceToItem.remove(info);
     m_itemToResource.remove(item);
-    m_nameToInfo.remove(info->m_path);
+    m_nameToInfo.remove(info->m_sourcePath);
 
     QTreeWidgetItem * group = item->parent();
 
@@ -149,27 +155,44 @@ void QAddResourceDialog::itemRemove()
         m_nameToGroup.remove(group->text(0));
         delete group;
     }
+
+    updateName();
 }
 
 void QAddResourceDialog::itemRename()
 {
-    QRenameDialog dlg(this);
+    QRenameDialog dlg(".*",this);
 
     QResourceItemWidget * wid = (QResourceItemWidget*)sender();
     ResourceFileInfo * info = wid->getInfo();
-    QTreeWidgetItem * item = m_resourceToItem.value(info);
     dlg.setOldName(wid->getText());
 
-    dlg.setNameList(getEnabledString(info->m_path));
+    dlg.setNameList(getEnabledString(m_resourceToItem.value(info)));
 
 
     dlg.exec();
+
+    if(dlg.getRet() ==1)
+    {
+        QString newName = dlg.getNewName();
+
+        if(newName != wid->getText())
+        {
+            info->m_path = info->m_path.left(info->m_path.lastIndexOf("/"))+
+                    "/"+newName;
+            wid->setText(newName);
+
+        }
+    }
+
+    updateName();
 }
 
-QStringList QAddResourceDialog::getEnabledString(const QString &path)
+QStringList QAddResourceDialog::getEnabledString(QTreeWidgetItem * item)
 {
-    QString name = path.mid(path.lastIndexOf("/")+1);
-    QString group = path.left(path.lastIndexOf("/"));
+    QString name = ((QResourceItemWidget*)m_listview->itemWidget(item,0))
+            ->getText();
+    QString group = item->parent()->text(0);
     QStringList list;
 
     QResourceManager * manager = QSoftCore::getInstance()->getProject()->getResourceManager();
@@ -184,17 +207,18 @@ QStringList QAddResourceDialog::getEnabledString(const QString &path)
         }
     }
 
-    QTreeWidgetItem * gitem = m_nameToGroup.value(group);
+    QTreeWidgetItem * gitem = item->parent();
 
     int count = gitem->childCount();
 
     for(int i =0;i<count;i++)
     {
-        QResourceItemWidget * wid = (QResourceItemWidget*)m_listview->itemWidget(gitem->child(i),0);
-        if(wid->getText() != name)
+        if(gitem->child(i)  == item)
         {
-            list.append(wid->getText());
+            continue;
         }
+        QResourceItemWidget * wid = (QResourceItemWidget*)m_listview->itemWidget(gitem->child(i),0);
+        list.append(wid->getText());
     }
 
     if(ui->checkBox->isChecked())
@@ -213,4 +237,21 @@ QStringList QAddResourceDialog::getEnabledString(const QString &path)
     }
 
     return list;
+}
+
+void QAddResourceDialog::updateName()
+{
+    QMapIterator<ResourceFileInfo*,QTreeWidgetItem*> it(m_resourceToItem);
+
+    while(it.hasNext())
+    {
+        it.next();
+
+        QStringList list = getEnabledString(it.value());
+
+        bool invalid = list.contains(it.key()->m_path.mid(it.key()->m_path.lastIndexOf("/")+1));
+
+        ((QResourceItemWidget*)m_listview->itemWidget(it.value(),0))
+                ->setInvalid(invalid);
+    }
 }
