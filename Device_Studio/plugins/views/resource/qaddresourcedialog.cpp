@@ -2,10 +2,10 @@
 #include "ui_qaddresourcedialog.h"
 
 #include "qresourceitemwidget.h"
+#include "qresourcerenamedialog.h"
 #include "qsystemresourcedialog.h"
 #include "../../../libs/platform/qbaseitemdelegate.h"
 #include "../../../libs/platform/qbaselistview.h"
-#include "../../../libs/platform/qrenamedialog.h"
 #include "../../../libs/platform/qsoftcore.h"
 #include "../../../libs/platform/qsystemresourcemanager.h"
 #include "../../../libs/kernel/qproject.h"
@@ -161,14 +161,9 @@ void QAddResourceDialog::itemRemove()
 
 void QAddResourceDialog::itemRename()
 {
-    QRenameDialog dlg(".*",this);
-
     QResourceItemWidget * wid = (QResourceItemWidget*)sender();
     ResourceFileInfo * info = wid->getInfo();
-    dlg.setOldName(wid->getText());
-
-    dlg.setNameList(getEnabledString(m_resourceToItem.value(info)));
-
+    QResourceRenameDialog dlg(wid->getText(),getEnabledString(m_resourceToItem.value(info)),this);
 
     dlg.exec();
 
