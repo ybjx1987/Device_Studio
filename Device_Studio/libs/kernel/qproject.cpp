@@ -12,6 +12,7 @@
 #include "data/qdatamanager.h"
 #include "stylesheet/qstylesheetmanager.h"
 #include "qstylesheetsync.h"
+#include "resource/qresourcemanager.h"
 
 #include <QFile>
 #include <QVariant>
@@ -26,7 +27,8 @@ QProject::QProject():
     m_languageManager(NULL),
     m_dataManager(NULL),
     m_styleSheetManager(NULL),
-    m_styleSheetSync(NULL)
+    m_styleSheetSync(NULL),
+    m_resourceManager(NULL)
 {
 }
 
@@ -84,6 +86,9 @@ bool QProject::open(const QString &proFileName)
                                            m_forms,
                                            this);
 
+    m_resourceManager = new QResourceManager(this);
+    m_resourceManager->load(path+"/resource");
+
     setProjectStatus(PS_OPENED);
     setModified(PM_NOT_MODIFIED);
     emit projectOpened();
@@ -130,6 +135,12 @@ void QProject::close()
     {
         delete m_styleSheetManager;
         m_styleSheetManager = NULL;
+    }
+
+    if(m_resourceManager != NULL)
+    {
+        delete m_resourceManager;
+        m_resourceManager = NULL;
     }
 }
 
@@ -281,6 +292,11 @@ QStyleSheetManager* QProject::getStyleSheetManager()
     return m_styleSheetManager;
 }
 
+QResourceManager * QProject::getResourceManager()
+{
+    return m_resourceManager;
+}
+
 bool QProject::save()
 {
     if(m_projectStatus ==PS_OPENED)
@@ -293,6 +309,7 @@ bool QProject::save()
         m_languageManager->save(path+"/languages");
         m_dataManager->save(path);
         m_styleSheetManager->save(path+"/stylesheet");
+        m_resourceManager->save(path+"/resource");
 
         foreach(QAbstractHost *host,m_forms)
         {

@@ -30,6 +30,7 @@ class QAbstractHost;
 class QDataManager;
 class QStyleSheetManager;
 class QStyleSheetSync;
+class QResourceManager;
 
 class KERNEL_EXPORT QProject :public QObject
 {
@@ -46,6 +47,7 @@ public:
     QLanguageManager* getLanguageManager();
     QDataManager    * getDataManager();
     QStyleSheetManager  * getStyleSheetManager();
+    QResourceManager    * getResourceManager();
 
     enProjectStatus getProjectStatus();
     enProjectModified getProjectModified();
@@ -85,6 +87,7 @@ protected:
     QDataManager                    *m_dataManager;
     QStyleSheetManager              *m_styleSheetManager;
     QStyleSheetSync                 *m_styleSheetSync;
+    QResourceManager                *m_resourceManager;
 };
 
 #endif // QPROJECT_H

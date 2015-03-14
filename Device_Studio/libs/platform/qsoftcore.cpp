@@ -122,6 +122,8 @@ bool QSoftCore::saveProject()
 
 void QSoftCore::clearPath(const QString &path)
 {
+    clearPath(path);
+
     QDir dir(path);
 
     QFileInfoList list = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDot | QDir::NoDotDot);

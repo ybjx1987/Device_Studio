@@ -85,7 +85,10 @@ SOURCES += \
     qstylesheetsync.cpp \
     stylesheet/type/qbrushsheettype.cpp \
     stylesheet/type/qbordersheettype.cpp \
-    stylesheet/type/qenumsheettype.cpp
+    stylesheet/type/qenumsheettype.cpp \
+    resource/qresourcemanager.cpp \
+    resource/qresourcefile.cpp \
+    resource/qrccfilemaker.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -156,7 +159,10 @@ HEADERS +=\
     qstylesheetsync.h \
     stylesheet/type/qbrushsheettype.h \
     stylesheet/type/qbordersheettype.h \
-    stylesheet/type/qenumsheettype.h
+    stylesheet/type/qenumsheettype.h \
+    resource/qresourcemanager.h \
+    resource/qresourcefile.h \
+    resource/qrccfilemaker.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
