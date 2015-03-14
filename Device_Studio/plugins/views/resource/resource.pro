@@ -37,7 +37,10 @@ HEADERS += \
     qaddresourcedialog.h \
     qsystemresourcedialog.h \
     qresourceitemwidget.h \
-    qresourcerenamedialog.h
+    qresourcerenamedialog.h \
+    editor/qimageeditor.h \
+    editor/qabstractfileeditor.h \
+    editor/qeditorfactory.h
 
 SOURCES += \
     qresourceplugin.cpp \
@@ -46,7 +49,10 @@ SOURCES += \
     qaddresourcedialog.cpp \
     qsystemresourcedialog.cpp \
     qresourceitemwidget.cpp \
-    qresourcerenamedialog.cpp
+    qresourcerenamedialog.cpp \
+    editor/qimageeditor.cpp \
+    editor/qabstractfileeditor.cpp \
+    editor/qeditorfactory.cpp
 
 FORMS += \
     qaddresourcedialog.ui \

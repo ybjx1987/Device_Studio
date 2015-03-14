@@ -2,6 +2,8 @@
 
 #include "qresourcelistview.h"
 #include "qaddresourcedialog.h"
+#include "editor/qabstractfileeditor.h"
+#include "editor/qeditorfactory.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/platform/minisplitter.h"
@@ -11,6 +13,7 @@
 #include "../../../libs/platform/qsoftcore.h"
 #include "../../../libs/platform/qbaselistview.h"
 #include "../../../libs/platform/qsoftactionmap.h"
+#include "../../../libs/kernel/resource/qresourcefile.h"
 
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -19,7 +22,9 @@
 QResourceWidget::QResourceWidget(QWidget * parent):
     QAbstractPageWidget(parent),
     m_resourceListViewBar(new StyledBar),
-    m_resourceListView(new QResourceListView)
+    m_resourceListView(new QResourceListView),
+    m_editorView(new QStackedWidget),
+    m_editorViewBar(new StyledBar)
 {
     registerAction();
     MiniSplitter * sp = new MiniSplitter;
@@ -37,6 +42,17 @@ QResourceWidget::QResourceWidget(QWidget * parent):
 
     sp->addWidget(wid);
 
+    vb = new QVBoxLayout;
+    vb->setMargin(0);
+    vb->setSpacing(0);
+    vb->addWidget(m_editorViewBar);
+    vb->addWidget(m_editorView);
+    wid = new QWidget;
+    wid->setLayout(vb);
+    sp->addWidget(wid);
+
+    sp->setStretchFactor(0,0);
+    sp->setStretchFactor(1,1);
 
     vb = new QVBoxLayout;
     vb->setMargin(0);
@@ -67,6 +83,9 @@ QResourceWidget::QResourceWidget(QWidget * parent):
     vb->setSpacing(0);
     vb->addWidget(toolBar);
     m_resourceListViewBar->setLayout(vb);
+
+    connect(m_resourceListView,SIGNAL(resourceSelect(QResourceFile*)),
+            this,SLOT(resourceSelect(QResourceFile*)));
 
 }
 
@@ -122,4 +141,28 @@ void QResourceWidget::addResource()
     QAddResourceDialog dlg(this);
 
     dlg.exec();
+}
+
+void QResourceWidget::resourceSelect(QResourceFile *resource)
+{
+    QAbstractFileEditor * wid = m_resourceToWidget.value(resource);
+
+    if(wid != NULL)
+    {
+        m_editorView->setCurrentWidget(wid);
+    }
+    else
+    {
+        int index = resource->getPath().lastIndexOf(".");
+        wid = QEditorFactory::createEditor(resource->getPath().mid(index+1));
+
+        if(wid != NULL)
+        {
+            wid->setResourceFile(resource);
+
+            m_resourceToWidget.insert(resource,wid);
+            m_editorView->addWidget(wid);
+            m_editorView->setCurrentWidget(wid);
+        }
+    }
 }

@@ -1,6 +1,7 @@
 #include "qresourceplugin.h"
 
 #include "qresourcewidget.h"
+#include "editor/qeditorfactory.h"
 
 #include <qplugin.h>
 #include <QIcon>
@@ -8,6 +9,7 @@
 
 void QResourcePlugin::createWidget()
 {
+    QEditorFactory::registerInnerEditor();
     m_widget = new QResourceWidget;
     m_widget->setProperty("panelwidget",true);
 }
