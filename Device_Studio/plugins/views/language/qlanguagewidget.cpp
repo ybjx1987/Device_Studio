@@ -57,12 +57,6 @@ QLanguageWidget::QLanguageWidget(QWidget* parent):
     sp->setStretchFactor(0,0);
     sp->setStretchFactor(1,1);
 
-    QProject * project = QSoftCore::getInstance()->getProject();
-    connect(project,SIGNAL(projectClosed()),
-            this,SLOT(projectClosed()));
-    connect(project,SIGNAL(projectOpened()),
-            this,SLOT(projectOpened()));
-
     initAction();
 
     QActionToolBar *toolBar = new QActionToolBar;

@@ -6,6 +6,7 @@
 
 #include <QFile>
 #include <QUuid>
+#include <QDir>
 
 QLanguageManager::QLanguageManager(QObject *parent) :
     QObject(parent)
@@ -75,6 +76,11 @@ void QLanguageManager::load(const QString &path)
 
 void QLanguageManager::save(const QString &path)
 {
+    QDir dir(path);
+    if(!dir.exists())
+    {
+        dir.mkpath(path);
+    }
     XmlNode xml;
 
     xml.setTitle("Languages");

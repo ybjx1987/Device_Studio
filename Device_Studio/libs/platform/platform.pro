@@ -7,6 +7,7 @@ DESTDIR = ../../../temp/bin/Device_Studio.app/Contents/MacOS
 DEFINES += PLATFORM_LIBRARY
 
 LIBS += -L../../../temp/bin/Device_Studio.app/Contents/MacOS -lkernel
+LIBS += -L../../../temp/bin/Device_Studio.app/Contents/MacOS -lgradienteditor
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS
@@ -58,7 +59,17 @@ HEADERS += \
     propertylist/editor/qfontpropertyeditor.h \
     propertylist/editor/qstringpropertyeditor.h \
     propertylist/editor/qstringeditordialog.h \
-    propertylist/editor/qfloatpropertyeditor.h
+    propertylist/editor/qfloatpropertyeditor.h \
+    qabstractstylesheetpropertyeditor.h \
+    stylesheet/qabstractsheetpropertyeditor.h \
+    stylesheet/qsheettypeeditorfactory.h \
+    stylesheet/qenumsheettypeeditor.h \
+    stylesheet/qfontsheettypeeditor.h \
+    stylesheet/qbrushsheettypeeditor.h \
+    stylesheet/qbordersheettypeeditor.h \
+    stylesheet/qnumbersheettypeeditor.h \
+    qsystemresourcemanager.h \
+    qrenamedialog.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -98,7 +109,17 @@ SOURCES += \
     propertylist/editor/qfontpropertyeditor.cpp \
     propertylist/editor/qstringpropertyeditor.cpp \
     propertylist/editor/qstringeditordialog.cpp \
-    propertylist/editor/qfloatpropertyeditor.cpp
+    propertylist/editor/qfloatpropertyeditor.cpp \
+    qabstractstylesheetpropertyeditor.cpp \
+    stylesheet/qabstractsheetpropertyeditor.cpp \
+    stylesheet/qsheettypeeditorfactory.cpp \
+    stylesheet/qenumsheettypeeditor.cpp \
+    stylesheet/qfontsheettypeeditor.cpp \
+    stylesheet/qbrushsheettypeeditor.cpp \
+    stylesheet/qbordersheettypeeditor.cpp \
+    stylesheet/qnumbersheettypeeditor.cpp \
+    qsystemresourcemanager.cpp \
+    qrenamedialog.cpp
 
 RESOURCES += \
     platform.qrc
@@ -113,4 +134,5 @@ DISTFILES += \
 
 FORMS += \
     qlineeditdialog.ui \
-    propertylist/editor/qstringeditordialog.ui
+    propertylist/editor/qstringeditordialog.ui \
+    qrenamedialog.ui

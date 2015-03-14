@@ -71,7 +71,24 @@ SOURCES += \
     data/qdatamanager.cpp \
     data/qdatagroup.cpp \
     data/qintdatahost.cpp \
-    data/qfloatdatahost.cpp
+    data/qfloatdatahost.cpp \
+    stylesheet/qstylesheetmanager.cpp \
+    stylesheet/qstylesheetgroup.cpp \
+    stylesheet/qstylesheetitem.cpp \
+    stylesheet/qstylesheetitemtitle.cpp \
+    stylesheet/qsheetpropertyfactory.cpp \
+    stylesheet/type/qabstractsheettype.cpp \
+    stylesheet/type/qurlsheettype.cpp \
+    stylesheet/type/qnumbersheettype.cpp \
+    stylesheet/type/qstringsheettype.cpp \
+    stylesheet/type/qfontsheettype.cpp \
+    qstylesheetsync.cpp \
+    stylesheet/type/qbrushsheettype.cpp \
+    stylesheet/type/qbordersheettype.cpp \
+    stylesheet/type/qenumsheettype.cpp \
+    resource/qresourcemanager.cpp \
+    resource/qresourcefile.cpp \
+    resource/qrccfilemaker.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -128,7 +145,24 @@ HEADERS +=\
     data/qdatamanager.h \
     data/qdatagroup.h \
     data/qintdatahost.h \
-    data/qfloatdatahost.h
+    data/qfloatdatahost.h \
+    stylesheet/qstylesheetmanager.h \
+    stylesheet/qstylesheetgroup.h \
+    stylesheet/qstylesheetitem.h \
+    stylesheet/qstylesheetitemtitle.h \
+    stylesheet/qsheetpropertyfactory.h \
+    stylesheet/type/qabstractsheettype.h \
+    stylesheet/type/qurlsheettype.h \
+    stylesheet/type/qnumbersheettype.h \
+    stylesheet/type/qstringsheettype.h \
+    stylesheet/type/qfontsheettype.h \
+    qstylesheetsync.h \
+    stylesheet/type/qbrushsheettype.h \
+    stylesheet/type/qbordersheettype.h \
+    stylesheet/type/qenumsheettype.h \
+    resource/qresourcemanager.h \
+    resource/qresourcefile.h \
+    resource/qrccfilemaker.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

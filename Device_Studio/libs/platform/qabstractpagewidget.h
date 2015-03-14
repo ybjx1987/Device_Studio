@@ -14,7 +14,9 @@ public:
     void        setVisible(bool visible);
 signals:
     void        select(bool select);
-public slots:
+protected slots:
+    virtual void    projectOpened();
+    virtual void    projectClosed();
 };
 
 #endif // QABSTRACTPAGEWIDGET_H

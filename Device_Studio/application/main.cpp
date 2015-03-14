@@ -6,6 +6,8 @@
 #include "../libs/kernel/host/qhostfactory.h"
 #include "../libs/platform/propertylist/qpropertyeditorfactory.h"
 #include "../libs/platform/qlanguageid.h"
+#include "../libs/kernel/stylesheet/qsheetpropertyfactory.h"
+#include "../libs/platform/stylesheet/qsheettypeeditorfactory.h"
 
 #include <QFont>
 #include <QTextCodec>
@@ -37,6 +39,8 @@ int main(int argc,char *argv[])
 
     QHostFactory::registerInnerHost();
     QPropertyEditorFactory::registerInnerEditor();
+    QSheetPropertyFactory::registerInnerProperty();
+    QSheetTypeEditorFactory::registerInnerEditor();
 
     PluginLoader::loadPlugin("plugins.xml");
 
