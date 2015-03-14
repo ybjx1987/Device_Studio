@@ -3,6 +3,7 @@
 #include "../kernel/qproject.h"
 #include "qsoftactionmap.h"
 #include "../kernel/host/qprojecthost.h"
+#include "qsystemresourcemanager.h"
 
 #include <QDir>
 #include <QFile>
@@ -11,7 +12,8 @@ QSoftCore* QSoftCore::m_instance = NULL;
 
 QSoftCore::QSoftCore(QObject *parent) :
     QObject(parent),
-    m_project(new QProject)
+    m_project(new QProject("Design")),
+    m_systemResourceManager(new QSystemResourceManager(this))
 {
     initAction();
 }
@@ -19,6 +21,7 @@ QSoftCore::QSoftCore(QObject *parent) :
 QSoftCore::~QSoftCore()
 {
     delete m_project;
+    delete m_systemResourceManager;
 }
 
 QSoftCore* QSoftCore::getInstance()
@@ -122,6 +125,8 @@ bool QSoftCore::saveProject()
 
 void QSoftCore::clearPath(const QString &path)
 {
+    clearPath(path);
+
     QDir dir(path);
 
     QFileInfoList list = dir.entryInfoList(QDir::Dirs | QDir::Files | QDir::NoDot | QDir::NoDotDot);
@@ -141,4 +146,9 @@ void QSoftCore::clearPath(const QString &path)
             dir.rmdir(info.filePath());
         }
     }
+}
+
+QSystemResourceManager * QSoftCore::getSystemResourceManager()
+{
+    return m_systemResourceManager;
 }

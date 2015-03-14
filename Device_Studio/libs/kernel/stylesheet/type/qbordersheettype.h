@@ -1,35 +1,34 @@
 #ifndef QBORDERSHEETTYPE_H
 #define QBORDERSHEETTYPE_H
 
-#include "qbrushsheettype.h"
+#include "qabstractsheettype.h"
 
 class XmlNode;
+class QEnumSheetType;
+class QNumberSheetType;
+class QBrushSheetType;
 
-class QBorderSheetType : public QBrushSheetType
+class QBorderSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QBorderSheetType();
+    Q_INVOKABLE QBorderSheetType(QAbstractSheetType * parent = NULL);
     ~QBorderSheetType();
 
     QString getValueText();
 
-    QString getStyleSheet();
+    QString getStyleSheetValue();
 
+    QStringList getStyleList();
 
-    virtual bool    toXml(XmlNode * xml);
-    virtual bool    fromXml(XmlNode * xml);
+    void setValue(const QVariant &value);
 
-    QStringList     getStyleList();
-
-    void        setBorderWidth(int width);
-    int         getBorderWidth();
-
-    void        setBorderStyle(const QString &style);
-    QString     getBorderStyle();
 protected:
-    QString     m_borderStyle;
-    int         m_borderWidth;
+    void updateValue();
+protected:
+    QEnumSheetType       *m_borderStyle;
+    QNumberSheetType     *m_borderWidth;
+    QBrushSheetType      *m_borderBrush;
 };
 
 #endif // QBORDERSHEETTYPE_H

@@ -15,10 +15,10 @@ public:
     ~QFontSheetType();
 
     QString getValueText();
-    QString getStyleSheet();
+    QString getStyleSheetValue();
 
-    virtual bool    toXml(XmlNode * xml);
-    virtual bool    fromXml(XmlNode * xml);
+    virtual void    toXml(XmlNode * xml);
+    virtual void    fromXml(XmlNode * xml);
 
     virtual bool    equal(const QVariant & value);
 };

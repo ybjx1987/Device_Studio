@@ -2,8 +2,10 @@
 
 #include "../../xmlnode.h"
 
-QNumberSheetType::QNumberSheetType():
-    m_type("Integer")
+QNumberSheetType::QNumberSheetType(QAbstractSheetType * parent):
+    QAbstractSheetType(parent),
+    m_minValue(0),
+    m_maxValue(9999)
 {
     setValue(0);
 }
@@ -15,41 +17,33 @@ QNumberSheetType::~QNumberSheetType()
 
 QString QNumberSheetType::getValueText()
 {
-    QString str;
-    if(m_type == "Integer")
-    {
-        str.sprintf("%d",getValue().toInt());
-    }
-    else if(m_type == "Float")
-    {
-        str.sprintf("%f",getValue().toFloat());
-    }
-    return str;
+    return QString("%1px").arg(m_value.toInt());
 }
 
-QString QNumberSheetType::getType()
+void QNumberSheetType::toXml(XmlNode *xml)
 {
-    return m_type;
+    xml->setProperty("value",getValue().toString());
+    QAbstractSheetType::toXml(xml);
 }
 
-void QNumberSheetType::setType(const QString &type)
+void QNumberSheetType::fromXml(XmlNode *xml)
 {
-    if(m_type != type)
-    {
-        m_type = type;
-        emit needUpdate();
-    }
+    m_value = xml->getProperty("value");
+    QAbstractSheetType::fromXml(xml);
 }
 
-bool QNumberSheetType::toXml(XmlNode *xml)
+void QNumberSheetType::parserProperty(XmlNode *xml)
 {
-    xml->setProperty("type",m_type);
-    return QAbstractSheetType::toXml(xml);
+    m_minValue = xml->getProperty("minValue").toInt();
+    m_maxValue = xml->getProperty("maxValue").toInt();
 }
 
-bool QNumberSheetType::fromXml(XmlNode *xml)
+int QNumberSheetType::getMinValue()
 {
-    m_type = xml->getProperty("type");
-    return QAbstractSheetType::fromXml(xml);
+    return m_minValue;
 }
 
+int QNumberSheetType::getMaxValue()
+{
+    return m_maxValue;
+}

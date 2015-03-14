@@ -30,12 +30,13 @@ class QAbstractHost;
 class QDataManager;
 class QStyleSheetManager;
 class QStyleSheetSync;
+class QResourceManager;
 
 class KERNEL_EXPORT QProject :public QObject
 {
     Q_OBJECT
 public:
-    QProject();
+    QProject(const QString & type);
     ~QProject();
 
     bool    open(const QString &proFileName);
@@ -46,6 +47,7 @@ public:
     QLanguageManager* getLanguageManager();
     QDataManager    * getDataManager();
     QStyleSheetManager  * getStyleSheetManager();
+    QResourceManager    * getResourceManager();
 
     enProjectStatus getProjectStatus();
     enProjectModified getProjectModified();
@@ -85,6 +87,9 @@ protected:
     QDataManager                    *m_dataManager;
     QStyleSheetManager              *m_styleSheetManager;
     QStyleSheetSync                 *m_styleSheetSync;
+    QResourceManager                *m_resourceManager;
+
+    QString         m_type;
 };
 
 #endif // QPROJECT_H

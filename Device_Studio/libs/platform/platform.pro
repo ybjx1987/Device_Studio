@@ -62,13 +62,14 @@ HEADERS += \
     propertylist/editor/qfloatpropertyeditor.h \
     qabstractstylesheetpropertyeditor.h \
     stylesheet/qabstractsheetpropertyeditor.h \
-    stylesheet/qnumbersheettypeeditor.h \
     stylesheet/qsheettypeeditorfactory.h \
-    stylesheet/qlengthsheettypeeditor.h \
     stylesheet/qenumsheettypeeditor.h \
     stylesheet/qfontsheettypeeditor.h \
     stylesheet/qbrushsheettypeeditor.h \
-    stylesheet/qbordersheettypeeditor.h
+    stylesheet/qbordersheettypeeditor.h \
+    stylesheet/qnumbersheettypeeditor.h \
+    qsystemresourcemanager.h \
+    qrenamedialog.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -111,13 +112,14 @@ SOURCES += \
     propertylist/editor/qfloatpropertyeditor.cpp \
     qabstractstylesheetpropertyeditor.cpp \
     stylesheet/qabstractsheetpropertyeditor.cpp \
-    stylesheet/qnumbersheettypeeditor.cpp \
     stylesheet/qsheettypeeditorfactory.cpp \
-    stylesheet/qlengthsheettypeeditor.cpp \
     stylesheet/qenumsheettypeeditor.cpp \
     stylesheet/qfontsheettypeeditor.cpp \
     stylesheet/qbrushsheettypeeditor.cpp \
-    stylesheet/qbordersheettypeeditor.cpp
+    stylesheet/qbordersheettypeeditor.cpp \
+    stylesheet/qnumbersheettypeeditor.cpp \
+    qsystemresourcemanager.cpp \
+    qrenamedialog.cpp
 
 RESOURCES += \
     platform.qrc
@@ -132,4 +134,5 @@ DISTFILES += \
 
 FORMS += \
     qlineeditdialog.ui \
-    propertylist/editor/qstringeditordialog.ui
+    propertylist/editor/qstringeditordialog.ui \
+    qrenamedialog.ui

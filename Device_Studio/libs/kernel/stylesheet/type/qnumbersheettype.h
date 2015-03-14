@@ -7,18 +7,21 @@ class QNumberSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QNumberSheetType();
+    Q_INVOKABLE QNumberSheetType(QAbstractSheetType * parent = NULL);
     ~QNumberSheetType();
 
     QString getValueText();
 
-    QString getType();
-    void    setType(const QString &type);
+    void    toXml(XmlNode *xml);
+    void    fromXml(XmlNode *xml);
 
-    bool    toXml(XmlNode *xml);
-    bool    fromXml(XmlNode *xml);
+    int     getMinValue();
+    int     getMaxValue();
 protected:
-    QString m_type;
+    void    parserProperty(XmlNode *xml);
+protected:
+    int     m_minValue;
+    int     m_maxValue;
 };
 
 #endif // QNUMBERSHEETTYPE_H

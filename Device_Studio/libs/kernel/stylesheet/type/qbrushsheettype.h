@@ -11,17 +11,17 @@ class QBrushSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QBrushSheetType();
+    Q_INVOKABLE QBrushSheetType(QAbstractSheetType * parent = NULL);
     ~QBrushSheetType();
 
     QString getValueText();
     QIcon getValueIcon();
 
-    QString getStyleSheet();
+    QString getStyleSheetValue();
 
 
-    virtual bool    toXml(XmlNode * xml);
-    virtual bool    fromXml(XmlNode * xml);
+    virtual void    toXml(XmlNode * xml);
+    virtual void    fromXml(XmlNode * xml);
 
     virtual bool    equal(const QVariant & value);
 protected:

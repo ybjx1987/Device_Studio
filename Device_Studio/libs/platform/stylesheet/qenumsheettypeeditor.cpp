@@ -1,6 +1,6 @@
 #include "qenumsheettypeeditor.h"
 
-#include "../../kernel/stylesheet/type/qabstractenumsheettype.h"
+#include "../../kernel/stylesheet/type/qenumsheettype.h"
 
 #include <QHBoxLayout>
 
@@ -10,7 +10,7 @@ QEnumSheetTypeEditor::QEnumSheetTypeEditor(QAbstractSheetType * property,
     m_combo(new QComboBox)
 {
     setProperty("no-ManhattanStyle",true);
-    QAbstractEnumSheetType *etype = (QAbstractEnumSheetType*)m_property;
+    QEnumSheetType *etype = (QEnumSheetType*)m_property;
 
     QHBoxLayout * hb = new QHBoxLayout;
     hb->setMargin(0);

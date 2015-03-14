@@ -1,6 +1,7 @@
 #include "qurlsheettype.h"
 
-QUrlSheetType::QUrlSheetType()
+QUrlSheetType::QUrlSheetType(QAbstractSheetType * parent):
+    QStringSheetType(parent)
 {
     setValue("");
 }
@@ -28,12 +29,12 @@ QIcon QUrlSheetType::getValueIcon()
     return icon;
 }
 
-QString QUrlSheetType::getStyleSheet()
+QString QUrlSheetType::getStyleSheetValue()
 {
     if(getValue().toString() != "")
     {
         QString str;
-        str=getName()+": url("+getValue().toString()+")";
+        str="url("+getValue().toString()+")";
         return str;
     }
     else

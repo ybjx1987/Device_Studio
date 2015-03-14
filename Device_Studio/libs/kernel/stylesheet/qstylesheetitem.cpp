@@ -48,10 +48,7 @@ bool QStyleSheetItem::toXml(XmlNode *xml)
     {
         XmlNode * obj = new XmlNode(xml);
         obj->setTitle("Property");
-        if(!pro->toXml(obj))
-        {
-            return false;
-        }
+        pro->toXml(obj);
     }
 
     return true;
@@ -92,16 +89,10 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
                         node->getProperty("type"));
             if(pro != NULL)
             {
-                if(pro->fromXml(node))
-                {
-                    connect(pro,SIGNAL(needUpdate()),
+                connect(pro,SIGNAL(needUpdate()),
                             this,SIGNAL(needUpdateStyleSheet()));
-                    m_propertys.append(pro);
-                }
-                else
-                {
-                    delete pro;
-                }
+                pro->fromXml(node);
+                m_propertys.append(pro);
             }
         }
     }

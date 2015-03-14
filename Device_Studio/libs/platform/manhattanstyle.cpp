@@ -358,7 +358,6 @@ void ManhattanStyle::drawControl(ControlElement element, const QStyleOption *opt
         }
         break;
     case CE_HeaderEmptyArea:
-        return;
         break;
     case CE_HeaderSection:
     {

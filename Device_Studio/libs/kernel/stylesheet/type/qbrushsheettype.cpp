@@ -7,7 +7,8 @@
 #include <QPainter>
 #include <QPixmap>
 
-QBrushSheetType::QBrushSheetType()
+QBrushSheetType::QBrushSheetType(QAbstractSheetType * parent):
+    QAbstractSheetType(parent)
 {
 
 }
@@ -219,7 +220,7 @@ QString QBrushSheetType::styleSheetCode(const QGradient &gradient)
     return ret;
 }
 
-QString QBrushSheetType::getStyleSheet()
+QString QBrushSheetType::getStyleSheetValue()
 {
     if(!getValue().isValid())
     {
@@ -250,19 +251,11 @@ QString QBrushSheetType::getStyleSheet()
         }
         str = styleSheetCode(g);
     }
-    else
-    {
-        return "";
-    }
 
-    if(str != "")
-    {
-        str = m_name + ":" +str;
-    }
     return str;
 }
 
-bool QBrushSheetType::toXml(XmlNode *xml)
+void QBrushSheetType::toXml(XmlNode *xml)
 {
     tagBrushSheetType value = getValue().value<tagBrushSheetType>();
     xml->setProperty("color_type",value.m_type);
@@ -353,10 +346,10 @@ bool QBrushSheetType::toXml(XmlNode *xml)
         }
     }
 
-    return true;
+    return;
 }
 
-bool QBrushSheetType::fromXml(XmlNode *xml)
+void QBrushSheetType::fromXml(XmlNode *xml)
 {
     tagBrushSheetType value;
     value.m_type = xml->getProperty("color_type");
@@ -426,7 +419,7 @@ bool QBrushSheetType::fromXml(XmlNode *xml)
         }
         else
         {
-            return true;
+            return;
         }
         g.setCoordinateMode(QGradient::StretchToDeviceMode);
         if(g.type() != QGradient::ConicalGradient)
@@ -477,11 +470,15 @@ bool QBrushSheetType::fromXml(XmlNode *xml)
     {
         m_value=QVariant::fromValue<tagBrushSheetType>(value);
     }
-    return true;
+    return;
 }
 
 bool QBrushSheetType::equal(const QVariant &value)
 {
+    if(value.isValid() || m_value.isValid())
+    {
+        return false;
+    }
     tagBrushSheetType v1 = m_value.value<tagBrushSheetType>();
     tagBrushSheetType v2 = value.value<tagBrushSheetType>();
 
