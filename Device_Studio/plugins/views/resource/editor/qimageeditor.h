@@ -3,6 +3,8 @@
 
 #include "qabstractfileeditor.h"
 
+class QImageView;
+
 class QImageEditor : public QAbstractFileEditor
 {
     Q_OBJECT
@@ -11,9 +13,13 @@ public:
     ~QImageEditor();
 
     static QStringList getSupportFile();
+
+    void setResourceFile(QResourceFile *resource);
 signals:
 
 public slots:
+protected:
+    QImageView      *m_imageView;
 };
 
 #endif // QIMAGEEDITOR_H

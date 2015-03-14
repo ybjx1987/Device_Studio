@@ -12,7 +12,7 @@ public:
     explicit QAbstractFileEditor(QWidget *parent = 0);
     ~QAbstractFileEditor();
 
-    void setResourceFile(QResourceFile * resource);
+    virtual void setResourceFile(QResourceFile * resource);
 protected:
     QResourceFile       *m_resource;
 };

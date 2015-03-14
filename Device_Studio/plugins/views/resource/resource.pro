@@ -40,7 +40,8 @@ HEADERS += \
     qresourcerenamedialog.h \
     editor/qimageeditor.h \
     editor/qabstractfileeditor.h \
-    editor/qeditorfactory.h
+    editor/qeditorfactory.h \
+    editor/qimageview.h
 
 SOURCES += \
     qresourceplugin.cpp \
@@ -52,7 +53,8 @@ SOURCES += \
     qresourcerenamedialog.cpp \
     editor/qimageeditor.cpp \
     editor/qabstractfileeditor.cpp \
-    editor/qeditorfactory.cpp
+    editor/qeditorfactory.cpp \
+    editor/qimageview.cpp
 
 FORMS += \
     qaddresourcedialog.ui \

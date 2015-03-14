@@ -7,6 +7,7 @@
 QResourceListView::QResourceListView(QWidget* parent):
     QBaseListView(parent)
 {
+    setRootIsDecorated(true);
     connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(itemSelectChanged()));
 }
 
@@ -55,7 +56,7 @@ void QResourceListView::resourceAdded(QResourceFile *resource)
 
         if(m_itemToResource.size() == 1)
         {
-            emit resourceSelect(resource);
+            item->setSelected(true);
         }
     }
 }
