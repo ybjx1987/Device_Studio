@@ -17,7 +17,9 @@ class QSystemResourceDialog : public QDialog
 public:
     explicit QSystemResourceDialog(QWidget *parent = 0);
     ~QSystemResourceDialog();
+    QStringList getSelected();
 
+    int getRet();
 protected:
     void updateCheck();
 private slots:
@@ -33,6 +35,7 @@ private:
     QBaseListView       *m_resourceList;
     QMap<QString,QTreeWidgetItem*>  m_nameToGroup;
     QMap<QString,bool>              m_checked;
+    int                             m_ret;
 };
 
 #endif // QSYSTEMRESOURCEDIALOG_H

@@ -68,7 +68,8 @@ HEADERS += \
     stylesheet/qbrushsheettypeeditor.h \
     stylesheet/qbordersheettypeeditor.h \
     stylesheet/qnumbersheettypeeditor.h \
-    qsystemresourcemanager.h
+    qsystemresourcemanager.h \
+    qrenamedialog.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -117,7 +118,8 @@ SOURCES += \
     stylesheet/qbrushsheettypeeditor.cpp \
     stylesheet/qbordersheettypeeditor.cpp \
     stylesheet/qnumbersheettypeeditor.cpp \
-    qsystemresourcemanager.cpp
+    qsystemresourcemanager.cpp \
+    qrenamedialog.cpp
 
 RESOURCES += \
     platform.qrc
@@ -132,4 +134,5 @@ DISTFILES += \
 
 FORMS += \
     qlineeditdialog.ui \
-    propertylist/editor/qstringeditordialog.ui
+    propertylist/editor/qstringeditordialog.ui \
+    qrenamedialog.ui

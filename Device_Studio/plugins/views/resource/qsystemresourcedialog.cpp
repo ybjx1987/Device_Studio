@@ -12,7 +12,8 @@
 QSystemResourceDialog::QSystemResourceDialog(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::QSystemResourceDialog),
-    m_resourceList(new QBaseListView)
+    m_resourceList(new QBaseListView),
+    m_ret(0)
 {
     ui->setupUi(this);
     ui->verticalLayout->insertWidget(0,m_resourceList,1);
@@ -37,7 +38,8 @@ QSystemResourceDialog::~QSystemResourceDialog()
 
 void QSystemResourceDialog::on_pushButton_2_clicked()
 {
-
+    m_ret = 1;
+    close();
 }
 
 void QSystemResourceDialog::on_pushButton_clicked()
@@ -175,4 +177,31 @@ void QSystemResourceDialog::itemClicked(QTreeWidgetItem *item)
         }
     }
     updateCheck();
+}
+
+QStringList QSystemResourceDialog::getSelected()
+{
+    QStringList list;
+
+    int count = m_resourceList->topLevelItemCount();
+
+    for(int i = 0; i < count ; i++)
+    {
+        QTreeWidgetItem * parent = m_resourceList->topLevelItem(i);
+
+        for(int j = 0; j < parent->childCount(); j++)
+        {
+            QTreeWidgetItem * item = parent->child(j);
+            if(item->checkState(0) == Qt::Checked)
+            {
+                list.append(parent->text(0)+"/"+item->text(0));
+            }
+        }
+    }
+    return list;
+}
+
+int QSystemResourceDialog::getRet()
+{
+    return m_ret;
 }
