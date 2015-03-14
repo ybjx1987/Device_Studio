@@ -36,7 +36,7 @@ class KERNEL_EXPORT QProject :public QObject
 {
     Q_OBJECT
 public:
-    QProject();
+    QProject(const QString & type);
     ~QProject();
 
     bool    open(const QString &proFileName);
@@ -88,6 +88,8 @@ protected:
     QStyleSheetManager              *m_styleSheetManager;
     QStyleSheetSync                 *m_styleSheetSync;
     QResourceManager                *m_resourceManager;
+
+    QString         m_type;
 };
 
 #endif // QPROJECT_H

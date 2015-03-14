@@ -11,7 +11,7 @@ QSoftCore* QSoftCore::m_instance = NULL;
 
 QSoftCore::QSoftCore(QObject *parent) :
     QObject(parent),
-    m_project(new QProject)
+    m_project(new QProject("Design"))
 {
     initAction();
 }

@@ -7,8 +7,9 @@
 #include <QFile>
 #include <QDir>
 
-QResourceManager::QResourceManager(QObject *parent) :
-    QObject(parent)
+QResourceManager::QResourceManager(const QString & type,QObject *parent) :
+    QObject(parent),
+    m_type(type)
 {
 
 }
@@ -77,12 +78,12 @@ int QResourceManager::getResourceQuote(const QString &uuid)
 
 void QResourceManager::registerResource(QResourceFile *resource)
 {
-    QResource::registerResource(resource->getRccData(),":/project");
+    QResource::registerResource(resource->getRccData(),":/project/"+m_type);
 }
 
 void QResourceManager::unregisterResource(QResourceFile *resource)
 {
-    QResource::registerResource(resource->getRccData(),":/project");
+    QResource::registerResource(resource->getRccData(),":/project/"+m_type);
 }
 
 void QResourceManager::useResource(const QString &uuid)

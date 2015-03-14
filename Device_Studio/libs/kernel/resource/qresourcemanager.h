@@ -11,7 +11,7 @@ class QResourceManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit QResourceManager(QObject *parent = 0);
+    explicit QResourceManager(const QString & type,QObject *parent = 0);
     ~QResourceManager();
 
     void    addResource(QResourceFile *resource);
@@ -39,6 +39,7 @@ protected:
     QList<QResourceFile*>   m_resources;
     QMap<QResourceFile*,int>    m_resourceQuote;
     QMap<QString,QResourceFile*>    m_uuidToResource;
+    QString     m_type;
 };
 
 #endif // QRESOURCEMANAGER_H

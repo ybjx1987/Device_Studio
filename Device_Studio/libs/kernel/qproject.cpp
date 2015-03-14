@@ -19,7 +19,7 @@
 #include <QUuid>
 #include <QDir>
 
-QProject::QProject():
+QProject::QProject(const QString & type):
     QObject(NULL),
     m_projectHost(NULL),
     m_projectStatus(PS_CLOSED),
@@ -28,7 +28,8 @@ QProject::QProject():
     m_dataManager(NULL),
     m_styleSheetManager(NULL),
     m_styleSheetSync(NULL),
-    m_resourceManager(NULL)
+    m_resourceManager(NULL),
+    m_type(type)
 {
 }
 
@@ -86,7 +87,7 @@ bool QProject::open(const QString &proFileName)
                                            m_forms,
                                            this);
 
-    m_resourceManager = new QResourceManager(this);
+    m_resourceManager = new QResourceManager(m_type,this);
     m_resourceManager->load(path+"/resource");
 
     setProjectStatus(PS_OPENED);

@@ -106,5 +106,6 @@
         <file>images/stylesheet.png</file>
         <file>images/begin.png</file>
         <file>images/end.png</file>
+        <file>images/resource.png</file>
     </qresource>
 </RCC>

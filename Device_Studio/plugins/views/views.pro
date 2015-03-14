@@ -5,4 +5,5 @@ SUBDIRS += \
     project \
     language\
     data\
-    stylesheet
+    stylesheet\
+    resource
