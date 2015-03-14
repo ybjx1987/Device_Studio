@@ -24,7 +24,7 @@ void QBaseItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &opt
 
     painter->fillRect(option.rect,c);
     opt.state &=~ QStyle::State_HasFocus;
-    QItemDelegate::paint(painter,opt,index);
+    QItemDelegate::paint(painter,option,index);
     opt.palette.setCurrentColorGroup(QPalette::Active);
     QColor color=static_cast<QRgb>(QApplication::style()->styleHint(QStyle::SH_Table_GridLineColor,&opt));
     painter->setPen(color);

@@ -6,6 +6,7 @@
 #include <QObject>
 
 class QProject;
+class QSystemResourceManager;
 
 class PLATFORM_EXPORT QSoftCore : public QObject
 {
@@ -22,6 +23,7 @@ public:
 
 public:
     QProject*   getProject();
+    QSystemResourceManager  *getSystemResourceManager();
 
     bool        newProject(const QString & path, const QString & name);
     bool        saveProject();
@@ -36,6 +38,7 @@ public slots:
 protected:
     static      QSoftCore*      m_instance;
     QProject    *m_project;
+    QSystemResourceManager  *m_systemResourceManager;
 };
 
 #endif // QSOFTCORE_H

@@ -67,7 +67,8 @@ HEADERS += \
     stylesheet/qfontsheettypeeditor.h \
     stylesheet/qbrushsheettypeeditor.h \
     stylesheet/qbordersheettypeeditor.h \
-    stylesheet/qnumbersheettypeeditor.h
+    stylesheet/qnumbersheettypeeditor.h \
+    qsystemresourcemanager.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -115,7 +116,8 @@ SOURCES += \
     stylesheet/qfontsheettypeeditor.cpp \
     stylesheet/qbrushsheettypeeditor.cpp \
     stylesheet/qbordersheettypeeditor.cpp \
-    stylesheet/qnumbersheettypeeditor.cpp
+    stylesheet/qnumbersheettypeeditor.cpp \
+    qsystemresourcemanager.cpp
 
 RESOURCES += \
     platform.qrc

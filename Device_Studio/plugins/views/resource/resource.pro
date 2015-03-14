@@ -34,13 +34,16 @@ HEADERS += \
     qresourceplugin.h \
     qresourcewidget.h \
     qresourcelistview.h \
-    qaddresourcedialog.h
+    qaddresourcedialog.h \
+    qsystemresourcedialog.h
 
 SOURCES += \
     qresourceplugin.cpp \
     qresourcewidget.cpp \
     qresourcelistview.cpp \
-    qaddresourcedialog.cpp
+    qaddresourcedialog.cpp \
+    qsystemresourcedialog.cpp
 
 FORMS += \
-    qaddresourcedialog.ui
+    qaddresourcedialog.ui \
+    qsystemresourcedialog.ui

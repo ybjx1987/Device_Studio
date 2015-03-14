@@ -1,6 +1,8 @@
 #include "qaddresourcedialog.h"
 #include "ui_qaddresourcedialog.h"
 
+#include "qsystemresourcedialog.h"
+
 #include <QFileDialog>
 #include <QApplication>
 
@@ -9,7 +11,7 @@ QAddResourceDialog::QAddResourceDialog(QWidget *parent) :
     ui(new Ui::QAddResourceDialog)
 {
     ui->setupUi(this);
-    setProperty("no-ManhattanStyle",true);
+    //setProperty("no-ManhattanStyle",true);
     ui->toolButton->setPopupMode(QToolButton::MenuButtonPopup);
 
     QAction * ac ;
@@ -30,7 +32,8 @@ QAddResourceDialog::~QAddResourceDialog()
 
 void QAddResourceDialog::fromSystem()
 {
-
+    QSystemResourceDialog dlg(this);
+    dlg.exec();
 }
 
 void QAddResourceDialog::fromLocal()
