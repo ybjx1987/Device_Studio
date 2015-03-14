@@ -12,6 +12,7 @@ QResourceListView::QResourceListView(QWidget* parent):
 
 void QResourceListView::init(QResourceManager *manager)
 {
+    clear();
     connect(manager,SIGNAL(resourceAdded(QResourceFile*)),
             this,SLOT(resourceAdded(QResourceFile*)));
     connect(manager,SIGNAL(resourceDeled(QResourceFile*)),
@@ -41,6 +42,7 @@ void QResourceListView::resourceAdded(QResourceFile *resource)
             parent->setToolTip(0,firstName);
             parent->setData(0,DarkRole,true);
             parent->setFlags(Qt::ItemIsEnabled);
+            parent->setExpanded(true);
             m_nameToGroup.insert(firstName,parent);
         }
 
@@ -97,4 +99,12 @@ void QResourceListView::itemSelectChanged()
     {
         emit resourceSelect(NULL);
     }
+}
+
+void QResourceListView::clear()
+{
+    m_nameToGroup.clear();
+    m_resourceToItem.clear();
+    m_itemToResource.clear();
+    QBaseListView::clear();
 }

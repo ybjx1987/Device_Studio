@@ -183,7 +183,6 @@ void QStyleSheetSync::updateStyleSheet(QAbstractHost *host)
     {
         styleSheet += item->getStyleSheet("#"+host->getPropertyValue("objectName").toString());
     }
-    qDebug(styleSheet.toLocal8Bit());
     host->getObject()->setProperty("styleSheet",styleSheet);
 
     if(host->getChildrenHost().size()>0)

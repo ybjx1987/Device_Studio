@@ -73,7 +73,7 @@ QResourceWidget::QResourceWidget(QWidget * parent):
 void QResourceWidget::projectOpened()
 {
     QProject * project = (QProject*)sender();
-
+    m_resourceListView->init(project->getResourceManager());
     updateAction();
 }
 

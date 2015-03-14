@@ -132,19 +132,23 @@ void QResourceManager::save(const QString & path)
 
     foreach(QResourceFile *file,m_resources)
     {
-        QString path = file->getPath();
-        int last = path.lastIndexOf("/");
+        QString p = file->getPath();
+        int last = p.lastIndexOf("/");
         if(last >= 0)
         {
-            dir.mkpath(path+"/"+path.left(last));
+            dir.mkpath(path+"/"+p.left(last));
         }
-        QFile rf(path+"/"+file->getPath());
-        if(rf.open(QFile::ReadWrite))
+        QFile f(path+"/"+p);
+        if(f.open(QFile::ReadWrite))
         {
-            rf.resize(0);
-            rf.write(file->getData());
+            f.resize(0);
+            f.write(file->getData());
             XmlNode * obj = new XmlNode(&xml);
             file->toXml(obj);
+        }
+        else
+        {
+            qDebug(f.errorString().toLocal8Bit());
         }
     }
 
@@ -172,7 +176,7 @@ void QResourceManager::load(const QString &path)
     }
 
     XmlNode xml;
-    if(!xml.load(f.readAll()))
+    if(!xml.load(QString::fromLocal8Bit(f.readAll())))
     {
         return;
     }
