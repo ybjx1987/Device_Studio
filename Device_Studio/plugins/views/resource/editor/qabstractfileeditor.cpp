@@ -15,3 +15,10 @@ void QAbstractFileEditor::setResourceFile(QResourceFile *resource)
 {
     m_resource = resource;
 }
+
+QList<QAction*> QAbstractFileEditor::getToolBarActions()
+{
+    QList<QAction*> list;
+
+    return list;
+}

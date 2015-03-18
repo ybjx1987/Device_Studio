@@ -15,6 +15,7 @@ public:
     static QStringList getSupportFile();
 
     void setResourceFile(QResourceFile *resource);
+    QList<QAction*>     getToolBarActions();
 signals:
 
 public slots:

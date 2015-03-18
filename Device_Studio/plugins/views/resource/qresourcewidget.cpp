@@ -24,7 +24,8 @@ QResourceWidget::QResourceWidget(QWidget * parent):
     m_resourceListViewBar(new StyledBar),
     m_resourceListView(new QResourceListView),
     m_editorView(new QStackedWidget),
-    m_editorViewBar(new StyledBar)
+    m_editorViewBar(new StyledBar),
+    m_editorViewToolBar(new QActionToolBar)
 {
     registerAction();
     MiniSplitter * sp = new MiniSplitter;
@@ -83,6 +84,13 @@ QResourceWidget::QResourceWidget(QWidget * parent):
     vb->setSpacing(0);
     vb->addWidget(toolBar);
     m_resourceListViewBar->setLayout(vb);
+
+
+    vb = new QVBoxLayout;
+    vb->setMargin(0);
+    vb->setSpacing(0);
+    vb->addWidget(m_editorViewToolBar);
+    m_editorViewBar->setLayout(vb);
 
     connect(m_resourceListView,SIGNAL(resourceSelect(QResourceFile*)),
             this,SLOT(resourceSelect(QResourceFile*)));
@@ -145,11 +153,16 @@ void QResourceWidget::addResource()
 
 void QResourceWidget::resourceSelect(QResourceFile *resource)
 {
+    if(resource == NULL)
+    {
+        return;
+    }
     QAbstractFileEditor * wid = m_resourceToWidget.value(resource);
 
     if(wid != NULL)
     {
         m_editorView->setCurrentWidget(wid);
+        m_editorViewToolBar->addButtonActions(wid->getToolBarActions());
     }
     else
     {
@@ -163,6 +176,7 @@ void QResourceWidget::resourceSelect(QResourceFile *resource)
             m_resourceToWidget.insert(resource,wid);
             m_editorView->addWidget(wid);
             m_editorView->setCurrentWidget(wid);
+            m_editorViewToolBar->addButtonActions(wid->getToolBarActions());
         }
     }
 }

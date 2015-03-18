@@ -2,6 +2,7 @@
 #define QABSTRACTFILEEDITOR_H
 
 #include <QWidget>
+#include <QAction>
 
 class QResourceFile;
 
@@ -13,6 +14,8 @@ public:
     ~QAbstractFileEditor();
 
     virtual void setResourceFile(QResourceFile * resource);
+
+    virtual QList<QAction*>     getToolBarActions();
 protected:
     QResourceFile       *m_resource;
 };

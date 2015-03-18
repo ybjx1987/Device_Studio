@@ -11,6 +11,7 @@ class StyledBar;
 class QResourceListView;
 class QResourceFile;
 class QAbstractFileEditor;
+class QActionToolBar;
 
 class QResourceWidget : public QAbstractPageWidget
 {
@@ -36,6 +37,8 @@ protected:
     StyledBar           *m_editorViewBar;
 
     QMap<QResourceFile*,QAbstractFileEditor*>   m_resourceToWidget;
+
+    QActionToolBar      *m_editorViewToolBar;
 };
 
 #endif // QRESOURCEWIDGET_H
