@@ -63,6 +63,10 @@ void QResourceListView::resourceAdded(QResourceFile *resource)
 
 void QResourceListView::resourceDeled(QResourceFile *resource)
 {
+    if(!m_resourceToItem.keys().contains(resource))
+    {
+        return;
+    }
     QString path = resource->getPath();
 
     int index = path.lastIndexOf("/");
@@ -73,6 +77,8 @@ void QResourceListView::resourceDeled(QResourceFile *resource)
         QTreeWidgetItem * item = m_resourceToItem.value(resource);
 
         m_resourceToItem.remove(resource);
+        m_itemToResource.remove(item);
+
         if(item != NULL)
         {
             delete item;
@@ -108,4 +114,21 @@ void QResourceListView::clear()
     m_resourceToItem.clear();
     m_itemToResource.clear();
     QBaseListView::clear();
+}
+
+void QResourceListView::removeFile(QList<QResourceFile *> resource)
+{
+    foreach(QResourceFile * file,resource)
+    {
+        resourceDeled(file);
+    }
+
+    if(topLevelItemCount() > 0)
+    {
+        topLevelItem(0)->child(0)->setSelected(true);
+    }
+    else
+    {
+        emit resourceSelect(NULL);
+    }
 }

@@ -2,6 +2,7 @@
 
 #include "qresourcelistview.h"
 #include "qaddresourcedialog.h"
+#include "qdeleteresourcedialog.h"
 #include "editor/qabstractfileeditor.h"
 #include "editor/qeditorfactory.h"
 
@@ -119,6 +120,7 @@ void QResourceWidget::registerAction()
 
     ac = new QAction(QIcon(":/inner/images/del.png"),tr("Delete Resource"),this);
     QSoftActionMap::insertAction("resource.del",ac);
+    connect(ac,SIGNAL(triggered()),this,SLOT(removeResource()));
 }
 
 void QResourceWidget::updateAction()
@@ -149,6 +151,29 @@ void QResourceWidget::addResource()
     QAddResourceDialog dlg(this);
 
     dlg.exec();
+}
+
+void QResourceWidget::removeResource()
+{
+    QDeleteResourceDialog dlg(this);
+
+    dlg.exec();
+
+    QList<QResourceFile*> list = dlg.getSelectFile();
+
+    m_resourceListView->removeFile(list);
+
+    QResourceManager * manager = QSoftCore::getInstance()->getProject()
+            ->getResourceManager();
+    foreach(QResourceFile * file,list)
+    {
+        QAbstractFileEditor * wid = m_resourceToWidget.value(file);
+        if(wid != NULL)
+        {
+            m_editorView->removeWidget(wid);
+        }
+        manager->delResource(file);
+    }
 }
 
 void QResourceWidget::resourceSelect(QResourceFile *resource)

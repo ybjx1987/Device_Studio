@@ -41,7 +41,8 @@ HEADERS += \
     editor/qimageeditor.h \
     editor/qabstractfileeditor.h \
     editor/qeditorfactory.h \
-    editor/qimageview.h
+    editor/qimageview.h \
+    qdeleteresourcedialog.h
 
 SOURCES += \
     qresourceplugin.cpp \
@@ -54,9 +55,11 @@ SOURCES += \
     editor/qimageeditor.cpp \
     editor/qabstractfileeditor.cpp \
     editor/qeditorfactory.cpp \
-    editor/qimageview.cpp
+    editor/qimageview.cpp \
+    qdeleteresourcedialog.cpp
 
 FORMS += \
     qaddresourcedialog.ui \
     qsystemresourcedialog.ui \
-    qresourcerenamedialog.ui
+    qresourcerenamedialog.ui \
+    qdeleteresourcedialog.ui

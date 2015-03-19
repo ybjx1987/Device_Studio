@@ -25,6 +25,7 @@ protected slots:
     void    resourceSelect(QResourceFile * resource);
 
     void    addResource();
+    void    removeResource();
 protected:
     void    registerAction();
     void    updateAction();
