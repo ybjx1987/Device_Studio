@@ -8,15 +8,15 @@
 #include "../../xmlnode.h"
 #include "../qsheetpropertyfactory.h"
 
-QBorderSheetType::QBorderSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent),
+QBorderSheetType::QBorderSheetType():
+    QAbstractSheetType(),
     m_borderStyle(NULL),
     m_borderWidth(NULL),
     m_borderBrush(NULL)
 {
-    m_borderStyle = new QEnumSheetType(this);
-    m_borderWidth = new QNumberSheetType(this);
-    m_borderBrush = new QBrushSheetType(this);
+    m_borderStyle = new QEnumSheetType();
+    m_borderWidth = new QNumberSheetType();
+    m_borderBrush = new QBrushSheetType();
     m_borderStyle->setTypeProperty("<Property>"
                                    "<Item>dashed</Item>"
                                    "<Item>dot-dash</Item>"
@@ -30,12 +30,6 @@ QBorderSheetType::QBorderSheetType(QAbstractSheetType * parent):
                                    "<Item>solid</Item>"
                                    "<Item>none</Item>"
                                    "</Property>");
-    connect(m_borderStyle,SIGNAL(valueChanged(QVariant)),
-            this,SLOT(updateValue()));
-    connect(m_borderWidth,SIGNAL(valueChanged(QVariant)),
-            this,SLOT(updateValue()));
-    connect(m_borderBrush,SIGNAL(valueChanged(QVariant)),
-            this,SLOT(updateValue()));
 }
 
 QBorderSheetType::~QBorderSheetType()
@@ -96,20 +90,12 @@ void QBorderSheetType::setValue(const QVariant &value)
     QAbstractSheetType::setValue(value);
 }
 
-void QBorderSheetType::updateValue()
+QEnumSheetType * QBorderSheetType::getBorderStyleProperty()
 {
-    tagBorderSheetType v;
-    if(m_borderBrush!=NULL)
-    {
-        v.m_borderBrush = m_borderBrush->getValue().value<tagBrushSheetType>();
-    }
-    if(m_borderWidth != NULL)
-    {
-        v.m_borderWidth = m_borderWidth->getValue().toInt();
-    }
-    if(m_borderStyle != NULL)
-    {
-        v.m_borderStyle = m_borderStyle->getValue().toString();
-    }
-    setValue(QVariant::fromValue<tagBorderSheetType>(v));
+    return m_borderStyle;
+}
+
+QBrushSheetType * QBorderSheetType::getBorderBrushProperty()
+{
+    return m_borderBrush;
 }

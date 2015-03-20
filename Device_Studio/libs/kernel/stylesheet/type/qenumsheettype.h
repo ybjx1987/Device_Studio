@@ -8,7 +8,7 @@ class XmlNode;
 class QEnumSheetType: public QAbstractSheetType
 {
 public:
-    QEnumSheetType(QAbstractSheetType * parent = NULL);
+    QEnumSheetType();
     ~QEnumSheetType();
 
     QString getValueText();

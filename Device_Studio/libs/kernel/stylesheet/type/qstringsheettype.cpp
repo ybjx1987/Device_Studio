@@ -2,8 +2,8 @@
 
 #include "../../xmlnode.h"
 
-QStringSheetType::QStringSheetType(QAbstractSheetType *parent):
-    QAbstractSheetType(parent)
+QStringSheetType::QStringSheetType():
+    QAbstractSheetType()
 {
     setValue("");
 }

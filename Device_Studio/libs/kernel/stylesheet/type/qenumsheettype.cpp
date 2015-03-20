@@ -2,8 +2,8 @@
 
 #include "../../xmlnode.h"
 
-QEnumSheetType::QEnumSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent)
+QEnumSheetType::QEnumSheetType():
+    QAbstractSheetType()
 {
     setValue("");
 }

@@ -7,8 +7,8 @@
 #include <QPainter>
 #include <QPixmap>
 
-QBrushSheetType::QBrushSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent)
+QBrushSheetType::QBrushSheetType():
+    QAbstractSheetType()
 {
 
 }

@@ -12,6 +12,8 @@ public:
     Q_INVOKABLE QNumberSheetTypeEditor(QAbstractSheetType * property,
                                        QWidget * parent = NULL);
     ~QNumberSheetTypeEditor();
+protected:
+
 protected slots:
     void    valueEdited();
 protected:

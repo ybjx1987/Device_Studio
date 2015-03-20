@@ -11,7 +11,7 @@ class QBrushSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QBrushSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QBrushSheetType();
     ~QBrushSheetType();
 
     QString getValueText();

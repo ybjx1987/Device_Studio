@@ -7,7 +7,7 @@ class QNumberSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QNumberSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QNumberSheetType();
     ~QNumberSheetType();
 
     QString getValueText();
@@ -15,6 +15,7 @@ public:
     void    toXml(XmlNode *xml);
     void    fromXml(XmlNode *xml);
 
+    QString getSuffix();
     int     getMinValue();
     int     getMaxValue();
 protected:
@@ -22,6 +23,7 @@ protected:
 protected:
     int     m_minValue;
     int     m_maxValue;
+    QString m_suffix;
 };
 
 #endif // QNUMBERSHEETTYPE_H

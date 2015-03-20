@@ -1,12 +1,14 @@
 #ifndef QBORDERSHEETTYPEEDITOR_H
 #define QBORDERSHEETTYPEEDITOR_H
 
-#include "qbrushsheettypeeditor.h"
+#include "qabstractsheetpropertyeditor.h"
 
 #include <QSpinBox>
 #include <QComboBox>
 
-class QBorderSheetTypeEditor : public QBrushSheetTypeEditor
+class QBrushEditor;
+
+class QBorderSheetTypeEditor : public QAbstractSheetPropertyEditor
 {
     Q_OBJECT
 public:
@@ -16,13 +18,14 @@ public:
 protected slots:
     void    widthChanged();
     void    styleChanged();
+    void    brushChanged(const QVariant & value);
 protected:
 
     void    propertyChanged();
 protected:
     QSpinBox        *m_borderWidth;
     QComboBox       *m_borderStyle;
-    QAbstractSheetType  *m_borderProperty;
+    QBrushEditor    *m_brushEditor;
 };
 
 #endif // QBORDERSHEETTYPEEDITOR_H

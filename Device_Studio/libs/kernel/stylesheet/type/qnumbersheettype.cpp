@@ -2,8 +2,8 @@
 
 #include "../../xmlnode.h"
 
-QNumberSheetType::QNumberSheetType(QAbstractSheetType * parent):
-    QAbstractSheetType(parent),
+QNumberSheetType::QNumberSheetType():
+    QAbstractSheetType(),
     m_minValue(0),
     m_maxValue(9999)
 {
@@ -17,7 +17,7 @@ QNumberSheetType::~QNumberSheetType()
 
 QString QNumberSheetType::getValueText()
 {
-    return QString("%1px").arg(m_value.toInt());
+    return QString("%1").arg(m_value.toInt())+m_suffix;
 }
 
 void QNumberSheetType::toXml(XmlNode *xml)
@@ -36,6 +36,7 @@ void QNumberSheetType::parserProperty(XmlNode *xml)
 {
     m_minValue = xml->getProperty("minValue").toInt();
     m_maxValue = xml->getProperty("maxValue").toInt();
+    m_suffix = xml->getProperty("suffix");
 }
 
 int QNumberSheetType::getMinValue()
@@ -46,4 +47,9 @@ int QNumberSheetType::getMinValue()
 int QNumberSheetType::getMaxValue()
 {
     return m_maxValue;
+}
+
+QString QNumberSheetType::getSuffix()
+{
+    return m_suffix;
 }

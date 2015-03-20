@@ -4,7 +4,8 @@
 
 #include <QPainter>
 
-QAbstractSheetPropertyEditor::QAbstractSheetPropertyEditor(QAbstractSheetType * property,QWidget *parent) :
+QAbstractSheetPropertyEditor::QAbstractSheetPropertyEditor(QAbstractSheetType * property,
+                                                           QWidget *parent) :
     QWidget(parent),
     m_property(property)
 {

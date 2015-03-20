@@ -3,9 +3,7 @@
 
 #include "qabstractsheetpropertyeditor.h"
 
-#include <QComboBox>
-#include <QToolButton>
-#include <QLabel>
+class QBrushEditor;
 
 class QBrushSheetTypeEditor : public QAbstractSheetPropertyEditor
 {
@@ -17,12 +15,9 @@ public:
 protected:
     void    propertyChanged();
 protected slots:
-    void    editColor();
-    void    editGradient();
+    void    valueChanged(const QVariant & value);
 protected:
-    QLabel  *m_iconLabel;
-    QLabel  *m_textLabel;
-    QToolButton *m_editButton;
+    QBrushEditor        *m_brushEditor;
 };
 
 #endif // QBRUSHSHEETTYPEEDITOR_H

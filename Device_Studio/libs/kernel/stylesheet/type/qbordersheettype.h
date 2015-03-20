@@ -12,7 +12,7 @@ class QBorderSheetType : public QAbstractSheetType
 {
     Q_OBJECT
 public:
-    Q_INVOKABLE QBorderSheetType(QAbstractSheetType * parent = NULL);
+    Q_INVOKABLE QBorderSheetType();
     ~QBorderSheetType();
 
     QString getValueText();
@@ -23,8 +23,8 @@ public:
 
     void setValue(const QVariant &value);
 
-protected:
-    void updateValue();
+    QEnumSheetType  * getBorderStyleProperty();
+    QBrushSheetType * getBorderBrushProperty();
 protected:
     QEnumSheetType       *m_borderStyle;
     QNumberSheetType     *m_borderWidth;

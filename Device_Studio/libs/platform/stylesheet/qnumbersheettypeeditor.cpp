@@ -17,7 +17,8 @@ QNumberSheetTypeEditor::QNumberSheetTypeEditor(QAbstractSheetType * property,
     QNumberSheetType * type = (QNumberSheetType*)m_property;
     m_valueEditor->setRange(type->getMinValue(),type->getMaxValue());
     setLayout(hb);
-
+    m_valueEditor->setSuffix(type->getSuffix());
+    m_valueEditor->setValue(type->getValue().toInt());
     connect(m_valueEditor,SIGNAL(valueChanged(int)),this,SLOT(valueEdited()));
 }
 
