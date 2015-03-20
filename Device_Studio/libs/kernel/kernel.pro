@@ -88,7 +88,8 @@ SOURCES += \
     stylesheet/type/qenumsheettype.cpp \
     resource/qresourcemanager.cpp \
     resource/qresourcefile.cpp \
-    resource/qrccfilemaker.cpp
+    resource/qrccfilemaker.cpp \
+    stylesheet/type/qbackgroundsheettype.cpp
 
 HEADERS +=\
     xmlnode.h \
@@ -162,7 +163,8 @@ HEADERS +=\
     stylesheet/type/qenumsheettype.h \
     resource/qresourcemanager.h \
     resource/qresourcefile.h \
-    resource/qrccfilemaker.h
+    resource/qrccfilemaker.h \
+    stylesheet/type/qbackgroundsheettype.h
 
 unix {
     target.path = ../../../temp/bin/Device_Studio.app/Contents/MacOS

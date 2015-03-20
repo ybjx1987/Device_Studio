@@ -99,3 +99,41 @@ QBrushSheetType * QBorderSheetType::getBorderBrushProperty()
 {
     return m_borderBrush;
 }
+
+void QBorderSheetType::toXml(XmlNode *xml)
+{
+    QAbstractSheetType::toXml(xml);
+    XmlNode * obj = new XmlNode(xml);
+    m_borderStyle->toXml(obj);
+    obj = new XmlNode(xml);
+    m_borderWidth->toXml(obj);
+    obj = new XmlNode(xml);
+    m_borderBrush->toXml(obj);
+}
+
+void QBorderSheetType::fromXml(XmlNode *xml)
+{
+    QAbstractSheetType::fromXml(xml);
+
+    QList<XmlNode*> list = xml->getChildren();
+
+    if(list.size() != 3)
+    {
+        return ;
+    }
+
+    m_borderStyle->fromXml(list.at(0));
+    m_borderWidth->fromXml(list.at(1));
+    m_borderBrush->fromXml(list.at(2));
+
+    tagBorderSheetType value;
+    value.m_borderBrush = m_borderBrush->getValue().value<tagBrushSheetType>();
+    value.m_borderStyle = m_borderStyle->getValue().toString();
+    value.m_borderWidth = m_borderWidth->getValue().toInt();
+    setValue(QVariant::fromValue<tagBorderSheetType>(value));
+}
+
+QIcon QBorderSheetType::getValueIcon()
+{
+    return m_borderBrush->getValueIcon();
+}

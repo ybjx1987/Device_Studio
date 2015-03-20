@@ -3,6 +3,8 @@
 
 #include "qabstractsheettype.h"
 
+#include <QIcon>
+
 class XmlNode;
 class QEnumSheetType;
 class QNumberSheetType;
@@ -16,6 +18,7 @@ public:
     ~QBorderSheetType();
 
     QString getValueText();
+    QIcon   getValueIcon();
 
     QString getStyleSheetValue();
 
@@ -25,6 +28,9 @@ public:
 
     QEnumSheetType  * getBorderStyleProperty();
     QBrushSheetType * getBorderBrushProperty();
+
+    void toXml(XmlNode *xml);
+    void fromXml(XmlNode *xml);
 protected:
     QEnumSheetType       *m_borderStyle;
     QNumberSheetType     *m_borderWidth;
