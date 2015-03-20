@@ -2,6 +2,9 @@
 
 #include "qresourcelistview.h"
 #include "qaddresourcedialog.h"
+#include "qdeleteresourcedialog.h"
+#include "editor/qabstractfileeditor.h"
+#include "editor/qeditorfactory.h"
 
 #include "../../../libs/platform/styledbar.h"
 #include "../../../libs/platform/minisplitter.h"
@@ -11,6 +14,7 @@
 #include "../../../libs/platform/qsoftcore.h"
 #include "../../../libs/platform/qbaselistview.h"
 #include "../../../libs/platform/qsoftactionmap.h"
+#include "../../../libs/kernel/resource/qresourcefile.h"
 
 #include <QVBoxLayout>
 #include <QHeaderView>
@@ -19,7 +23,10 @@
 QResourceWidget::QResourceWidget(QWidget * parent):
     QAbstractPageWidget(parent),
     m_resourceListViewBar(new StyledBar),
-    m_resourceListView(new QResourceListView)
+    m_resourceListView(new QResourceListView),
+    m_editorView(new QStackedWidget),
+    m_editorViewBar(new StyledBar),
+    m_editorViewToolBar(new QActionToolBar)
 {
     registerAction();
     MiniSplitter * sp = new MiniSplitter;
@@ -37,6 +44,17 @@ QResourceWidget::QResourceWidget(QWidget * parent):
 
     sp->addWidget(wid);
 
+    vb = new QVBoxLayout;
+    vb->setMargin(0);
+    vb->setSpacing(0);
+    vb->addWidget(m_editorViewBar);
+    vb->addWidget(m_editorView);
+    wid = new QWidget;
+    wid->setLayout(vb);
+    sp->addWidget(wid);
+
+    sp->setStretchFactor(0,0);
+    sp->setStretchFactor(1,1);
 
     vb = new QVBoxLayout;
     vb->setMargin(0);
@@ -68,12 +86,22 @@ QResourceWidget::QResourceWidget(QWidget * parent):
     vb->addWidget(toolBar);
     m_resourceListViewBar->setLayout(vb);
 
+
+    vb = new QVBoxLayout;
+    vb->setMargin(0);
+    vb->setSpacing(0);
+    vb->addWidget(m_editorViewToolBar);
+    m_editorViewBar->setLayout(vb);
+
+    connect(m_resourceListView,SIGNAL(resourceSelect(QResourceFile*)),
+            this,SLOT(resourceSelect(QResourceFile*)));
+
 }
 
 void QResourceWidget::projectOpened()
 {
     QProject * project = (QProject*)sender();
-
+    m_resourceListView->init(project->getResourceManager());
     updateAction();
 }
 
@@ -92,6 +120,7 @@ void QResourceWidget::registerAction()
 
     ac = new QAction(QIcon(":/inner/images/del.png"),tr("Delete Resource"),this);
     QSoftActionMap::insertAction("resource.del",ac);
+    connect(ac,SIGNAL(triggered()),this,SLOT(removeResource()));
 }
 
 void QResourceWidget::updateAction()
@@ -122,4 +151,57 @@ void QResourceWidget::addResource()
     QAddResourceDialog dlg(this);
 
     dlg.exec();
+}
+
+void QResourceWidget::removeResource()
+{
+    QDeleteResourceDialog dlg(this);
+
+    dlg.exec();
+
+    QList<QResourceFile*> list = dlg.getSelectFile();
+
+    m_resourceListView->removeFile(list);
+
+    QResourceManager * manager = QSoftCore::getInstance()->getProject()
+            ->getResourceManager();
+    foreach(QResourceFile * file,list)
+    {
+        QAbstractFileEditor * wid = m_resourceToWidget.value(file);
+        if(wid != NULL)
+        {
+            m_editorView->removeWidget(wid);
+        }
+        manager->delResource(file);
+    }
+}
+
+void QResourceWidget::resourceSelect(QResourceFile *resource)
+{
+    if(resource == NULL)
+    {
+        return;
+    }
+    QAbstractFileEditor * wid = m_resourceToWidget.value(resource);
+
+    if(wid != NULL)
+    {
+        m_editorView->setCurrentWidget(wid);
+        m_editorViewToolBar->addButtonActions(wid->getToolBarActions());
+    }
+    else
+    {
+        int index = resource->getPath().lastIndexOf(".");
+        wid = QEditorFactory::createEditor(resource->getPath().mid(index+1));
+
+        if(wid != NULL)
+        {
+            wid->setResourceFile(resource);
+
+            m_resourceToWidget.insert(resource,wid);
+            m_editorView->addWidget(wid);
+            m_editorView->setCurrentWidget(wid);
+            m_editorViewToolBar->addButtonActions(wid->getToolBarActions());
+        }
+    }
 }

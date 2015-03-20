@@ -15,6 +15,10 @@ public:
     QResourceListView(QWidget * parent = NULL);
 
     void    init(QResourceManager * manager);
+
+    void    clear();
+
+    void    removeFile(QList<QResourceFile *> resource);
 signals:
     void    resourceSelect(QResourceFile * resource);
 protected slots:

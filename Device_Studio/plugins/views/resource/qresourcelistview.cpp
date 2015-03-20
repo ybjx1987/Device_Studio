@@ -7,11 +7,13 @@
 QResourceListView::QResourceListView(QWidget* parent):
     QBaseListView(parent)
 {
+    setRootIsDecorated(true);
     connect(this,SIGNAL(itemSelectionChanged()),this,SLOT(itemSelectChanged()));
 }
 
 void QResourceListView::init(QResourceManager *manager)
 {
+    clear();
     connect(manager,SIGNAL(resourceAdded(QResourceFile*)),
             this,SLOT(resourceAdded(QResourceFile*)));
     connect(manager,SIGNAL(resourceDeled(QResourceFile*)),
@@ -41,6 +43,7 @@ void QResourceListView::resourceAdded(QResourceFile *resource)
             parent->setToolTip(0,firstName);
             parent->setData(0,DarkRole,true);
             parent->setFlags(Qt::ItemIsEnabled);
+            parent->setExpanded(true);
             m_nameToGroup.insert(firstName,parent);
         }
 
@@ -53,13 +56,17 @@ void QResourceListView::resourceAdded(QResourceFile *resource)
 
         if(m_itemToResource.size() == 1)
         {
-            emit resourceSelect(resource);
+            item->setSelected(true);
         }
     }
 }
 
 void QResourceListView::resourceDeled(QResourceFile *resource)
 {
+    if(!m_resourceToItem.keys().contains(resource))
+    {
+        return;
+    }
     QString path = resource->getPath();
 
     int index = path.lastIndexOf("/");
@@ -70,6 +77,8 @@ void QResourceListView::resourceDeled(QResourceFile *resource)
         QTreeWidgetItem * item = m_resourceToItem.value(resource);
 
         m_resourceToItem.remove(resource);
+        m_itemToResource.remove(item);
+
         if(item != NULL)
         {
             delete item;
@@ -92,6 +101,31 @@ void QResourceListView::itemSelectChanged()
     if(items.size() > 0)
     {
         emit resourceSelect(m_itemToResource.value(items.first()));
+    }
+    else
+    {
+        emit resourceSelect(NULL);
+    }
+}
+
+void QResourceListView::clear()
+{
+    m_nameToGroup.clear();
+    m_resourceToItem.clear();
+    m_itemToResource.clear();
+    QBaseListView::clear();
+}
+
+void QResourceListView::removeFile(QList<QResourceFile *> resource)
+{
+    foreach(QResourceFile * file,resource)
+    {
+        resourceDeled(file);
+    }
+
+    if(topLevelItemCount() > 0)
+    {
+        topLevelItem(0)->child(0)->setSelected(true);
     }
     else
     {

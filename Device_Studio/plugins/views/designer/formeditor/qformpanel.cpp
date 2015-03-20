@@ -32,8 +32,8 @@ QFormPanel::QFormPanel(QAbstractWidgetHost *host, QWidget *parent):
     m_host(host),
     m_undoStack(new QUndoStack),
     m_frame(new QFrame),
-    m_selection(new Selection(m_frame)),
-    m_click(false)
+    m_click(false),
+    m_selection(new Selection(m_frame))
 {
     QWidget* wid = ((QWidget*)m_host->getObject());
     wid->setAcceptDrops(true);
@@ -360,6 +360,7 @@ bool QFormPanel::hostResizeEvent(QAbstractWidgetHost *host, QEvent *)
 {
     QSize re=host->getPropertyValue("geometry").toRect().size();
     this->resize(re+QSize(FRAME_SIZE*2,FRAME_SIZE*2));
+    return true;
 }
 
 bool QFormPanel::hostMouseRelease(QAbstractWidgetHost *host, QMouseEvent *e)

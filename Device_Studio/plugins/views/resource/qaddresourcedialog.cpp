@@ -15,6 +15,7 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <QHeaderView>
+#include <QMessageBox>
 
 QAddResourceDialog::QAddResourceDialog(QWidget *parent) :
     QDialog(parent),
@@ -100,7 +101,31 @@ void QAddResourceDialog::on_pushButton_2_clicked()
 
 void QAddResourceDialog::on_pushButton_clicked()
 {
+    QMapIterator<ResourceFileInfo*,QTreeWidgetItem*> it(m_resourceToItem);
 
+    while(it.hasNext())
+    {
+        it.next();
+
+        QStringList list = getEnabledString(it.value());
+
+        bool invalid = list.contains(it.key()->m_path.mid(it.key()->m_path.lastIndexOf("/")+1));
+        if(invalid == true)
+        {
+            QMessageBox::warning(this,tr("Error"),tr("Some file name is invalid!"));
+            return;
+        }
+    }
+    QResourceManager * manager = QSoftCore::getInstance()->getProject()
+            ->getResourceManager();
+    it.toFront();
+    while(it.hasNext())
+    {
+        it.next();
+        QResourceFile *file = new QResourceFile(it.key()->m_path,it.key()->m_sourcePath);
+        manager->addResource(file);
+    }
+    close();
 }
 
 void QAddResourceDialog::addResource(ResourceFileInfo *info)
