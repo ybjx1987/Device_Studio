@@ -11,7 +11,7 @@ class QStyleSheetManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit QStyleSheetManager(QObject *parent = 0);
+    explicit QStyleSheetManager(const QString & type,QObject *parent = 0);
     ~QStyleSheetManager();
 
     void    load(const QString & path);
@@ -34,6 +34,7 @@ public slots:
 protected:
     QList<QStyleSheetGroup*>    m_groups;
     QMap<QString,QStyleSheetGroup*> m_uuidToGroup;
+    QString                     m_type;
 };
 
 #endif // QSTYLESHEETMANAGER_H

@@ -8,7 +8,9 @@
 #include <QVariant>
 #include <QUuid>
 
-QStyleSheetGroup::QStyleSheetGroup(QObject *parent) : QObject(parent)
+QStyleSheetGroup::QStyleSheetGroup(const QString & type,QObject *parent) :
+    QObject(parent),
+    m_type(type)
 {
     m_uuid = QUuid::createUuid().toString();
 }
@@ -29,7 +31,7 @@ void QStyleSheetGroup::addItem(QStyleSheetItem *item)
     {
         return;
     }
-
+    item->setType(m_type);
     m_uuidToItem.insert(item->getUuid(),item);
     m_items.append(item);
     connect(item,SIGNAL(needUpdateStyleSheet()),
@@ -109,7 +111,7 @@ bool QStyleSheetGroup::fromXml(XmlNode *xml)
     {
         if(obj->getTitle() == "Item")
         {
-            QStyleSheetItem * item = new QStyleSheetItem;
+            QStyleSheetItem * item = new QStyleSheetItem(m_type);
             item->fromXml(obj);
             m_items.append(item);
             m_uuidToItem.insert(item->getUuid(),item);

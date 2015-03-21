@@ -12,7 +12,7 @@ class QStyleSheetItem : public QObject
 {
     Q_OBJECT
 public:
-    explicit QStyleSheetItem(QObject *parent = 0);
+    explicit QStyleSheetItem(const QString & type = "",QObject *parent = 0);
     ~QStyleSheetItem();
 
     QList<QStyleSheetItemTitle*>    getTitles();
@@ -34,6 +34,8 @@ public:
     QString getUuid();
 
     QString getStyleSheet(const QString & title);
+
+    void    setType(const QString & type);
 signals:
     void    titleAdded(QStyleSheetItemTitle * title);
     void    titleDeled(QStyleSheetItemTitle * title);
@@ -49,6 +51,7 @@ protected:
     QList<QStyleSheetItemTitle*>    m_titles;
     QList<QAbstractSheetType*>  m_propertys;
     QString                         m_uuid;
+    QString                         m_type;
 };
 
 #endif // QSTYLESHEETITEM_H

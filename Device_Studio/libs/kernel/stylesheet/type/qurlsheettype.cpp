@@ -15,18 +15,26 @@ QString QUrlSheetType::getValueText()
 {
     if(getValue().toString() != "")
     {
-        return QString("url(%1)").arg(getValue().toString());
+        return QString("%1").arg(getValue().toString());
     }
     else
     {
-        return "None";
+        return "Invalid";
     }
 }
 
 QIcon QUrlSheetType::getValueIcon()
 {
-    QIcon icon(getValue().toString());
-    return icon;
+    if(getValue().toString() != "")
+    {
+        QString str = ":/project/"+m_type+"/"+getValue().toString();
+        QIcon icon(str);
+        return icon;
+    }
+    else
+    {
+        return QIcon();
+    }
 }
 
 QString QUrlSheetType::getStyleSheetValue()
@@ -34,7 +42,7 @@ QString QUrlSheetType::getStyleSheetValue()
     if(getValue().toString() != "")
     {
         QString str;
-        str="url("+getValue().toString()+")";
+        str="url(:/project/"+m_type+"/"+getValue().toString()+")";
         return str;
     }
     else

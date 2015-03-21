@@ -32,6 +32,8 @@ public:
     bool            getEnabled();
 
     void    setTypeProperty(const QString &xml);
+
+    void    setType(const QString & type);
 signals:
     void    enabledChanged(bool enabled);
     void    valueChanged(const QVariant & value);
@@ -42,6 +44,7 @@ protected:
     QString     m_name;
     bool        m_enabled;
     QVariant    m_value;
+    QString     m_type;
 };
 
 #endif // QABSTRACTSHEETTYPE_H

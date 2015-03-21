@@ -114,3 +114,8 @@ void QAbstractSheetType::parserProperty(XmlNode *)
 {
 
 }
+
+void QAbstractSheetType::setType(const QString &type)
+{
+    m_type = type;
+}

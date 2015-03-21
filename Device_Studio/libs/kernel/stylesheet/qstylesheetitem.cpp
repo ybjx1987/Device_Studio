@@ -9,8 +9,9 @@
 
 #include <QUuid>
 
-QStyleSheetItem::QStyleSheetItem(QObject *parent) :
-    QObject(parent)
+QStyleSheetItem::QStyleSheetItem(const QString & type,QObject *parent) :
+    QObject(parent),
+    m_type(type)
 {
     m_uuid = QUuid::createUuid().toString();
 }
@@ -89,6 +90,7 @@ bool QStyleSheetItem::fromXml(XmlNode *xml)
                         node->getProperty("type"));
             if(pro != NULL)
             {
+                pro->setType(m_type);
                 connect(pro,SIGNAL(needUpdate()),
                             this,SIGNAL(needUpdateStyleSheet()));
                 pro->fromXml(node);
@@ -139,7 +141,7 @@ void QStyleSheetItem::addProperty(QAbstractSheetType *property)
     {
         return;
     }
-
+    property->setType(m_type);
     m_propertys.append(property);
     connect(property,SIGNAL(needUpdate()),
             this,SIGNAL(needUpdateStyleSheet()));
@@ -166,7 +168,7 @@ void QStyleSheetItem::replaceProperty(QAbstractSheetType *oldPro, QAbstractSheet
     {
         return;
     }
-
+    newPro->setType(m_type);
     m_propertys.replace(m_propertys.indexOf(oldPro),newPro);
     emit propertyReplaced(oldPro,newPro);
     connect(newPro,SIGNAL(needUpdate()),
@@ -235,4 +237,9 @@ QString QStyleSheetItem::getStyleSheet(const QString & title)
     ret += buffer;
     ret +="\n}";
     return ret;
+}
+
+void QStyleSheetItem::setType(const QString &type)
+{
+    m_type = type;
 }

@@ -25,6 +25,9 @@
   <property name="windowTitle">
    <string>Add Resource</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-image: url(:/project/design/images/user/data.png);</string>
+  </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">

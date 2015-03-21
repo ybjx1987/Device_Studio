@@ -11,7 +11,7 @@ class QStyleSheetGroup : public QObject
 {
     Q_OBJECT
 public:
-    explicit QStyleSheetGroup(QObject *parent = 0);
+    explicit QStyleSheetGroup(const QString & type,QObject *parent = 0);
     ~QStyleSheetGroup();
 
     QList<QStyleSheetItem*> getItems();
@@ -43,6 +43,7 @@ protected:
     QMap<QString,QStyleSheetItem*>  m_uuidToItem;
     QString                 m_uuid;
     QString                 m_name;
+    QString                 m_type;
 };
 
 #endif // QSTYLESHEETGROUP_H

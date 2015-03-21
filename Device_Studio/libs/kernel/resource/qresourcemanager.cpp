@@ -38,6 +38,7 @@ void QResourceManager::addResource(QResourceFile *resource)
     m_uuidToResource.insert(resource->getUuid(),resource);
     m_resourceQuote.insert(resource,0);
     emit resourceAdded(resource);
+    useResource(resource->getUuid());
 }
 
 void QResourceManager::delResource(QResourceFile *resource)
@@ -49,6 +50,7 @@ void QResourceManager::delResource(QResourceFile *resource)
         m_resources.removeAll(resource);
         unregisterResource(resource);
         emit resourceDeled(resource);
+        unuseResource(resource->getUuid());
         delete resource;
     }
 }

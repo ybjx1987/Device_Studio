@@ -71,7 +71,10 @@ HEADERS += \
     qsystemresourcemanager.h \
     qrenamedialog.h \
     qprojectresourceview.h \
-    stylesheet/qbrusheditor.h
+    stylesheet/qbrusheditor.h \
+    stylesheet/qimageselectdialog.h \
+    stylesheet/qurlsheettypeeditor.h \
+    stylesheet/qimageeditor.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -123,7 +126,10 @@ SOURCES += \
     qsystemresourcemanager.cpp \
     qrenamedialog.cpp \
     qprojectresourceview.cpp \
-    stylesheet/qbrusheditor.cpp
+    stylesheet/qbrusheditor.cpp \
+    stylesheet/qimageselectdialog.cpp \
+    stylesheet/qurlsheettypeeditor.cpp \
+    stylesheet/qimageeditor.cpp
 
 RESOURCES += \
     platform.qrc
@@ -139,4 +145,5 @@ DISTFILES += \
 FORMS += \
     qlineeditdialog.ui \
     propertylist/editor/qstringeditordialog.ui \
-    qrenamedialog.ui
+    qrenamedialog.ui \
+    stylesheet/qimageselectdialog.ui

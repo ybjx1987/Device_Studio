@@ -9,8 +9,9 @@
 #include <QVariant>
 #include <QDir>
 
-QStyleSheetManager::QStyleSheetManager(QObject *parent) :
-    QObject(parent)
+QStyleSheetManager::QStyleSheetManager(const QString & type,QObject *parent) :
+    QObject(parent),
+    m_type(type)
 {
 
 }
@@ -60,7 +61,7 @@ void QStyleSheetManager::load(const QString &path)
         if(obj->getTitle() == "Group")
         {
             QString name = path+"/"+obj->getText();
-            QStyleSheetGroup * group = new QStyleSheetGroup;
+            QStyleSheetGroup * group = new QStyleSheetGroup(m_type);
             if(group->load(name))
             {
                 group->setProperty("fileName",obj->getText());
@@ -115,7 +116,7 @@ void QStyleSheetManager::save(const QString & path)
 
 void QStyleSheetManager::addGroup(const QString &name)
 {
-    QStyleSheetGroup * group = new QStyleSheetGroup;
+    QStyleSheetGroup * group = new QStyleSheetGroup(m_type);
 
     group->setName(name);
     group->setProperty("fileName",name+".xml");

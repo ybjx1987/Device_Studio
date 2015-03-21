@@ -80,7 +80,7 @@ bool QProject::open(const QString &proFileName)
     m_dataManager = new QDataManager(this);
     m_dataManager->load(path);
 
-    m_styleSheetManager = new QStyleSheetManager(this);
+    m_styleSheetManager = new QStyleSheetManager(m_type,this);
     m_styleSheetManager->load(path+"/stylesheet");
 
     m_styleSheetSync = new QStyleSheetSync(m_styleSheetManager,
