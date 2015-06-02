@@ -88,7 +88,7 @@ void QBaseListView::mousePressEvent(QMouseEvent *event)
     }
 }
 
-void QBaseListView::clickEditItem(QTreeWidgetItem *item, int index)
+void QBaseListView::clickEditItem(QTreeWidgetItem *, int )
 {
 
 }

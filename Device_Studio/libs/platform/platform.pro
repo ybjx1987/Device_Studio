@@ -69,7 +69,8 @@ HEADERS += \
     stylesheet/qbordersheettypeeditor.h \
     stylesheet/qnumbersheettypeeditor.h \
     qsystemresourcemanager.h \
-    qrenamedialog.h
+    qrenamedialog.h \
+    qprojectresourceview.h
 
 SOURCES += \
     stylehelper.cpp \
@@ -119,7 +120,8 @@ SOURCES += \
     stylesheet/qbordersheettypeeditor.cpp \
     stylesheet/qnumbersheettypeeditor.cpp \
     qsystemresourcemanager.cpp \
-    qrenamedialog.cpp
+    qrenamedialog.cpp \
+    qprojectresourceview.cpp
 
 RESOURCES += \
     platform.qrc
